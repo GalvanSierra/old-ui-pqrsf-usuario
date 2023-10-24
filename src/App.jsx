@@ -5,13 +5,29 @@ import { NotFound } from "./pages/NotFound";
 import { Dashboard } from "./pages/Dashboard";
 import { Logout } from "./pages/Logout";
 import { Navbar } from "./components/Navbar";
+import { AuthProvider } from "./contexts/AuthContext";
+import { AuthRoute } from "./components/AuthRoute";
 
 const AppRoute = () => {
   const routes = useRoutes([
     { path: "/", element: <Login /> },
     { path: "/login", element: <Login /> },
-    { path: "/logout", element: <Logout /> },
-    { path: "/dashboard-pqrsf", element: <Dashboard /> },
+    {
+      path: "/logout",
+      element: (
+        <AuthRoute>
+          <Logout />
+        </AuthRoute>
+      ),
+    },
+    {
+      path: "/dashboard-pqrsf",
+      element: (
+        <AuthRoute>
+          <Dashboard />
+        </AuthRoute>
+      ),
+    },
     // { path: "/management-pqrsf", element: <Login /> },
     { path: "*", element: <NotFound /> },
   ]);
@@ -22,8 +38,10 @@ const AppRoute = () => {
 function App() {
   return (
     <BrowserRouter>
-      <Navbar />
-      <AppRoute />
+      <AuthProvider>
+        <Navbar />
+        <AppRoute />
+      </AuthProvider>
     </BrowserRouter>
   );
 }
