@@ -9,6 +9,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 
 import { AuthRoute } from "./components/AuthRoute";
 import { Management } from "./components/Management";
+import { Write } from "./components/Write";
 
 const AppRoute = () => {
   const routes = useRoutes([
@@ -31,6 +32,7 @@ const AppRoute = () => {
       ),
     },
     { path: "/management-pqrsf/:id", element: <Management /> },
+    { path: "/write-pqrsf", element: <Write /> },
     { path: "*", element: <NotFound /> },
   ]);
 
