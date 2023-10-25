@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 
 import api from "../service/api";
 
-function Management() {
+function Management({ type }) {
   const { id } = useParams();
 
   const navigate = useNavigate();
@@ -12,17 +12,20 @@ function Management() {
     register,
     setValue,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm();
 
   const [peticionData, setPeticionData] = useState(null);
-
+  const departamentoSelected = watch("paciente.departamentoId");
   //   Traer las opciones para los distintos selects
 
+  console.log(departamentoSelected);
   const [tipoPeticionOptions, seTipoPeticionOptions] = useState([]);
   const [epsOption, setEpsOption] = useState([]);
   const [tipoIdOptions, setTipoIdOptions] = useState([]);
   const [departamentoOptions, setDepartamentoOptions] = useState([]);
+  const [municipioOptions, setMunicipioOptions] = useState([]);
   const [areasOptions, setAreasOptions] = useState([]);
   const [serviciosOptions, setServiciosOptions] = useState([]);
   const [estadoOptions, setEstadoOptions] = useState([]);
@@ -36,6 +39,7 @@ function Management() {
     eps: "referencias/eps",
     tipoId: `/referencias/tipos_identificacion`,
     departamentos: `/referencias/departamentos`,
+    municipios: `referencias/departamentos/${departamentoSelected}/municipios`,
     areas: "/referencias/areas",
     servicios: "/referencias/servicios",
     estado: `/referencias/estados`,
@@ -64,6 +68,7 @@ function Management() {
       setTipoIdOptions(referenceData.tipoId);
       setEpsOption(referenceData.eps);
       setDepartamentoOptions(referenceData.departamentos);
+      setMunicipioOptions(referenceData.municipios);
       setAreasOptions(referenceData.areas);
       setServiciosOptions(referenceData.servicios);
       setEstadoOptions(referenceData.estado);
@@ -299,7 +304,6 @@ function Management() {
               ))}
             </select>
           </div>
-          {/*"paciente.municipioId": 1033, TODO: */}
           <div>
             <label>Municipio</label>
             <select
@@ -307,6 +311,11 @@ function Management() {
                 valueAsNumber: true,
               })}
             >
+              {municipioOptions.map(({ id, nombre }) => (
+                <option key={id} value={id}>
+                  {nombre}
+                </option>
+              ))}
               <option value="1">hola</option>
               <option value="2">hola2</option>
             </select>
