@@ -136,10 +136,6 @@ function Management() {
     setValue("dueDate", peticion.dueDate);
     setValue("liderId", peticion.liderId);
 
-    setValue(
-      "fechaEnvioResponsableArea",
-      convertISOToDate(peticion.fechaEnvioResponsableArea)
-    );
     setValue("respuesta", peticion.respuesta);
     setValue("seDioRespuesta", peticion.seDioRespuesta ? "1" : "0");
     setValue("fechaRespuesta", convertISOToDate(peticion.fechaRespuesta));
@@ -156,8 +152,37 @@ function Management() {
   const returnToPage = () => {
     navigate("/management-pqrsf");
   };
-  const onSubmit = (data) => {
-    console.log(data);
+
+  const findChangesToUpdate = (obj1, obj2) => {
+    const differences = {};
+
+    // Itera a través de las propiedades de obj1
+    for (let key in obj1) {
+      if (obj1[key] !== obj2[key] && obj2[key] != undefined && obj2[key] != "")
+        differences[key] = obj2[key];
+    }
+
+    delete differences.paciente;
+    delete differences.peticionario;
+
+    return differences;
+  };
+  const onSubmit = async (data) => {
+    const changes = findChangesToUpdate(peticionData, data);
+
+    changes.seGestiono = Boolean(changes.seGestiono);
+    changes.seDioRespuesta = Boolean(changes.seDioRespuesta);
+
+    console.log(changes);
+
+    await api
+      .patch(`/peticiones/${id}`, changes)
+      .then((response) => {
+        console.log("éxito", response);
+      })
+      .catch((error) => {
+        console.error("Error en la solicitud PATCH", error);
+      });
   };
 
   return (
@@ -452,7 +477,6 @@ function Management() {
             <input
               type="date"
               {...register("fechaDiligencia", {
-                valueAsDate: true,
                 required: "Campo requerido",
               })}
             />
@@ -564,6 +588,11 @@ function Management() {
             </div>
           </div>
           {/* fechaRespuesta:null */}
+          <div>
+            <label>Fecha de respuesta de las solicitud</label>
+            <input type="date" {...register("fechaRespuesta", {})} />
+          </div>
+
           {/* descripcionGestion:null */}
           <div>
             <label>Descripcion de la gestión</label>
