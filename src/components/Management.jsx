@@ -17,7 +17,7 @@ function Management({ type }) {
   } = useForm();
 
   const [peticionData, setPeticionData] = useState(null);
-  const departamentoSelected = watch("paciente.departamentoId");
+  const departamentoSelected = watch("paciente.departamentoId") || 0;
   //   Traer las opciones para los distintos selects
 
   console.log(departamentoSelected);
