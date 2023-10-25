@@ -20,7 +20,6 @@ function Management() {
   const departamentoSelected = watch("paciente.departamentoId") || 0;
   //   Traer las opciones para los distintos selects
 
-  console.log(departamentoSelected);
   const [tipoPeticionOptions, seTipoPeticionOptions] = useState([]);
   const [epsOption, setEpsOption] = useState([]);
   const [tipoIdOptions, setTipoIdOptions] = useState([]);
@@ -176,6 +175,7 @@ function Management() {
           <select
             {...register("tipoPeticionId", {
               valueAsNumber: true,
+              disabled: true,
             })}
           >
             {tipoPeticionOptions.map(({ id, nombre }) => (
@@ -193,6 +193,7 @@ function Management() {
             <select
               {...register("peticionario.tipoId", {
                 valueAsNumber: true,
+                disabled: true,
               })}
             >
               {tipoIdOptions.map(({ id, nombre }) => (
@@ -205,27 +206,42 @@ function Management() {
           {/*"peticionario.id": "da12", */}
           <div>
             <label>Numero de identificacion</label>
-            <input type="number" {...register("peticionario.id", {})} />
+            <input
+              type="number"
+              {...register("peticionario.id", { disabled: true })}
+            />
           </div>
           {/*"peticionario.nombre": "da", */}
           <div>
             <label>Nombre(s)</label>
-            <input type="text" {...register("peticionario.nombre", {})} />
+            <input
+              type="text"
+              {...register("peticionario.nombre", { disabled: true })}
+            />
           </div>
           {/*"peticionario.apellido": "da", */}
           <div>
             <label>Apellido(s)</label>
-            <input type="text" {...register("peticionario.apellido", {})} />
+            <input
+              type="text"
+              {...register("peticionario.apellido", { disabled: true })}
+            />
           </div>
           {/*"peticionario.telefono": "112da" */}
           <div>
             <label>Telefono</label>
-            <input type="tel" {...register("peticionario.telefono", {})} />
+            <input
+              type="tel"
+              {...register("peticionario.telefono", { disabled: true })}
+            />
           </div>
           {/*"peticionario.email": "da@gmail.com", */}
           <div>
             <label>Correo electrónico</label>
-            <input type="email" {...register("peticionario.email", {})} />
+            <input
+              type="email"
+              {...register("peticionario.email", { disabled: true })}
+            />
           </div>
         </fieldset>
         <fieldset>
@@ -236,6 +252,7 @@ function Management() {
             <select
               {...register("paciente.tipoId", {
                 valueAsNumber: true,
+                disabled: true,
               })}
             >
               {tipoIdOptions.map(({ id, nombre }) => (
@@ -248,17 +265,26 @@ function Management() {
           {/*"paciente.id": "12", */}
           <div>
             <label>Numero de identificación</label>
-            <input type="number" {...register("paciente.id", {})} />
+            <input
+              type="number"
+              {...register("paciente.id", { disabled: true })}
+            />
           </div>
           {/*"paciente.nombre": "12d", */}
           <div>
             <label>Nombre(s)</label>
-            <input type="text" {...register("paciente.nombre", {})} />
+            <input
+              type="text"
+              {...register("paciente.nombre", { disabled: true })}
+            />
           </div>
           {/*"paciente.apellido": "a", */}
           <div>
             <label>Apellido(s)</label>
-            <input type="text" {...register("paciente.apellido", {})} />
+            <input
+              type="text"
+              {...register("paciente.apellido", { disabled: true })}
+            />
           </div>
           {/*"paciente.epsId": 13, */}
           <div>
@@ -266,6 +292,7 @@ function Management() {
             <select
               {...register("paciente.epsId", {
                 valueAsNumber: true,
+                disabled: true,
               })}
             >
               {epsOption.map(({ id, nombre }) => (
@@ -281,6 +308,7 @@ function Management() {
             <select
               {...register("paciente.regimenId", {
                 valueAsNumber: true,
+                disabled: true,
               })}
             ></select>
           </div>
@@ -290,6 +318,7 @@ function Management() {
             <select
               {...register("paciente.departamentoId", {
                 valueAsNumber: true,
+                disabled: true,
               })}
             >
               {departamentoOptions.map(({ id, nombre }) => (
@@ -304,6 +333,7 @@ function Management() {
             <select
               {...register("paciente.municipioId", {
                 valueAsNumber: true,
+                disabled: true,
               })}
             >
               {municipioOptions.map(({ id, nombre }) => (
@@ -322,6 +352,7 @@ function Management() {
             <select
               {...register("areaId", {
                 valueAsNumber: true,
+                disabled: true,
               })}
             >
               {areasOptions.map(({ id, nombre }) => (
@@ -337,6 +368,7 @@ function Management() {
             <select
               {...register("servicioId", {
                 valueAsNumber: true,
+                disabled: true,
               })}
             >
               {serviciosOptions.map(({ id, nombre }) => (
@@ -349,7 +381,7 @@ function Management() {
           {/*"dirigidaA": "wq", */}
           <div>
             <label>Solicitud dirigida a</label>
-            <input type="text" {...register("dirigidaA", {})} />
+            <input type="text" {...register("dirigidaA", { disabled: true })} />
           </div>
           {/*"tutela": false, */}
           <div>
@@ -358,13 +390,13 @@ function Management() {
               <input
                 type="radio"
                 value="1"
-                {...register("tutela", { valueAsNumber: true })}
+                {...register("tutela", { valueAsNumber: true, disabled: true })}
               />
               <label>Si</label>
               <input
                 type="radio"
                 value="0"
-                {...register("tutela", { valueAsNumber: true })}
+                {...register("tutela", { valueAsNumber: true, disabled: true })}
               />
               <label>No</label>
             </div>
@@ -372,12 +404,15 @@ function Management() {
           {/*"radicadoTutela": null, */}
           <div>
             <label>Radicado de la tutela</label>
-            <input type="number" {...register("radicadoTutela", {})} />
+            <input
+              type="number"
+              {...register("radicadoTutela", { disabled: true })}
+            />
           </div>
           {/*"motivo": "wq", */}
           <div>
             <label>Motivo de la solicitud</label>
-            <textarea {...register("motivo", {})}></textarea>
+            <textarea {...register("motivo", { disabled: true })}></textarea>
           </div>
         </fieldset>
         <fieldset>
