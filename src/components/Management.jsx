@@ -424,6 +424,7 @@ function Management() {
               type="date"
               {...register("fechaRecepcion", {
                 valueAsDate: true,
+                disabled: true,
               })}
             />
           </div>
@@ -444,10 +445,6 @@ function Management() {
               />
               <label>No</label>
             </div>
-            {/* <select {...register("seGestiono", { valueAsNumber: true })}>
-              <option value="1">Si</option>
-              <option value="0">No</option>
-            </select> */}
           </div>
           {/* fechaDiligencia:"2023-10-19T00:00:00.000Z" */}
           <div>
@@ -456,8 +453,14 @@ function Management() {
               type="date"
               {...register("fechaDiligencia", {
                 valueAsDate: true,
+                required: "Campo requerido",
               })}
             />
+            {errors.fechaDiligencia && (
+              <p role="alert" className="alert">
+                {errors.fechaDiligencia.message}
+              </p>
+            )}
           </div>
           {/* estadoId:1 */}
           <div>
@@ -465,6 +468,7 @@ function Management() {
             <select
               {...register("estadoId", {
                 valueAsNumber: true,
+                required: "Campo requerido",
               })}
             >
               {estadoOptions.map(({ id, nombre }) => (
@@ -473,13 +477,19 @@ function Management() {
                 </option>
               ))}
             </select>
+            {errors.estadoId && (
+              <p role="alert" className="alert">
+                {errors.estadoId.message}
+              </p>
+            )}
           </div>
-          {/* canalId:5 */}
+          {/* canalId:5 TODO:remove*/}
           <div>
             <label>Canal de recepción</label>
             <select
               {...register("canalId", {
                 valueAsNumber: true,
+                disabled: true,
               })}
             ></select>
           </div>
