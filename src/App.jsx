@@ -6,7 +6,9 @@ import { Dashboard } from "./pages/Dashboard";
 import { Logout } from "./pages/Logout";
 import { Navbar } from "./components/Navbar";
 import { AuthProvider } from "./contexts/AuthContext";
+
 import { AuthRoute } from "./components/AuthRoute";
+import { Management } from "./components/Management";
 
 const AppRoute = () => {
   const routes = useRoutes([
@@ -28,7 +30,7 @@ const AppRoute = () => {
         </AuthRoute>
       ),
     },
-    // { path: "/management-pqrsf", element: <Login /> },
+    { path: "/management-pqrsf/:id", element: <Management /> },
     { path: "*", element: <NotFound /> },
   ]);
 
