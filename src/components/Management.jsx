@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 
 import api from "../service/api";
 
-function Management({ type }) {
+function Management() {
   const { id } = useParams();
 
   const navigate = useNavigate();
@@ -273,8 +273,6 @@ function Management({ type }) {
                   {nombre}
                 </option>
               ))}
-              <option value="1">hola</option>
-              <option value="2">hola2</option>
             </select>
           </div>
           {/*"paciente.regimenId": 2, */}
@@ -284,10 +282,7 @@ function Management({ type }) {
               {...register("paciente.regimenId", {
                 valueAsNumber: true,
               })}
-            >
-              <option value="1">hola</option>
-              <option value="2">hola2</option>
-            </select>
+            ></select>
           </div>
           {/*"paciente.departamentoId": 44, */}
           <div>
@@ -316,8 +311,6 @@ function Management({ type }) {
                   {nombre}
                 </option>
               ))}
-              <option value="1">hola</option>
-              <option value="2">hola2</option>
             </select>
           </div>
         </fieldset>
@@ -444,7 +437,6 @@ function Management({ type }) {
                   {nombre}
                 </option>
               ))}
-              <option value="2">hola2</option>
             </select>
           </div>
           {/* canalId:5 */}
@@ -454,10 +446,7 @@ function Management({ type }) {
               {...register("canalId", {
                 valueAsNumber: true,
               })}
-            >
-              <option value="1">hola</option>
-              <option value="2">hola2</option>
-            </select>
+            ></select>
           </div>
           {/* clasePeticionId:1 */}
           <div>

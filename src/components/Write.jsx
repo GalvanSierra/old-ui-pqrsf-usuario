@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import api from "../service/api";
 
-function Write({ type }) {
+function Write() {
   const navigate = useNavigate();
   const {
     register,
