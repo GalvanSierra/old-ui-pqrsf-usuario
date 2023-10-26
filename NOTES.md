@@ -1,5 +1,9 @@
 # TODOs:
 
+_navbar_
+
+- [ ] Corrección de rutas visualización de rutas privadas y publicas
+
 _Sección de peticionario_
 
 - [x] Si un peticionario ingresa información en alguno de los campos solicitar los demás campos
