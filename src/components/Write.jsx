@@ -90,7 +90,6 @@ function Write() {
     <>
       <h2>Tipo:</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {/*"tipoPeticionId": 1, */}
         <div>
           <label>Tipo de solicitud</label>
           <select
@@ -108,14 +107,7 @@ function Write() {
         </div>
 
         <fieldset>
-          {/* 
-          TODO: 
-          - [ ] Si un peticionario ingresa información en alguno de los campos solicitar los demás campos
-          - [ ] Validar tipo de documento, pasaporte, y numero 
-           */}
-
           <legend>Información del Peticionario</legend>
-          {/*"peticionario.tipoId": "MS", */}
           <div>
             <label>Tipo identificación</label>
             <select
@@ -131,22 +123,22 @@ function Write() {
               ))}
             </select>
           </div>
-          {/*"peticionario.id": "da12", */}
+
           <div>
             <label>Numero de identificacion</label>
             <input type="number" {...register("peticionario.id", {})} />
           </div>
-          {/*"peticionario.nombre": "da", */}
+
           <div>
             <label>Nombre(s)</label>
             <input type="text" {...register("peticionario.nombre", {})} />
           </div>
-          {/*"peticionario.apellido": "da", */}
+
           <div>
             <label>Apellido(s)</label>
             <input type="text" {...register("peticionario.apellido", {})} />
           </div>
-          {/*"peticionario.telefono": "112da" */}
+
           <div>
             <label>Telefono</label>
             <input
@@ -173,7 +165,6 @@ function Write() {
             )}
           </div>
 
-          {/*"peticionario.email": "da@gmail.com", */}
           <div>
             <label>Correo electrónico</label>
             <input
@@ -199,16 +190,7 @@ function Write() {
         </fieldset>
 
         <fieldset>
-          {/* 
-          TODO: 
-          - [ ] Si un peticionario ingresa información en alguno de los campos solicitar los demás campos
-          - [ ] Validar tipo de documento, pasaporte, y numero
-          - [ ] Agregar opción de regimen 
-          - [ ] Corrección de municipios  
-           */}
-
           <legend>Información del Paciente</legend>
-          {/*"paciente.tipoId": "CD", */}
           <div>
             <label>Tipo de identificación</label>
             <select
@@ -224,22 +206,22 @@ function Write() {
               ))}
             </select>
           </div>
-          {/*"paciente.id": "12", */}
+
           <div>
             <label>Numero de identificación</label>
             <input type="number" {...register("paciente.id", {})} />
           </div>
-          {/*"paciente.nombre": "12d", */}
+
           <div>
             <label>Nombre(s)</label>
             <input type="text" {...register("paciente.nombre", {})} />
           </div>
-          {/*"paciente.apellido": "a", */}
+
           <div>
             <label>Apellido(s)</label>
             <input type="text" {...register("paciente.apellido", {})} />
           </div>
-          {/*"paciente.epsId": 13, */}
+
           <div>
             <label>EPS</label>
             <select
@@ -256,7 +238,6 @@ function Write() {
             </select>
           </div>
 
-          {/*"paciente.regimenId": 2, */}
           <div>
             <label>Regimen</label>
             <select
@@ -267,7 +248,7 @@ function Write() {
               <option defaultValue={true} value=""></option>
             </select>
           </div>
-          {/*"paciente.departamentoId": 44, */}
+
           <div>
             <label>Departamento</label>
             <select
@@ -283,6 +264,7 @@ function Write() {
               ))}
             </select>
           </div>
+
           <div>
             <label>Municipio</label>
             <select
@@ -299,9 +281,9 @@ function Write() {
             </select>
           </div>
         </fieldset>
+
         <fieldset>
           <legend>información de la Petición</legend>
-          {/*"areaId": 8, */}
           <div>
             <label>Area a informar</label>
             <select
@@ -324,7 +306,6 @@ function Write() {
             )}
           </div>
 
-          {/*"servicioId": 1, */}
           <div>
             <label>Servicio</label>
             <select
@@ -347,7 +328,6 @@ function Write() {
             )}
           </div>
 
-          {/*"dirigidaA": "wq", */}
           <div>
             <label>Solicitud dirigida a</label>
             <input
@@ -380,12 +360,12 @@ function Write() {
               <label>No</label>
             </div>
           </div>
-          {/*"radicadoTutela": null, */}
+
           <div>
             <label>Radicado de la tutela</label>
             <input type="number" {...register("radicadoTutela", {})} />
           </div>
-          {/*"motivo": "wq", */}
+
           <div>
             <label>Motivo de la solicitud</label>
             <textarea
@@ -411,6 +391,7 @@ function Write() {
             <label>Fecha de recepción</label>
             <input type="date" {...register("fechaRecepcion", {})} />
           </div>
+
           {/* seGestiono:false */}
           <div>
             <label>¿Se va a gestiono?</label>
@@ -429,6 +410,7 @@ function Write() {
               <label>No</label>
             </div>
           </div>
+
           {/* fechaDiligencia:"2023-10-19T00:00:00.000Z" */}
           <div>
             <label>Fecha de diligencia de la solicitud</label>
@@ -439,6 +421,7 @@ function Write() {
               })}
             />
           </div>
+
           {/* estadoId:1 */}
           <div>
             <label>Estado de la solicitud</label>
@@ -454,6 +437,7 @@ function Write() {
               ))}
             </select>
           </div>
+
           {/* canalId:5 */}
           <div>
             <label>Canal de recepción</label>
@@ -463,6 +447,7 @@ function Write() {
               })}
             ></select>
           </div>
+
           {/* clasePeticionId:1 */}
           <div>
             <label>Clase de peticion</label>
@@ -479,6 +464,7 @@ function Write() {
               ))}
             </select>
           </div>
+
           {/* complejidadId:1 */}
           <div>
             <label>Complejidad</label>
@@ -495,6 +481,7 @@ function Write() {
               ))}
             </select>
           </div>
+
           {/* dueDate:"2023-10-26T12:18:09.194Z" */}
           {/* liderId:3 */}
           <div>
@@ -512,12 +499,14 @@ function Write() {
               ))}
             </select>
           </div>
+
           {/* fechaEnvioResponsableArea:"2023-10-24" */}
           {/* respuesta:"wqwqwqwqwqwqwqwqwq" */}
           <div>
             <label>Respuesta a solicitud</label>
             <textarea {...register("respuesta", {})}></textarea>
           </div>
+
           {/* seDioRespuesta:true */}
           <div>
             <label>¿Se dio respuesta?</label>
@@ -536,12 +525,14 @@ function Write() {
               <label>No</label>
             </div>
           </div>
+
           {/* fechaRespuesta:null */}
           {/* descripcionGestion:null */}
           <div>
             <label>Descripcion de la gestión</label>
             <textarea {...register("descripcionGestion", {})}></textarea>
           </div>
+
           {/* calidadId:null */}
           <div>
             <label>Calidad</label>
@@ -558,6 +549,7 @@ function Write() {
             </select>
           </div>
         </fieldset>
+
         <input type="submit" value="Enviar petición" />
       </form>
 
