@@ -8,7 +8,6 @@ function Write() {
   const navigate = useNavigate();
   const {
     register,
-    setValue,
     handleSubmit,
     watch,
     formState: { errors },
@@ -91,11 +90,6 @@ function Write() {
     <>
       <h2>Tipo:</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {/*"radicado": 8, */}
-        <div>
-          <label>Radicado</label>
-          <input type="number" {...register("radicado", { disabled: true })} />
-        </div>
         {/*"tipoPeticionId": 1, */}
         <div>
           <label>Tipo de solicitud</label>
@@ -104,6 +98,7 @@ function Write() {
               valueAsNumber: true,
             })}
           >
+            <option defaultValue={true} hidden={true} value=""></option>
             {tipoPeticionOptions.map(({ id, nombre }) => (
               <option key={id} value={id}>
                 {nombre}
@@ -111,7 +106,14 @@ function Write() {
             ))}
           </select>
         </div>
+
         <fieldset>
+          {/* 
+          TODO: 
+          - [ ] Si un peticionario ingresa información en alguno de los campos solicitar los demás campos
+          - [ ] Validar tipo de documento, pasaporte, y numero 
+           */}
+
           <legend>Información del Peticionario</legend>
           {/*"peticionario.tipoId": "MS", */}
           <div>
@@ -121,6 +123,7 @@ function Write() {
                 valueAsNumber: true,
               })}
             >
+              <option defaultValue={true} value=""></option>
               {tipoIdOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
@@ -146,15 +149,64 @@ function Write() {
           {/*"peticionario.telefono": "112da" */}
           <div>
             <label>Telefono</label>
-            <input type="tel" {...register("peticionario.telefono", {})} />
+            <input
+              type="tel"
+              {...register("peticionario.telefono", {
+                minLength: {
+                  value: 7,
+                  message: "Mínimo 7 caracteres",
+                },
+                maxLength: {
+                  value: 10,
+                  message: "Máximo 10 caracteres",
+                },
+                pattern: {
+                  value: /^\d+$/,
+                  message: "Por favor, ingresa solo números",
+                },
+              })}
+            />
+            {errors.peticionario?.telefono && (
+              <p role="alert" className="alert">
+                {errors.peticionario?.telefono.message}
+              </p>
+            )}
           </div>
+
           {/*"peticionario.email": "da@gmail.com", */}
           <div>
             <label>Correo electrónico</label>
-            <input type="email" {...register("peticionario.email", {})} />
+            <input
+              type="email"
+              {...register("peticionario.email", {
+                pattern: {
+                  maxLength: {
+                    value: 125,
+                    message: "Máximo 125 caracteres",
+                  },
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  message:
+                    "Por favor, ingresa una dirección de correo electrónico válida",
+                },
+              })}
+            />
+            {errors.peticionario?.email && (
+              <p role="alert" className="alert">
+                {errors.peticionario?.email.message}
+              </p>
+            )}
           </div>
         </fieldset>
+
         <fieldset>
+          {/* 
+          TODO: 
+          - [ ] Si un peticionario ingresa información en alguno de los campos solicitar los demás campos
+          - [ ] Validar tipo de documento, pasaporte, y numero
+          - [ ] Agregar opción de regimen 
+          - [ ] Corrección de municipios  
+           */}
+
           <legend>Información del Paciente</legend>
           {/*"paciente.tipoId": "CD", */}
           <div>
@@ -164,6 +216,7 @@ function Write() {
                 valueAsNumber: true,
               })}
             >
+              <option defaultValue={true} value=""></option>
               {tipoIdOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
@@ -194,6 +247,7 @@ function Write() {
                 valueAsNumber: true,
               })}
             >
+              <option defaultValue={true} value=""></option>
               {epsOption.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
@@ -201,6 +255,7 @@ function Write() {
               ))}
             </select>
           </div>
+
           {/*"paciente.regimenId": 2, */}
           <div>
             <label>Regimen</label>
@@ -208,7 +263,9 @@ function Write() {
               {...register("paciente.regimenId", {
                 valueAsNumber: true,
               })}
-            ></select>
+            >
+              <option defaultValue={true} value=""></option>
+            </select>
           </div>
           {/*"paciente.departamentoId": 44, */}
           <div>
@@ -218,6 +275,7 @@ function Write() {
                 valueAsNumber: true,
               })}
             >
+              <option defaultValue={true} value=""></option>
               {departamentoOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
@@ -232,6 +290,7 @@ function Write() {
                 valueAsNumber: true,
               })}
             >
+              <option defaultValue={true} value=""></option>
               {municipioOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
@@ -248,36 +307,62 @@ function Write() {
             <select
               {...register("areaId", {
                 valueAsNumber: true,
+                required: "Campo requerido",
               })}
             >
+              <option defaultValue={true} hidden={true} value=""></option>
               {areasOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
                 </option>
               ))}
             </select>
+            {errors.areaId && (
+              <p role="alert" className="alert">
+                {errors.areaId.message}
+              </p>
+            )}
           </div>
+
           {/*"servicioId": 1, */}
           <div>
             <label>Servicio</label>
             <select
               {...register("servicioId", {
                 valueAsNumber: true,
+                required: "Campo requerido",
               })}
             >
+              <option defaultValue={true} hidden={true} value=""></option>
               {serviciosOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
                 </option>
               ))}
             </select>
+            {errors.servicioId && (
+              <p role="alert" className="alert">
+                {errors.servicioId.message}
+              </p>
+            )}
           </div>
+
           {/*"dirigidaA": "wq", */}
           <div>
             <label>Solicitud dirigida a</label>
-            <input type="text" {...register("dirigidaA", {})} />
+            <input
+              type="text"
+              {...register("dirigidaA", {
+                required: "Campo requerido",
+              })}
+            />
+            {errors.dirigidaA && (
+              <p role="alert" className="alert">
+                {errors.dirigidaA.message}
+              </p>
+            )}
           </div>
-          {/*"tutela": false, */}
+
           <div>
             <label>¿Aplica tutela?</label>
             <div>
@@ -303,20 +388,28 @@ function Write() {
           {/*"motivo": "wq", */}
           <div>
             <label>Motivo de la solicitud</label>
-            <textarea {...register("motivo", {})}></textarea>
+            <textarea
+              {...register("motivo", {
+                minLength: {
+                  value: 20,
+                  message: "Mínimo 20 caracteres",
+                },
+              })}
+            ></textarea>
+            {errors.motivo && (
+              <p role="alert" className="alert">
+                {errors.motivo.message}
+              </p>
+            )}
           </div>
         </fieldset>
+
         <fieldset>
-          <legend>Gestión</legend>
+          <legend>Gestión de la solicitud</legend>
           {/* fechaRecepcion:"2023-10-04T14:42:34.312Z" */}
           <div>
             <label>Fecha de recepción</label>
-            <input
-              type="date"
-              {...register("fechaRecepcion", {
-                valueAsDate: true,
-              })}
-            />
+            <input type="date" {...register("fechaRecepcion", {})} />
           </div>
           {/* seGestiono:false */}
           <div>
@@ -378,6 +471,7 @@ function Write() {
                 valueAsNumber: true,
               })}
             >
+              <option defaultValue={true} hidden={true} value=""></option>
               {clasePeticionOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
@@ -393,6 +487,7 @@ function Write() {
                 valueAsNumber: true,
               })}
             >
+              <option defaultValue={true} hidden={true} value=""></option>
               {complejidadOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
@@ -409,6 +504,7 @@ function Write() {
                 valueAsNumber: true,
               })}
             >
+              <option defaultValue={true} hidden={true} value=""></option>
               {lideresOptions.map(({ id, cargo }) => (
                 <option key={id} value={id}>
                   {cargo}
