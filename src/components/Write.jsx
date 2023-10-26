@@ -29,6 +29,7 @@ function Write() {
   const [complejidadOptions, setComplejidadOptions] = useState([]);
   const [lideresOptions, setLideresOptions] = useState([]);
   const [calidadOptions, setCalidadOptions] = useState([]);
+  const [canalOptions, setCanalOptions] = useState([]);
 
   const urls = {
     tipoPeticion: "/referencias/tipos_peticion",
@@ -43,6 +44,7 @@ function Write() {
     complejidad: `/referencias/complejidades`,
     lideres: `/referencias/lideres`,
     calidad: `/referencias/calidad`,
+    canales: "referencias/canales",
   };
 
   const fetchDataReference = async (url) => {
@@ -81,6 +83,7 @@ function Write() {
       setComplejidadOptions(referenceData.complejidad);
       setLideresOptions(referenceData.lideres);
       setCalidadOptions(referenceData.calidad);
+      setCanalOptions(referenceData.canales);
     });
   };
 
@@ -94,7 +97,7 @@ function Write() {
 
   useEffect(() => {
     fetchMunicipiosByDepId();
-  }, [departamentoSelected, fetchMunicipiosByDepId]);
+  }, [fetchMunicipiosByDepId]);
 
   const returnToPage = () => {
     navigate("/management-pqrsf");
@@ -592,7 +595,14 @@ function Write() {
               {...register("canalId", {
                 valueAsNumber: true,
               })}
-            ></select>
+            >
+              <option defaultValue={true} hidden={true} value=""></option>
+              {canalOptions.map(({ id, nombre }) => (
+                <option key={id} value={id}>
+                  {nombre}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* clasePeticionId:1 */}
