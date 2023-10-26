@@ -18,6 +18,7 @@ function Write() {
 
   const [tipoPeticionOptions, seTipoPeticionOptions] = useState([]);
   const [epsOption, setEpsOption] = useState([]);
+  const [regimenOption, setRegimenOption] = useState([]);
   const [tipoIdOptions, setTipoIdOptions] = useState([]);
   const [departamentoOptions, setDepartamentoOptions] = useState([]);
   const [municipioOptions, setMunicipioOptions] = useState([]);
@@ -32,9 +33,9 @@ function Write() {
   const urls = {
     tipoPeticion: "/referencias/tipos_peticion",
     eps: "referencias/eps",
+    regimen: "referencias/regimenes",
     tipoId: `/referencias/tipos_identificacion`,
     departamentos: `/referencias/departamentos`,
-    municipios: `referencias/departamentos/${departamentoSelected}/municipios`,
     areas: "/referencias/areas",
     servicios: "/referencias/servicios",
     estado: `/referencias/estados`,
@@ -47,6 +48,15 @@ function Write() {
   const fetchDataReference = async (url) => {
     const response = await api.get(url).then((response) => response.data);
     return response;
+  };
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const fetchMunicipiosByDepId = async () => {
+    const municipios = await fetchDataReference(
+      `referencias/departamentos/${departamentoSelected}/municipios`
+    );
+
+    setMunicipioOptions(municipios);
   };
 
   const fetchSelectedOptions = async (apiReferences) => {
@@ -62,8 +72,8 @@ function Write() {
       seTipoPeticionOptions(referenceData.tipoPeticion);
       setTipoIdOptions(referenceData.tipoId);
       setEpsOption(referenceData.eps);
+      setRegimenOption(referenceData.regimen);
       setDepartamentoOptions(referenceData.departamentos);
-      setMunicipioOptions(referenceData.municipios);
       setAreasOptions(referenceData.areas);
       setServiciosOptions(referenceData.servicios);
       setEstadoOptions(referenceData.estado);
@@ -74,10 +84,17 @@ function Write() {
     });
   };
 
+  const [isPeticionarioRequiere, setIsPeticionarioRequiere] = useState(false);
+  const [isPacienteRequiere, setIsPacienteRequiere] = useState(false);
+
   useEffect(() => {
     fetchSelectedOptions(urls);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    fetchMunicipiosByDepId();
+  }, [departamentoSelected, fetchMunicipiosByDepId]);
 
   const returnToPage = () => {
     navigate("/management-pqrsf");
@@ -95,6 +112,7 @@ function Write() {
           <select
             {...register("tipoPeticionId", {
               valueAsNumber: true,
+              required: "Campo requerido",
             })}
           >
             <option defaultValue={true} hidden={true} value=""></option>
@@ -104,6 +122,11 @@ function Write() {
               </option>
             ))}
           </select>
+          {errors.tipoPeticionId && (
+            <p role="alert" className="alert">
+              {errors.tipoPeticionId.message}
+            </p>
+          )}
         </div>
 
         <fieldset>
@@ -112,7 +135,13 @@ function Write() {
             <label>Tipo identificación</label>
             <select
               {...register("peticionario.tipoId", {
-                valueAsNumber: true,
+                required: {
+                  value: isPeticionarioRequiere,
+                  message: "Campo requerido",
+                },
+                validate: (v) => {
+                  if (v != null && v != "NA") setIsPeticionarioRequiere(true);
+                },
               })}
             >
               <option defaultValue={true} value=""></option>
@@ -122,21 +151,69 @@ function Write() {
                 </option>
               ))}
             </select>
+            {errors.peticionario?.tipoId && (
+              <p role="alert" className="alert">
+                {errors.peticionario?.tipoId.message}
+              </p>
+            )}
           </div>
 
           <div>
             <label>Numero de identificacion</label>
-            <input type="number" {...register("peticionario.id", {})} />
+            <input
+              type="number"
+              {...register("peticionario.id", {
+                required: {
+                  value: isPeticionarioRequiere,
+                  message: "Campo requerido",
+                },
+                validate: (v) => {
+                  if (v != null) setIsPeticionarioRequiere(true);
+                },
+              })}
+            />
+            {errors.peticionario?.id && (
+              <p role="alert" className="alert">
+                {errors.peticionario?.id.message}
+              </p>
+            )}
           </div>
 
           <div>
             <label>Nombre(s)</label>
-            <input type="text" {...register("peticionario.nombre", {})} />
+            <input
+              type="text"
+              {...register("peticionario.nombre", {
+                required: {
+                  value: isPeticionarioRequiere,
+                  message: "Campo requerido",
+                },
+              })}
+            />
+
+            {errors.peticionario?.nombre && (
+              <p role="alert" className="alert">
+                {errors.peticionario?.nombre.message}
+              </p>
+            )}
           </div>
 
           <div>
             <label>Apellido(s)</label>
-            <input type="text" {...register("peticionario.apellido", {})} />
+            <input
+              type="text"
+              {...register("peticionario.apellido", {
+                required: {
+                  value: isPeticionarioRequiere,
+                  message: "Campo requerido",
+                },
+              })}
+            />
+            {errors.peticionario?.apellido && (
+              <p role="alert" className="alert">
+                {errors.peticionario?.apellido.message}
+              </p>
+            )}
           </div>
 
           <div>
@@ -155,6 +232,10 @@ function Write() {
                 pattern: {
                   value: /^\d+$/,
                   message: "Por favor, ingresa solo números",
+                },
+                required: {
+                  value: isPeticionarioRequiere,
+                  message: "Campo requerido",
                 },
               })}
             />
@@ -195,7 +276,13 @@ function Write() {
             <label>Tipo de identificación</label>
             <select
               {...register("paciente.tipoId", {
-                valueAsNumber: true,
+                required: {
+                  value: isPacienteRequiere,
+                  message: "Campo requerido",
+                },
+                validate: (v) => {
+                  if (v != null && v != "NA") setIsPacienteRequiere(true);
+                },
               })}
             >
               <option defaultValue={true} value=""></option>
@@ -205,21 +292,63 @@ function Write() {
                 </option>
               ))}
             </select>
+            {errors.paciente?.tipoId && (
+              <p role="alert" className="alert">
+                {errors.paciente?.tipoId.message}
+              </p>
+            )}
           </div>
 
           <div>
             <label>Numero de identificación</label>
-            <input type="number" {...register("paciente.id", {})} />
+            <input
+              type="number"
+              {...register("paciente.id", {
+                required: {
+                  value: isPacienteRequiere,
+                  message: "Campo requerido",
+                },
+                validate: (v) => {
+                  if (v != null) setIsPacienteRequiere(true);
+                },
+              })}
+            />
           </div>
 
           <div>
             <label>Nombre(s)</label>
-            <input type="text" {...register("paciente.nombre", {})} />
+            <input
+              type="text"
+              {...register("paciente.nombre", {
+                required: {
+                  value: isPacienteRequiere,
+                  message: "Campo requerido",
+                },
+              })}
+            />
+            {errors.paciente?.nombre && (
+              <p role="alert" className="alert">
+                {errors.paciente?.nombre.message}
+              </p>
+            )}
           </div>
 
           <div>
             <label>Apellido(s)</label>
-            <input type="text" {...register("paciente.apellido", {})} />
+            <input
+              type="text"
+              {...register("paciente.apellido", {
+                required: {
+                  value: isPacienteRequiere,
+                  message: "Campo requerido",
+                },
+              })}
+            />
+            {errors.paciente?.apellido && (
+              <p role="alert" className="alert">
+                {errors.paciente?.apellido.message}
+              </p>
+            )}
           </div>
 
           <div>
@@ -227,6 +356,10 @@ function Write() {
             <select
               {...register("paciente.epsId", {
                 valueAsNumber: true,
+                required: {
+                  value: isPacienteRequiere,
+                  message: "Campo requerido",
+                },
               })}
             >
               <option defaultValue={true} value=""></option>
@@ -236,6 +369,11 @@ function Write() {
                 </option>
               ))}
             </select>
+            {errors.paciente?.epsId && (
+              <p role="alert" className="alert">
+                {errors.paciente?.epsId.message}
+              </p>
+            )}
           </div>
 
           <div>
@@ -243,10 +381,24 @@ function Write() {
             <select
               {...register("paciente.regimenId", {
                 valueAsNumber: true,
+                required: {
+                  value: isPacienteRequiere,
+                  message: "Campo requerido",
+                },
               })}
             >
+              {regimenOption.map(({ id, nombre }) => (
+                <option key={id} value={id}>
+                  {nombre}
+                </option>
+              ))}
               <option defaultValue={true} value=""></option>
             </select>
+            {errors.paciente?.regimenId && (
+              <p role="alert" className="alert">
+                {errors.paciente?.regimenId.message}
+              </p>
+            )}
           </div>
 
           <div>
@@ -414,12 +566,7 @@ function Write() {
           {/* fechaDiligencia:"2023-10-19T00:00:00.000Z" */}
           <div>
             <label>Fecha de diligencia de la solicitud</label>
-            <input
-              type="date"
-              {...register("fechaDiligencia", {
-                valueAsDate: true,
-              })}
-            />
+            <input type="date" {...register("fechaDiligencia", {})} />
           </div>
 
           {/* estadoId:1 */}
