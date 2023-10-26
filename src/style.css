@@ -1,0 +1,187 @@
+:root {
+  /* --green: #009190; */
+  --green-50: #eefffc;
+  --green-100: #c5fff9;
+  --green-200: #8bfff4;
+  --green-300: #4afeef;
+  --green-400: #15ece0;
+  --green-500: #00d0c8;
+  --green-600: #00a8a4;
+  --green-700: #009190;
+  --green-800: #066869;
+  --green-900: #0a5756;
+  --green-950: #003235;
+
+  /* --red: #de2f40; */
+  --red-50: #fff2f1;
+  --red-100: #fee6e5;
+  --red-200: #fdcece;
+  --red-300: #faa7a7;
+  --red-400: #f77578;
+  --red-500: #ef444d;
+  --red-600: #de2f40;
+  --red-700: #b9172b;
+  --red-800: #9b162b;
+  --red-900: #85162a;
+  --red-950: #4a0712;
+
+  /* --orange: #dd6d2c; */
+  --orange-50: #fdf6ef;
+  --orange-100: #faebda;
+  --orange-200: #f4d3b4;
+  --orange-300: #edb684;
+  --orange-400: #e48e53;
+  --orange-500: #dd6d2c;
+  --orange-600: #cf5927;
+  --orange-700: #ac4422;
+  --orange-800: #8a3822;
+  --orange-900: #6f301f;
+  --orange-950: #3c160e;
+
+  /* --lima: #c6ba3a; */
+  --lima-50: #fafbef;
+  --lima-100: #f1f3d2;
+  --lima-200: #e0e6a1;
+  --lima-300: #d4d970;
+  --lima-400: #cfd04f;
+  --lima-500: #c6ba3a;
+  --lima-600: #af9830;
+  --lima-700: #92752b;
+  --lima-800: #775c29;
+  --lima-900: #634d24;
+  --lima-950: #382910;
+
+  --white: #fbfcfc;
+  --light-gray: #c7c7c7;
+  --dark: #232830;
+
+  --regular-font: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+
+  --fw-regular: 400;
+  --fe-medium: 500;
+  --fw-bold: 700;
+
+  font-family: var(--font-regular);
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: var(--regular-font);
+  font-weight: 400;
+  font-size: 1.6rem;
+}
+
+.header {
+  padding: 2rem 0;
+  background-color: var(--green-950);
+  color: var(--white);
+}
+
+.container {
+  max-width: 120rem;
+  width: 90%;
+  margin: 0 auto;
+}
+.nav {
+  display: flex;
+}
+
+.nav__logo {
+}
+
+.nav__list {
+  display: none;
+}
+
+@media (768px <= width) {
+  .nav__list {
+    align-items: center;
+    display: flex;
+    gap: 1rem;
+    list-style: none;
+  }
+}
+.nav__item {
+  padding: 4px 6px;
+  border-radius: 5px;
+
+  text-decoration: none;
+  background-color: var(--green-500);
+  color: var(--white);
+}
+
+.nav__item--active {
+  background-color: var(--green-700);
+}
+
+/* 
+-------------------------------------
+Login 
+------------------------------------- 
+*/
+
+.login__container {
+  height: 70rem;
+  display: grid;
+  place-items: center;
+  padding: 0 2rem;
+}
+.login__title {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.login__form {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  border-radius: 6px;
+  background-color: var(--green-100);
+  gap: 1.5rem;
+}
+
+.input-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.login__input {
+  margin: 1rem 0;
+}
+
+.label {
+}
+
+.input {
+  border: 1px solid var(--green-700);
+  border-radius: 6px;
+  padding: 4px 8px;
+  margin: 0.4rem 0;
+}
+
+.alert::before {
+  content: "* ";
+}
+
+.alert {
+  font-size: 1.2rem;
+  color: var(--red-800);
+  font-weight: var(--fw-bold);
+}
+
+.button {
+  border-radius: 6px;
+  border: none;
+  padding: 1rem 0;
+  background-color: var(--green-700);
+  color: var(--white);
+}
+
+.login__button:active,
+.login__button:hover {
+  background-color: var(--green-950);
+}

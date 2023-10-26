@@ -11,6 +11,7 @@ import { AuthRoute } from "./components/AuthRoute";
 import { Management } from "./components/Management";
 import { Write } from "./components/Write";
 
+import "./style.css";
 const AppRoute = () => {
   const routes = useRoutes([
     { path: "/", element: <Login /> },

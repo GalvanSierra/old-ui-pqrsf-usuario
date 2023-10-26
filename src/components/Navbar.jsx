@@ -9,17 +9,17 @@ function Navbar() {
   ];
 
   return (
-    <header>
-      <nav>
-        <img src={logo} alt="logo" />
-        <ul>
+    <header className="header">
+      <nav className=" container nav">
+        <img src={logo} alt="logo" className="nav__logo" />
+        <ul className="nav__list">
           {routes.map((route) => {
             return (
               <li key={route.to}>
                 <NavLink
                   to={route.to}
                   className={({ isActive }) =>
-                    isActive ? "navbar__item--active" : ""
+                    isActive ? "nav__item nav__item--active" : "nav__item"
                   }
                 >
                   {route.text}
