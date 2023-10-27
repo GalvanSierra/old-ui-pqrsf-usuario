@@ -161,10 +161,11 @@ Login
   border-radius: 6px;
   padding: 4px 8px;
   margin: 0.4rem 0;
+  width: 100%;
 }
 
-.alert::before {
-  content: "* ";
+.form__input {
+  margin: 1rem 0;
 }
 
 .alert {
@@ -184,4 +185,51 @@ Login
 .login__button:active,
 .login__button:hover {
   background-color: var(--green-950);
+}
+
+legend {
+  background-color: var(--lima-500);
+  padding: 1rem 2rem;
+  color: var(--white);
+  border-radius: 6px;
+  text-transform: capitalize;
+}
+.input--radio {
+  margin: 0 2px 0 10px;
+}
+
+select:disabled,
+input:disabled {
+  background-color: var(--light-gray);
+  color: var(--dark);
+}
+fieldset {
+  margin: 3rem 0;
+  border: 1px solid var(--light-gray);
+}
+
+.form__input--textarea textarea {
+  min-height: 12rem;
+}
+
+/* input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+} */
+
+@media (768px <= width) {
+  fieldset {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(auto-fit, 1ft);
+  }
+
+  .form__input {
+    width: 90%;
+  }
+
+  .form__input--textarea {
+    grid-column: span 3; /* Ocupa tres columnas */
+  }
 }

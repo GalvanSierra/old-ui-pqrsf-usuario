@@ -100,19 +100,20 @@ function Write() {
   }, [fetchMunicipiosByDepId]);
 
   const returnToPage = () => {
-    navigate("/management-pqrsf");
+    navigate("/dashboard-pqrsf");
   };
   const onSubmit = (data) => {
     console.log(data);
   };
 
   return (
-    <>
+    <div className="container">
       <h2>Tipo:</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
+        <div className="input-box form__input">
           <label>Tipo de solicitud</label>
           <select
+            className="input"
             {...register("tipoPeticionId", {
               valueAsNumber: true,
               required: "Campo requerido",
@@ -134,9 +135,10 @@ function Write() {
 
         <fieldset>
           <legend>Información del Peticionario</legend>
-          <div>
+          <div className="input-box form__input">
             <label>Tipo identificación</label>
             <select
+              className="input"
               {...register("peticionario.tipoId", {
                 required: {
                   value: isPeticionarioRequiere,
@@ -161,9 +163,10 @@ function Write() {
             )}
           </div>
 
-          <div>
+          <div className="input-box form__input">
             <label>Numero de identificacion</label>
             <input
+              className="input"
               type="number"
               {...register("peticionario.id", {
                 required: {
@@ -182,9 +185,10 @@ function Write() {
             )}
           </div>
 
-          <div>
+          <div className="input-box form__input">
             <label>Nombre(s)</label>
             <input
+              className="input"
               type="text"
               {...register("peticionario.nombre", {
                 required: {
@@ -201,9 +205,10 @@ function Write() {
             )}
           </div>
 
-          <div>
+          <div className="input-box form__input">
             <label>Apellido(s)</label>
             <input
+              className="input"
               type="text"
               {...register("peticionario.apellido", {
                 required: {
@@ -219,9 +224,10 @@ function Write() {
             )}
           </div>
 
-          <div>
+          <div className="input-box form__input">
             <label>Telefono</label>
             <input
+              className="input"
               type="tel"
               {...register("peticionario.telefono", {
                 minLength: {
@@ -249,9 +255,10 @@ function Write() {
             )}
           </div>
 
-          <div>
+          <div className="input-box form__input">
             <label>Correo electrónico</label>
             <input
+              className="input"
               type="email"
               {...register("peticionario.email", {
                 pattern: {
@@ -275,9 +282,10 @@ function Write() {
 
         <fieldset>
           <legend>Información del Paciente</legend>
-          <div>
+          <div className="input-box form__input">
             <label>Tipo de identificación</label>
             <select
+              className="input"
               {...register("paciente.tipoId", {
                 required: {
                   value: isPacienteRequiere,
@@ -302,9 +310,10 @@ function Write() {
             )}
           </div>
 
-          <div>
+          <div className="input-box form__input">
             <label>Numero de identificación</label>
             <input
+              className="input"
               type="number"
               {...register("paciente.id", {
                 required: {
@@ -318,9 +327,10 @@ function Write() {
             />
           </div>
 
-          <div>
+          <div className="input-box form__input">
             <label>Nombre(s)</label>
             <input
+              className="input"
               type="text"
               {...register("paciente.nombre", {
                 required: {
@@ -336,9 +346,10 @@ function Write() {
             )}
           </div>
 
-          <div>
+          <div className="input-box form__input">
             <label>Apellido(s)</label>
             <input
+              className="input"
               type="text"
               {...register("paciente.apellido", {
                 required: {
@@ -354,9 +365,10 @@ function Write() {
             )}
           </div>
 
-          <div>
+          <div className="input-box form__input">
             <label>EPS</label>
             <select
+              className="input"
               {...register("paciente.epsId", {
                 valueAsNumber: true,
                 required: {
@@ -379,9 +391,10 @@ function Write() {
             )}
           </div>
 
-          <div>
+          <div className="input-box form__input">
             <label>Regimen</label>
             <select
+              className="input"
               {...register("paciente.regimenId", {
                 valueAsNumber: true,
                 required: {
@@ -404,9 +417,10 @@ function Write() {
             )}
           </div>
 
-          <div>
+          <div className="input-box form__input">
             <label>Departamento</label>
             <select
+              className="input"
               {...register("paciente.departamentoId", {
                 valueAsNumber: true,
               })}
@@ -420,9 +434,10 @@ function Write() {
             </select>
           </div>
 
-          <div>
+          <div className="input-box form__input">
             <label>Municipio</label>
             <select
+              className="input"
               {...register("paciente.municipioId", {
                 valueAsNumber: true,
               })}
@@ -439,9 +454,10 @@ function Write() {
 
         <fieldset>
           <legend>información de la Petición</legend>
-          <div>
+          <div className="input-box form__input">
             <label>Area a informar</label>
             <select
+              className="input"
               {...register("areaId", {
                 valueAsNumber: true,
                 required: "Campo requerido",
@@ -461,9 +477,10 @@ function Write() {
             )}
           </div>
 
-          <div>
+          <div className="input-box form__input">
             <label>Servicio</label>
             <select
+              className="input"
               {...register("servicioId", {
                 valueAsNumber: true,
                 required: "Campo requerido",
@@ -483,9 +500,10 @@ function Write() {
             )}
           </div>
 
-          <div>
+          <div className="input-box form__input">
             <label>Solicitud dirigida a</label>
             <input
+              className="input"
               type="text"
               {...register("dirigidaA", {
                 required: "Campo requerido",
@@ -498,16 +516,18 @@ function Write() {
             )}
           </div>
 
-          <div>
+          <div className="input-box form__input">
             <label>¿Aplica tutela?</label>
             <div>
               <input
+                className="input--radio"
                 type="radio"
                 value="1"
                 {...register("tutela", { valueAsNumber: true })}
               />
               <label>Si</label>
               <input
+                className="input--radio"
                 type="radio"
                 value="0"
                 {...register("tutela", { valueAsNumber: true })}
@@ -516,14 +536,19 @@ function Write() {
             </div>
           </div>
 
-          <div>
+          <div className="input-box form__input">
             <label>Radicado de la tutela</label>
-            <input type="number" {...register("radicadoTutela", {})} />
+            <input
+              className="input"
+              type="number"
+              {...register("radicadoTutela", {})}
+            />
           </div>
 
-          <div>
+          <div className="input-box form__input--textarea">
             <label>Motivo de la solicitud</label>
             <textarea
+              className="input"
               {...register("motivo", {
                 minLength: {
                   value: 20,
@@ -542,22 +567,28 @@ function Write() {
         <fieldset>
           <legend>Gestión de la solicitud</legend>
           {/* fechaRecepcion:"2023-10-04T14:42:34.312Z" */}
-          <div>
+          <div className="input-box form__input">
             <label>Fecha de recepción</label>
-            <input type="date" {...register("fechaRecepcion", {})} />
+            <input
+              className="input"
+              type="date"
+              {...register("fechaRecepcion", {})}
+            />
           </div>
 
           {/* seGestiono:false */}
-          <div>
+          <div className="input-box form__input">
             <label>¿Se va a gestiono?</label>
             <div>
               <input
+                className="input--radio"
                 type="radio"
                 value="1"
                 {...register("seGestiono", { valueAsNumber: true })}
               />
               <label>Si</label>
               <input
+                className="input--radio"
                 type="radio"
                 value="0"
                 {...register("seGestiono", { valueAsNumber: true })}
@@ -569,13 +600,18 @@ function Write() {
           {/* fechaDiligencia:"2023-10-19T00:00:00.000Z" */}
           <div>
             <label>Fecha de diligencia de la solicitud</label>
-            <input type="date" {...register("fechaDiligencia", {})} />
+            <input
+              className="input"
+              type="date"
+              {...register("fechaDiligencia", {})}
+            />
           </div>
 
           {/* estadoId:1 */}
-          <div>
+          <div className="input-box form__input">
             <label>Estado de la solicitud</label>
             <select
+              className="input"
               {...register("estadoId", {
                 valueAsNumber: true,
               })}
@@ -589,9 +625,10 @@ function Write() {
           </div>
 
           {/* canalId:5 */}
-          <div>
+          <div className="input-box form__input">
             <label>Canal de recepción</label>
             <select
+              className="input"
               {...register("canalId", {
                 valueAsNumber: true,
               })}
@@ -606,9 +643,10 @@ function Write() {
           </div>
 
           {/* clasePeticionId:1 */}
-          <div>
+          <div className="input-box form__input">
             <label>Clase de peticion</label>
             <select
+              className="input"
               {...register("clasePeticionId", {
                 valueAsNumber: true,
               })}
@@ -623,9 +661,10 @@ function Write() {
           </div>
 
           {/* complejidadId:1 */}
-          <div>
+          <div className="input-box form__input">
             <label>Complejidad</label>
             <select
+              className="input"
               {...register("complejidadId", {
                 valueAsNumber: true,
               })}
@@ -641,9 +680,10 @@ function Write() {
 
           {/* dueDate:"2023-10-26T12:18:09.194Z" */}
           {/* liderId:3 */}
-          <div>
+          <div className="input-box form__input">
             <label>Lider a asignar</label>
             <select
+              className="input"
               {...register("liderId", {
                 valueAsNumber: true,
               })}
@@ -659,22 +699,27 @@ function Write() {
 
           {/* fechaEnvioResponsableArea:"2023-10-24" */}
           {/* respuesta:"wqwqwqwqwqwqwqwqwq" */}
-          <div>
+          <div className="input-box form__input--textarea">
             <label>Respuesta a solicitud</label>
-            <textarea {...register("respuesta", {})}></textarea>
+            <textarea
+              className="input"
+              {...register("respuesta", {})}
+            ></textarea>
           </div>
 
           {/* seDioRespuesta:true */}
-          <div>
+          <div className="input-box form__input">
             <label>¿Se dio respuesta?</label>
             <div>
               <input
+                className="input--radio"
                 type="radio"
                 value="1"
                 {...register("seDioRespuesta", { valueAsNumber: true })}
               />
               <label>Si</label>
               <input
+                className="input--radio"
                 type="radio"
                 value="0"
                 {...register("seDioRespuesta", { valueAsNumber: true })}
@@ -685,15 +730,19 @@ function Write() {
 
           {/* fechaRespuesta:null */}
           {/* descripcionGestion:null */}
-          <div>
+          <div className="input-box form__input--textarea">
             <label>Descripcion de la gestión</label>
-            <textarea {...register("descripcionGestion", {})}></textarea>
+            <textarea
+              className="input"
+              {...register("descripcionGestion", {})}
+            ></textarea>
           </div>
 
           {/* calidadId:null */}
-          <div>
+          <div className="input-box form__input">
             <label>Calidad</label>
             <select
+              className="input"
               {...register("calidadId", {
                 valueAsNumber: true,
               })}
@@ -707,11 +756,11 @@ function Write() {
           </div>
         </fieldset>
 
-        <input type="submit" value="Enviar petición" />
+        <input className="input" type="submit" value="Enviar petición" />
       </form>
 
       <button onClick={returnToPage}> Regresar</button>
-    </>
+    </div>
   );
 }
 
