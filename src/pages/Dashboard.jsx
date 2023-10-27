@@ -14,6 +14,14 @@ function Dashboard() {
 
   const [peticiones, setPeticiones] = useState([]);
 
+  const formatDate = (fecha) => {
+    const date = new Date(fecha);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+  };
   const fetchData = async () => {
     await api
       .get(`pqrsf`)
@@ -24,12 +32,11 @@ function Dashboard() {
           peticion.estado = peticion.estado.nombre;
           peticion.lider = peticion.lider?.cargo || "N/A";
 
-          const date = new Date(peticion.fechaRecepcion);
-          const day = String(date.getDate()).padStart(2, "0");
-          const month = String(date.getMonth() + 1).padStart(2, "0");
-          const year = date.getFullYear();
-
-          peticion.fechaRecepcion = `${day}/${month}/${year}`;
+          peticion.fechaRecepcion = formatDate(peticion.fechaRecepcion);
+          peticion.fechaEnvioResponsableAreas = formatDate(
+            peticion.fechaEnvioResponsableAreas
+          );
+          peticion.dueDate = formatDate(peticion.dueDate);
 
           return peticion;
         })
@@ -45,16 +52,22 @@ function Dashboard() {
   }, []);
 
   const columns = [
-    { field: "id", headerName: "ID", width: 150 },
-    { field: "radicado", headerName: "Radico", width: 150 },
-    { field: "fechaRecepcion", headerName: "Fecha Recepción", width: 150 },
-    { field: "lider", headerName: "Líder encargado", width: 150 },
-    { field: "tipoPeticion", headerName: "Tipo de petición", width: 150 },
-    { field: "estado", headerName: "Estado", width: 150 },
+    { field: "id", headerName: "ID", width: 40 },
+    { field: "radicado", headerName: "Radico", width: 80 },
+    { field: "fechaRecepcion", headerName: "Fecha Recepción", width: 140 },
+    { field: "lider", headerName: "Líder encargado", width: 140 },
+    { field: "tipoPeticion", headerName: "Tipo", width: 120 },
+    {
+      field: "fechaEnvioResponsableArea",
+      headerName: "Fecha Envio Responsable",
+      width: 180,
+    },
+    { field: "estado", headerName: "Estado", width: 180 },
+    { field: "dueDate", headerName: "Fecha Vencimiento", width: 120 },
     {
       field: "actions",
-      headerName: "Actions",
-      width: 150,
+      headerName: "Action",
+      width: 100,
       renderCell: (params) => (
         <div>
           <IconButton
@@ -79,13 +92,31 @@ function Dashboard() {
 
   return (
     <>
-      <h1>ManagementPage</h1>
-      {user.role === "atencion" && (
-        <button onClick={write}>Redactar PQRSF a nombre del paciente</button>
-      )}
+      <div className="container dashboard-container">
+        <h1 className="dashboard-title">Hospital Infantil Santa Ana</h1>
+        {user.role === "atencion" && (
+          <button className="button dashboard-button" onClick={write}>
+            Redactar PQRSF a nombre del paciente
+          </button>
+        )}
 
-      <div style={{ width: "90%" }}>
-        <DataGrid rows={peticiones} columns={columns} />
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <DataGrid
+            // No es necesario aplicar estilos para width aquí, ya que se adaptará al ancho del contenedor.
+            rows={peticiones}
+            columns={columns}
+            autoHeight
+            style={{ fontSize: "1.6rem" }}
+            // autoPageSize // Esto permite que el DataGrid se ajuste automáticamente al ancho del contenedor.
+            disableExtendRowFullWidth // Evita que la fila se extienda al ancho total de la pantalla.
+          />
+        </div>
       </div>
     </>
   );
