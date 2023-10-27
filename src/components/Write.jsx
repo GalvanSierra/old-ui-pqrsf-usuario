@@ -10,10 +10,24 @@ function Write() {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm();
 
   const departamentoSelected = watch("paciente.departamentoId") || 0;
+  const epsSelected = watch("paciente.epsId");
+
+  const changeRegimen = () => {
+    if (epsSelected === 15) {
+      const REGIMEN_NA = 1;
+
+      setValue("paciente.regimenId", REGIMEN_NA);
+      setIsDisable(true);
+    } else {
+      setIsDisable(false);
+      setValue("paciente.regimenId", null);
+    }
+  };
   //   Traer las opciones para los distintos selects
 
   const [tipoPeticionOptions, seTipoPeticionOptions] = useState([]);
@@ -89,6 +103,12 @@ function Write() {
 
   const [isPeticionarioRequiere, setIsPeticionarioRequiere] = useState(false);
   const [isPacienteRequiere, setIsPacienteRequiere] = useState(false);
+  const [isDisable, setIsDisable] = useState(false);
+  const [tutelaOpen, setTutelaOpen] = useState(false);
+
+  const changeTutelaOpen = () => {
+    setTutelaOpen(!tutelaOpen);
+  };
 
   useEffect(() => {
     fetchSelectedOptions(urls);
@@ -99,7 +119,7 @@ function Write() {
     fetchMunicipiosByDepId();
   }, [fetchMunicipiosByDepId]);
 
-  const returnToPage = () => {
+  const returnToDashboard = () => {
     navigate("/dashboard-pqrsf");
   };
   const onSubmit = (data) => {
@@ -107,8 +127,8 @@ function Write() {
   };
 
   return (
-    <div className="container">
-      <h2>Tipo:</h2>
+    <div className="container container-form">
+      <h2>Tipo:{isDisable}</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="input-box form__input">
           <label>Tipo de solicitud</label>
@@ -167,11 +187,14 @@ function Write() {
             <label>Numero de identificacion</label>
             <input
               className="input"
-              type="number"
               {...register("peticionario.id", {
                 required: {
                   value: isPeticionarioRequiere,
                   message: "Campo requerido",
+                },
+                pattern: {
+                  value: /^(\d+|[a-zA-Z0-9]+)$/, // Patrón que permite alfanuméricos
+                  message: "Ingresa solo números o caracteres alfanuméricos",
                 },
                 validate: (v) => {
                   if (v != null) setIsPeticionarioRequiere(true);
@@ -314,11 +337,14 @@ function Write() {
             <label>Numero de identificación</label>
             <input
               className="input"
-              type="number"
               {...register("paciente.id", {
                 required: {
                   value: isPacienteRequiere,
                   message: "Campo requerido",
+                },
+                pattern: {
+                  value: /^(\d+|[a-zA-Z0-9]+)$/, // Patrón que permite alfanuméricos
+                  message: "Ingresa solo números o caracteres alfanuméricos",
                 },
                 validate: (v) => {
                   if (v != null) setIsPacienteRequiere(true);
@@ -376,6 +402,7 @@ function Write() {
                   message: "Campo requerido",
                 },
               })}
+              onClick={changeRegimen}
             >
               <option defaultValue={true} value=""></option>
               {epsOption.map(({ id, nombre }) => (
@@ -401,6 +428,7 @@ function Write() {
                   value: isPacienteRequiere,
                   message: "Campo requerido",
                 },
+                disabled: isDisable,
               })}
             >
               {regimenOption.map(({ id, nombre }) => (
@@ -524,6 +552,7 @@ function Write() {
                 type="radio"
                 value="1"
                 {...register("tutela", { valueAsNumber: true })}
+                onClick={changeTutelaOpen}
               />
               <label>Si</label>
               <input
@@ -531,25 +560,29 @@ function Write() {
                 type="radio"
                 value="0"
                 {...register("tutela", { valueAsNumber: true })}
+                onClick={changeTutelaOpen}
               />
               <label>No</label>
             </div>
           </div>
 
-          <div className="input-box form__input">
-            <label>Radicado de la tutela</label>
-            <input
-              className="input"
-              type="number"
-              {...register("radicadoTutela", {})}
-            />
-          </div>
+          {tutelaOpen && (
+            <div className="input-box form__input">
+              <label>Radicado de la tutela</label>
+              <input
+                className="input"
+                type="number"
+                {...register("radicadoTutela", {})}
+              />
+            </div>
+          )}
 
           <div className="input-box form__input--textarea">
             <label>Motivo de la solicitud</label>
             <textarea
               className="input"
               {...register("motivo", {
+                required: "Campo requerido",
                 minLength: {
                   value: 20,
                   message: "Mínimo 20 caracteres",
@@ -567,14 +600,14 @@ function Write() {
         <fieldset>
           <legend>Gestión de la solicitud</legend>
           {/* fechaRecepcion:"2023-10-04T14:42:34.312Z" */}
-          <div className="input-box form__input">
+          {/* <div className="input-box form__input">
             <label>Fecha de recepción</label>
             <input
               className="input"
               type="date"
               {...register("fechaRecepcion", {})}
             />
-          </div>
+          </div> */}
 
           {/* seGestiono:false */}
           <div className="input-box form__input">
@@ -598,7 +631,7 @@ function Write() {
           </div>
 
           {/* fechaDiligencia:"2023-10-19T00:00:00.000Z" */}
-          <div>
+          <div className="input-box form__input">
             <label>Fecha de diligencia de la solicitud</label>
             <input
               className="input"
@@ -747,6 +780,7 @@ function Write() {
                 valueAsNumber: true,
               })}
             >
+              <option defaultValue={true} hidden={true} value=""></option>
               {calidadOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
@@ -756,10 +790,20 @@ function Write() {
           </div>
         </fieldset>
 
-        <input className="input" type="submit" value="Enviar petición" />
+        <div className="form-grid">
+          <input
+            className="button form__button"
+            type="submit"
+            value="Enviar petición"
+          />
+          <button
+            className="button form__button button--red"
+            onClick={returnToDashboard}
+          >
+            Regresar
+          </button>
+        </div>
       </form>
-
-      <button onClick={returnToPage}> Regresar</button>
     </div>
   );
 }

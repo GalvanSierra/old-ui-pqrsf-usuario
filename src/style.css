@@ -153,6 +153,12 @@ Login
   margin: 1rem 0;
 }
 
+/* Form */
+
+.container-form {
+  display: flex;
+  flex-direction: column;
+}
 .label {
 }
 
@@ -166,6 +172,10 @@ Login
 
 .form__input {
   margin: 1rem 0;
+}
+
+.alert::before {
+  content: "* ";
 }
 
 .alert {
@@ -217,6 +227,20 @@ input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   appearance: none;
 } */
+
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.form__button {
+  min-width: 20rem;
+  margin: 2rem auto;
+}
+
+.button--red {
+  background-color: var(--red-700);
+}
 
 @media (768px <= width) {
   fieldset {
