@@ -32,6 +32,8 @@ function Management() {
   const [complejidadOptions, setComplejidadOptions] = useState([]);
   const [lideresOptions, setLideresOptions] = useState([]);
   const [calidadOptions, setCalidadOptions] = useState([]);
+  const [regimenOptions, setRegimenOptions] = useState([]);
+  const [canalOptions, setCanalOptions] = useState([]);
 
   const urls = {
     tipoPeticion: "/referencias/tipos_peticion",
@@ -46,6 +48,8 @@ function Management() {
     complejidad: `/referencias/complejidades`,
     lideres: `/referencias/lideres`,
     calidad: `/referencias/calidad`,
+    regimen: "/referencias/regimenes",
+    canal: "/referencias/canales",
   };
 
   const fetchDataReference = async (url) => {
@@ -75,6 +79,8 @@ function Management() {
       setComplejidadOptions(referenceData.complejidad);
       setLideresOptions(referenceData.lideres);
       setCalidadOptions(referenceData.calidad);
+      setRegimenOptions(referenceData.regimen);
+      setCanalOptions(referenceData.canal);
     });
   };
 
@@ -149,7 +155,7 @@ function Management() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const returnToPage = () => {
+  const returnToDashboard = () => {
     navigate("/dashboard-pqrsf");
   };
 
@@ -186,7 +192,7 @@ function Management() {
   };
 
   return (
-    <div className="container">
+    <div className="container form-container">
       <h2>Tipo: {peticionData?.tipoPeticion.nombre}</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         {/*"radicado": 8, */}
@@ -204,10 +210,10 @@ function Management() {
           <select
             className="input"
             {...register("tipoPeticionId", {
-              valueAsNumber: true,
               disabled: true,
             })}
           >
+            <option defaultValue={true} hidden={true} value=""></option>
             {tipoPeticionOptions.map(({ id, nombre }) => (
               <option key={id} value={id}>
                 {nombre}
@@ -222,11 +228,9 @@ function Management() {
             <label>Tipo identificación</label>
             <select
               className="input"
-              {...register("peticionario.tipoId", {
-                valueAsNumber: true,
-                disabled: true,
-              })}
+              {...register("peticionario.tipoId", { disabled: true })}
             >
+              <option defaultValue={true} value=""></option>
               {tipoIdOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
@@ -239,7 +243,6 @@ function Management() {
             <label>Numero de identificacion</label>
             <input
               className="input"
-              type="number"
               {...register("peticionario.id", { disabled: true })}
             />
           </div>
@@ -288,11 +291,9 @@ function Management() {
             <label>Tipo de identificación</label>
             <select
               className="input"
-              {...register("paciente.tipoId", {
-                valueAsNumber: true,
-                disabled: true,
-              })}
+              {...register("paciente.tipoId", { disabled: true })}
             >
+              <option defaultValue={true} value=""></option>
               {tipoIdOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
@@ -305,7 +306,6 @@ function Management() {
             <label>Numero de identificación</label>
             <input
               className="input"
-              type="number"
               {...register("paciente.id", { disabled: true })}
             />
           </div>
@@ -332,11 +332,9 @@ function Management() {
             <label>EPS</label>
             <select
               className="input"
-              {...register("paciente.epsId", {
-                valueAsNumber: true,
-                disabled: true,
-              })}
+              {...register("paciente.epsId", { disabled: true })}
             >
+              <option defaultValue={true} value=""></option>
               {epsOption.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
@@ -349,23 +347,24 @@ function Management() {
             <label>Regimen</label>
             <select
               className="input"
-              {...register("paciente.regimenId", {
-                valueAsNumber: true,
-                disabled: true,
-              })}
-            ></select>
+              {...register("paciente.regimenId", { disabled: true })}
+            >
+              {regimenOptions.map(({ id, nombre }) => (
+                <option key={id} value={id}>
+                  {nombre}
+                </option>
+              ))}
+              <option defaultValue={true} value=""></option>
+            </select>
           </div>
 
           <div className="input-box form__input">
             <label>Departamento</label>
             <select
-              className="input input--departamento"
-              {...register("paciente.departamentoId", {
-                valueAsNumber: true,
-                disabled: true,
-              })}
+              className="input"
+              {...register("paciente.departamentoId", { disabled: true })}
             >
-              <option value=""></option>
+              <option defaultValue={true} value=""></option>
               {departamentoOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
@@ -373,15 +372,14 @@ function Management() {
               ))}
             </select>
           </div>
+
           <div className="input-box form__input">
             <label>Municipio</label>
             <select
               className="input"
-              {...register("paciente.municipioId", {
-                valueAsNumber: true,
-                disabled: true,
-              })}
+              {...register("paciente.municipioId", { disabled: true })}
             >
+              <option defaultValue={true} value=""></option>
               {municipioOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
@@ -393,16 +391,13 @@ function Management() {
 
         <fieldset>
           <legend>información de la Petición</legend>
-          {/*"areaId": 8, */}
           <div className="input-box form__input">
             <label>Area a informar</label>
             <select
               className="input"
-              {...register("areaId", {
-                valueAsNumber: true,
-                disabled: true,
-              })}
+              {...register("areaId", { disabled: true })}
             >
+              <option defaultValue={true} hidden={true} value=""></option>
               {areasOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
@@ -415,11 +410,9 @@ function Management() {
             <label>Servicio</label>
             <select
               className="input"
-              {...register("servicioId", {
-                valueAsNumber: true,
-                disabled: true,
-              })}
+              {...register("servicioId", { disabled: true })}
             >
+              <option defaultValue={true} hidden={true} value=""></option>
               {serviciosOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
@@ -444,14 +437,14 @@ function Management() {
                 className="input--radio"
                 type="radio"
                 value="1"
-                {...register("tutela", { valueAsNumber: true, disabled: true })}
+                {...register("tutela", { disabled: true })}
               />
               <label>Si</label>
               <input
                 className="input--radio"
                 type="radio"
                 value="0"
-                {...register("tutela", { valueAsNumber: true, disabled: true })}
+                {...register("tutela", { disabled: true })}
               />
               <label>No</label>
             </div>
@@ -474,22 +467,21 @@ function Management() {
             ></textarea>
           </div>
         </fieldset>
+
         <fieldset>
-          <legend>Gestión</legend>
+          <legend>Gestión de la solicitud</legend>
           {/* fechaRecepcion:"2023-10-04T14:42:34.312Z" */}
           <div className="input-box form__input">
             <label>Fecha de recepción</label>
             <input
               className="input"
               type="date"
-              {...register("fechaRecepcion", {
-                valueAsDate: true,
-                disabled: true,
-              })}
+              {...register("fechaRecepcion", { disabled: true })}
             />
           </div>
+
           {/* seGestiono:false */}
-          <div>
+          <div className="input-box form__input">
             <label>¿Se va a gestiono?</label>
             <div>
               <input
@@ -546,17 +538,17 @@ function Management() {
               </p>
             )}
           </div>
-          {/* canalId:5 TODO:remove*/}
+          {/* canalId:5 */}
           <div className="input-box form__input">
             <label>Canal de recepción</label>
             <select
               className="input"
               {...register("canalId", {
-                valueAsNumber: true,
                 disabled: true,
               })}
             ></select>
           </div>
+
           {/* clasePeticionId:1 */}
           <div className="input-box form__input">
             <label>Clase de peticion</label>
@@ -566,6 +558,7 @@ function Management() {
                 valueAsNumber: true,
               })}
             >
+              <option defaultValue={true} hidden={true} value=""></option>
               {clasePeticionOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
@@ -582,6 +575,7 @@ function Management() {
                 valueAsNumber: true,
               })}
             >
+              <option defaultValue={true} hidden={true} value=""></option>
               {complejidadOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
@@ -599,6 +593,7 @@ function Management() {
                 valueAsNumber: true,
               })}
             >
+              <option defaultValue={true} hidden={true} value=""></option>
               {lideresOptions.map(({ id, cargo }) => (
                 <option key={id} value={id}>
                   {cargo}
@@ -616,7 +611,7 @@ function Management() {
             ></textarea>
           </div>
           {/* seDioRespuesta:true */}
-          <div>
+          <div className="input-box form__input">
             <label>¿Se dio respuesta?</label>
             <div>
               <input
@@ -644,23 +639,6 @@ function Management() {
               {...register("fechaRespuesta", {})}
             />
           </div>
-
-          <div className="input-box form__input">
-            <label>Calidad</label>
-            <select
-              className="input"
-              {...register("calidadId", {
-                valueAsNumber: true,
-              })}
-            >
-              {calidadOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
-            </select>
-          </div>
-
           {/* descripcionGestion:null */}
           <div className="input-box form__input--textarea">
             <label>Descripcion de la gestión</label>
@@ -669,12 +647,40 @@ function Management() {
               {...register("descripcionGestion", {})}
             ></textarea>
           </div>
-          {/* calidadId:null */}
-        </fieldset>
-        <input className="input" type="submit" value="Enviar petición" />
-      </form>
 
-      <button onClick={returnToPage}> Regresar</button>
+          {/* calidadId:null */}
+          <div className="input-box form__input">
+            <label>Calidad</label>
+            <select
+              className="input"
+              {...register("calidadId", {
+                valueAsNumber: true,
+              })}
+            >
+              <option defaultValue={true} hidden={true} value=""></option>
+              {calidadOptions.map(({ id, nombre }) => (
+                <option key={id} value={id}>
+                  {nombre}
+                </option>
+              ))}
+            </select>
+          </div>
+        </fieldset>
+
+        <div className="form-grid">
+          <input
+            className="button form__button"
+            type="submit"
+            value="Enviar petición"
+          />
+          <button
+            className="button form__button button--red"
+            onClick={returnToDashboard}
+          >
+            Regresar
+          </button>
+        </div>
+      </form>
     </div>
   );
 }
