@@ -102,7 +102,7 @@ function Management() {
 
       const date = new Date(isoDate);
       const day = date.getDate().toString().padStart(2, "0");
-      const month = (date.getMonth() + 1).toString().padStart(2, "0"); // ¡Recuerda sumar 1 al mes ya que los meses en JavaScript comienzan en 0!
+      const month = (date.getMonth() + 1).toString().padStart(2, "0");
       const year = date.getFullYear();
 
       return `${year}-${month}-${day}`;
@@ -194,8 +194,8 @@ function Management() {
   return (
     <div className="container form-container">
       <h2>Tipo: {peticionData?.tipoPeticion.nombre}</h2>
+
       <form onSubmit={handleSubmit(onSubmit)}>
-        {/*"radicado": 8, */}
         <div className="input-box form__input">
           <label>Radicado</label>
           <input
@@ -204,7 +204,7 @@ function Management() {
             {...register("radicado", { disabled: true })}
           />
         </div>
-        {/*"tipoPeticionId": 1, */}
+
         <div className="input-box form__input">
           <label>Tipo de solicitud</label>
           <select
@@ -221,9 +221,10 @@ function Management() {
             ))}
           </select>
         </div>
+
         <fieldset>
           <legend>Información del Peticionario</legend>
-          {/*"peticionario.tipoId": "MS", */}
+
           <div className="input-box form__input">
             <label>Tipo identificación</label>
             <select
@@ -238,7 +239,7 @@ function Management() {
               ))}
             </select>
           </div>
-          {/*"peticionario.id": "da12", */}
+
           <div className="input-box form__input">
             <label>Numero de identificacion</label>
             <input
@@ -246,7 +247,7 @@ function Management() {
               {...register("peticionario.id", { disabled: true })}
             />
           </div>
-          {/*"peticionario.nombre": "da", */}
+
           <div className="input-box form__input">
             <label>Nombre(s)</label>
             <input
@@ -255,7 +256,7 @@ function Management() {
               {...register("peticionario.nombre", { disabled: true })}
             />
           </div>
-          {/*"peticionario.apellido": "da", */}
+
           <div className="input-box form__input">
             <label>Apellido(s)</label>
             <input
@@ -264,7 +265,7 @@ function Management() {
               {...register("peticionario.apellido", { disabled: true })}
             />
           </div>
-          {/*"peticionario.telefono": "112da" */}
+
           <div className="input-box form__input">
             <label>Telefono</label>
             <input
@@ -273,7 +274,7 @@ function Management() {
               {...register("peticionario.telefono", { disabled: true })}
             />
           </div>
-          {/*"peticionario.email": "da@gmail.com", */}
+
           <div className="input-box form__input">
             <label>Correo electrónico</label>
             <input
@@ -391,6 +392,7 @@ function Management() {
 
         <fieldset>
           <legend>información de la Petición</legend>
+
           <div className="input-box form__input">
             <label>Area a informar</label>
             <select
@@ -405,7 +407,7 @@ function Management() {
               ))}
             </select>
           </div>
-          {/*"servicioId": 1, */}
+
           <div className="input-box form__input">
             <label>Servicio</label>
             <select
@@ -420,7 +422,7 @@ function Management() {
               ))}
             </select>
           </div>
-          {/*"dirigidaA": "wq", */}
+
           <div className="input-box form__input">
             <label>Solicitud dirigida a</label>
             <input
@@ -429,7 +431,7 @@ function Management() {
               {...register("dirigidaA", { disabled: true })}
             />
           </div>
-          {/*"tutela": false, */}
+
           <div className="input-box form__input">
             <label>¿Aplica tutela?</label>
             <div>
@@ -449,7 +451,7 @@ function Management() {
               <label>No</label>
             </div>
           </div>
-          {/*"radicadoTutela": null, */}
+
           <div className="input-box form__input">
             <label>Radicado de la tutela</label>
             <input
@@ -458,7 +460,7 @@ function Management() {
               {...register("radicadoTutela", { disabled: true })}
             />
           </div>
-          {/*"motivo": "wq", */}
+
           <div className="input-box form__input--textarea">
             <label>Motivo de la solicitud</label>
             <textarea
@@ -470,7 +472,7 @@ function Management() {
 
         <fieldset>
           <legend>Gestión de la solicitud</legend>
-          {/* fechaRecepcion:"2023-10-04T14:42:34.312Z" */}
+
           <div className="input-box form__input">
             <label>Fecha de recepción</label>
             <input
@@ -480,27 +482,22 @@ function Management() {
             />
           </div>
 
-          {/* seGestiono:false */}
           <div className="input-box form__input">
-            <label>¿Se va a gestiono?</label>
-            <div>
-              <input
-                className="input--radio"
-                type="radio"
-                value="1"
-                {...register("seGestiono", { valueAsNumber: true })}
-              />
-              <label>Si</label>
-              <input
-                className="input--radio"
-                type="radio"
-                value="0"
-                {...register("seGestiono", { valueAsNumber: true })}
-              />
-              <label>No</label>
-            </div>
+            <label>Canal de recepción</label>
+            <select
+              className="input"
+              {...register("canalId", {
+                disabled: true,
+              })}
+            >
+              {canalOptions.map(({ id, nombre }) => (
+                <option key={id} value={id}>
+                  {nombre}
+                </option>
+              ))}
+            </select>
           </div>
-          {/* fechaDiligencia:"2023-10-19T00:00:00.000Z" */}
+
           <div className="input-box form__input">
             <label>Fecha de diligencia de la solicitud</label>
             <input
@@ -516,7 +513,7 @@ function Management() {
               </p>
             )}
           </div>
-          {/* estadoId:1 */}
+
           <div className="input-box form__input">
             <label>Estado de la solicitud</label>
             <select
@@ -538,18 +535,27 @@ function Management() {
               </p>
             )}
           </div>
-          {/* canalId:5 */}
+
           <div className="input-box form__input">
-            <label>Canal de recepción</label>
-            <select
-              className="input"
-              {...register("canalId", {
-                disabled: true,
-              })}
-            ></select>
+            <label>¿Se va a gestiono?</label>
+            <div>
+              <input
+                className="input--radio"
+                type="radio"
+                value="1"
+                {...register("seGestiono", { valueAsNumber: true })}
+              />
+              <label>Si</label>
+              <input
+                className="input--radio"
+                type="radio"
+                value="0"
+                {...register("seGestiono", { valueAsNumber: true })}
+              />
+              <label>No</label>
+            </div>
           </div>
 
-          {/* clasePeticionId:1 */}
           <div className="input-box form__input">
             <label>Clase de peticion</label>
             <select
@@ -566,7 +572,7 @@ function Management() {
               ))}
             </select>
           </div>
-          {/* complejidadId:1 */}
+
           <div className="input-box form__input">
             <label>Complejidad</label>
             <select
@@ -583,8 +589,7 @@ function Management() {
               ))}
             </select>
           </div>
-          {/* dueDate:"2023-10-26T12:18:09.194Z" */}
-          {/* liderId:3 */}
+
           <div className="input-box form__input">
             <label>Lider a asignar</label>
             <select
@@ -601,8 +606,7 @@ function Management() {
               ))}
             </select>
           </div>
-          {/* fechaEnvioResponsableArea:"2023-10-24" */}
-          {/* respuesta:"wqwqwqwqwqwqwqwqwq" */}
+
           <div className="input-box form__input--textarea">
             <label>Respuesta a solicitud</label>
             <textarea
@@ -610,7 +614,7 @@ function Management() {
               {...register("respuesta", {})}
             ></textarea>
           </div>
-          {/* seDioRespuesta:true */}
+
           <div className="input-box form__input">
             <label>¿Se dio respuesta?</label>
             <div>
@@ -630,7 +634,7 @@ function Management() {
               <label>No</label>
             </div>
           </div>
-          {/* fechaRespuesta:null */}
+
           <div className="input-box form__input">
             <label>Fecha de respuesta de las solicitud</label>
             <input
@@ -639,7 +643,7 @@ function Management() {
               {...register("fechaRespuesta", {})}
             />
           </div>
-          {/* descripcionGestion:null */}
+
           <div className="input-box form__input--textarea">
             <label>Descripcion de la gestión</label>
             <textarea
@@ -648,7 +652,6 @@ function Management() {
             ></textarea>
           </div>
 
-          {/* calidadId:null */}
           <div className="input-box form__input">
             <label>Calidad</label>
             <select
