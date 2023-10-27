@@ -97,20 +97,29 @@ body {
 }
 
 @media (768px <= width) {
+  .nav {
+    justify-content: space-between;
+  }
   .nav__list {
-    align-items: center;
     display: flex;
-    gap: 1rem;
+    align-items: center;
+    gap: 2rem;
     list-style: none;
   }
 }
 .nav__item {
-  padding: 4px 6px;
+  width: 10rem;
+  height: 3rem;
   border-radius: 5px;
-
+  justify-content: center;
   text-decoration: none;
   background-color: var(--green-500);
   color: var(--white);
+}
+
+.nav__item li {
+  text-justify: center;
+  text-align: center;
 }
 
 .nav__item--active {

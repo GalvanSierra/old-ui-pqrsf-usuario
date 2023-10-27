@@ -15,16 +15,15 @@ function Navbar() {
         <ul className="nav__list">
           {routes.map((route) => {
             return (
-              <li key={route.to}>
-                <NavLink
-                  to={route.to}
-                  className={({ isActive }) =>
-                    isActive ? "nav__item nav__item--active" : "nav__item"
-                  }
-                >
-                  {route.text}
-                </NavLink>
-              </li>
+              <NavLink
+                key={route.to}
+                to={route.to}
+                className={({ isActive }) =>
+                  isActive ? "nav__item nav__item--active" : "nav__item"
+                }
+              >
+                <li>{route.text}</li>
+              </NavLink>
             );
           })}
         </ul>
