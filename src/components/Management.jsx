@@ -3,16 +3,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import api from "../service/api";
-// import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../hooks/useAuth";
 
 function Management() {
   const { id } = useParams();
-  // const auth = useAuth();
+  const auth = useAuth();
 
-  // const { user } = auth;
+  const { user } = auth;
   const [isDisabled, setIsDisabled] = useState(false);
-  // if (user.role === "atencion") setIsDisabled(false);
-  // const isDisabled = false;
 
   const navigate = useNavigate();
 
@@ -94,8 +92,6 @@ function Management() {
 
   //   Traer toda la información de la petición
   const fetchPeticionData = async () => {
-    await fetchSelectedOptions(urls);
-
     const peticion = await api
       .get(`/peticiones/${id}`)
       .then((response) => response.data)
@@ -160,7 +156,12 @@ function Management() {
   };
 
   useEffect(() => {
+    fetchSelectedOptions(urls);
+
     fetchPeticionData();
+    if (user.role === "atencion") setIsDisabled(false);
+    else setIsDisabled(true);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -23,7 +23,7 @@ function Dashboard() {
     return `${day}/${month}/${year}`;
   };
   const endpoint =
-    user.role === "atencion" ? "/pqrsf" : "/profile/mis-peticiones";
+    user.role === "atencion" ? "/pqrsf" : "profile/mis-peticiones";
 
   const fetchData = async () => {
     await api
