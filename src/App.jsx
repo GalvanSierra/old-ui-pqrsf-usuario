@@ -32,7 +32,14 @@ const AppRoute = () => {
         </AuthRoute>
       ),
     },
-    { path: "/management-pqrsf/:id", element: <Management /> },
+    {
+      path: "/management-pqrsf/:id",
+      element: (
+        <AuthRoute>
+          <Management />
+        </AuthRoute>
+      ),
+    },
     { path: "/write-pqrsf", element: <Write /> },
     { path: "*", element: <NotFound /> },
   ]);

@@ -22,16 +22,20 @@ function Dashboard() {
 
     return `${day}/${month}/${year}`;
   };
+  const endpoint =
+    user.role === "atencion" ? "/pqrsf" : "/profile/mis-peticiones";
+
   const fetchData = async () => {
+    console.log(endpoint);
     await api
-      .get(`pqrsf`)
+      .get(endpoint)
       .then((response) => response.data)
       .then((data) =>
         data.map((peticion) => {
           peticion.tipoPeticion = peticion.tipoPeticion.nombre;
           peticion.estado = peticion.estado.nombre;
           peticion.lider = peticion.lider?.cargo || "N/A";
-
+          peticion.radicado = peticion.radicado || "N/A";
           peticion.fechaRecepcion = formatDate(peticion.fechaRecepcion);
           peticion.fechaEnvioResponsableAreas = formatDate(
             peticion.fechaEnvioResponsableAreas
@@ -45,11 +49,21 @@ function Dashboard() {
       .catch((error) => {
         console.error("Error:", error);
       });
+
+    console.log(peticiones[0]);
   };
   useEffect(() => {
     fetchData();
     // eslint-disable-next-li ne react-hooks/exhaustive-deps
   }, []);
+
+  const handleEdit = (peticionId) => {
+    navigate(`/management-pqrsf/${peticionId}`);
+  };
+
+  const write = () => {
+    navigate(`/write-pqrsf`);
+  };
 
   const columns = [
     { field: "id", headerName: "ID", width: 40 },
@@ -81,14 +95,6 @@ function Dashboard() {
       ),
     },
   ];
-
-  const handleEdit = (peticionId) => {
-    navigate(`/management-pqrsf/${peticionId}`);
-  };
-
-  const write = () => {
-    navigate(`/write-pqrsf`);
-  };
 
   return (
     <>

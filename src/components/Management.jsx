@@ -3,11 +3,19 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import api from "../service/api";
+// import { useAuth } from "../hooks/useAuth";
 
 function Management() {
   const { id } = useParams();
+  // const auth = useAuth();
+
+  // const { user } = auth;
+  const [isDisabled, setIsDisabled] = useState(false);
+  // if (user.role === "atencion") setIsDisabled(false);
+  // const isDisabled = false;
 
   const navigate = useNavigate();
+
   const {
     register,
     setValue,
@@ -86,6 +94,8 @@ function Management() {
 
   //   Traer toda la información de la petición
   const fetchPeticionData = async () => {
+    await fetchSelectedOptions(urls);
+
     const peticion = await api
       .get(`/peticiones/${id}`)
       .then((response) => response.data)
@@ -150,13 +160,14 @@ function Management() {
   };
 
   useEffect(() => {
-    fetchSelectedOptions(urls);
     fetchPeticionData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  console.log(departamentoOptions);
+
   const returnToDashboard = () => {
-    navigate("/dashboard-pqrsf");
+    navigate(-1, { replace: true });
   };
 
   const findChangesToUpdate = (obj1, obj2) => {
@@ -505,6 +516,7 @@ function Management() {
               type="date"
               {...register("fechaDiligencia", {
                 required: "Campo requerido",
+                disabled: isDisabled,
               })}
             />
             {errors.fechaDiligencia && (
@@ -543,14 +555,20 @@ function Management() {
                 className="input--radio"
                 type="radio"
                 value="1"
-                {...register("seGestiono", { valueAsNumber: true })}
+                {...register("seGestiono", {
+                  valueAsNumber: true,
+                  disabled: isDisabled,
+                })}
               />
               <label>Si</label>
               <input
                 className="input--radio"
                 type="radio"
                 value="0"
-                {...register("seGestiono", { valueAsNumber: true })}
+                {...register("seGestiono", {
+                  valueAsNumber: true,
+                  disabled: isDisabled,
+                })}
               />
               <label>No</label>
             </div>
@@ -562,6 +580,7 @@ function Management() {
               className="input"
               {...register("clasePeticionId", {
                 valueAsNumber: true,
+                disabled: isDisabled,
               })}
             >
               <option defaultValue={true} hidden={true} value=""></option>
@@ -579,6 +598,7 @@ function Management() {
               className="input"
               {...register("complejidadId", {
                 valueAsNumber: true,
+                disabled: isDisabled,
               })}
             >
               <option defaultValue={true} hidden={true} value=""></option>
@@ -596,6 +616,7 @@ function Management() {
               className="input"
               {...register("liderId", {
                 valueAsNumber: true,
+                disabled: isDisabled,
               })}
             >
               <option defaultValue={true} hidden={true} value=""></option>
@@ -622,14 +643,20 @@ function Management() {
                 className="input--radio"
                 type="radio"
                 value="1"
-                {...register("seDioRespuesta", { valueAsNumber: true })}
+                {...register("seDioRespuesta", {
+                  valueAsNumber: true,
+                  disabled: isDisabled,
+                })}
               />
               <label>Si</label>
               <input
                 className="input--radio"
                 type="radio"
                 value="0"
-                {...register("seDioRespuesta", { valueAsNumber: true })}
+                {...register("seDioRespuesta", {
+                  valueAsNumber: true,
+                  disabled: isDisabled,
+                })}
               />
               <label>No</label>
             </div>
@@ -640,7 +667,7 @@ function Management() {
             <input
               className="input"
               type="date"
-              {...register("fechaRespuesta", {})}
+              {...register("fechaRespuesta", { disabled: isDisabled })}
             />
           </div>
 
@@ -648,7 +675,7 @@ function Management() {
             <label>Descripcion de la gestión</label>
             <textarea
               className="input"
-              {...register("descripcionGestion", {})}
+              {...register("descripcionGestion", { disabled: isDisabled })}
             ></textarea>
           </div>
 
@@ -658,6 +685,7 @@ function Management() {
               className="input"
               {...register("calidadId", {
                 valueAsNumber: true,
+                disabled: isDisabled,
               })}
             >
               <option defaultValue={true} hidden={true} value=""></option>
