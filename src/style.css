@@ -278,3 +278,25 @@ input[type="number"]::-webkit-outer-spin-button {
   justify-self: center;
   width: 35rem;
 }
+
+/* Logout */
+
+.logout__container {
+  display: grid;
+  place-items: center;
+  height: 90rem;
+
+  /* max-width: 15rem; */
+}
+
+.logout__form {
+  width: 30rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logout__button {
+  margin: 2rem 0 2.5rem;
+  width: 90%;
+}

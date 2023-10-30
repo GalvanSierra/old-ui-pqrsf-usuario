@@ -11,13 +11,19 @@ function Logout() {
   };
 
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor="email">¿Deseas cerrar sesión?</label>
+    <div className="container ">
+      <div className="logout__container">
+        <form className="logout__form" onSubmit={handleSubmit(onSubmit)}>
+          <label htmlFor="email">¿Deseas cerrar sesión?</label>
 
-        <input type="submit" value="Salir" />
-      </form>
-    </>
+          <input
+            className="logout__button button"
+            type="submit"
+            value="Salir"
+          />
+        </form>
+      </div>
+    </div>
   );
 }
 
