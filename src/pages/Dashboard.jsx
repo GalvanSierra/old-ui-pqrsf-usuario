@@ -26,7 +26,6 @@ function Dashboard() {
     user.role === "atencion" ? "/pqrsf" : "/profile/mis-peticiones";
 
   const fetchData = async () => {
-    console.log(endpoint);
     await api
       .get(endpoint)
       .then((response) => response.data)
@@ -36,6 +35,16 @@ function Dashboard() {
           peticion.estado = peticion.estado.nombre;
           peticion.lider = peticion.lider?.cargo || "N/A";
           peticion.radicado = peticion.radicado || "N/A";
+
+          peticion.paciente =
+            peticion.paciente?.nombre + " " + peticion.paciente?.apellido ||
+            "N/A";
+
+          peticion.peticionario =
+            peticion.peticionario?.nombre +
+              " " +
+              peticion.peticionario?.apellido || "N/A";
+
           peticion.fechaRecepcion = formatDate(peticion.fechaRecepcion);
           peticion.fechaEnvioResponsableAreas = formatDate(
             peticion.fechaEnvioResponsableAreas
@@ -78,6 +87,8 @@ function Dashboard() {
     },
     { field: "estado", headerName: "Estado", width: 180 },
     { field: "dueDate", headerName: "Fecha Vencimiento", width: 120 },
+    { field: "peticionario", headerName: "Peticionario", width: 120 },
+    { field: "paciente", headerName: "Paciente", width: 120 },
     {
       field: "actions",
       headerName: "Action",

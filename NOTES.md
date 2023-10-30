@@ -11,7 +11,7 @@ _Management_
 
 _Logout_
 
-- [ ] Darle estilos a la pagina
+- [x] Darle estilos a la pagina
 
 _Dashboard_
 
