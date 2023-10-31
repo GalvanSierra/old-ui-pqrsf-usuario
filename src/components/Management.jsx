@@ -12,6 +12,9 @@ function Management() {
   const { user } = auth;
   const [isDisabled, setIsDisabled] = useState(false);
 
+  const [changes, setChanges] = useState(null);
+  const [isOpenModal, setIsOpenModal] = useState(false);
+
   const navigate = useNavigate();
 
   const {
@@ -165,10 +168,8 @@ function Management() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(departamentoOptions);
-
   const returnToDashboard = () => {
-    navigate(-1, { replace: true });
+    navigate("/dashboard-pqrsf", { replace: true });
   };
 
   const findChangesToUpdate = (obj1, obj2) => {
@@ -185,14 +186,18 @@ function Management() {
 
     return differences;
   };
+
   const onSubmit = async (data) => {
     const changes = findChangesToUpdate(peticionData, data);
 
     changes.seGestiono = Boolean(changes.seGestiono);
     changes.seDioRespuesta = Boolean(changes.seDioRespuesta);
 
-    console.log(changes);
+    setChanges(changes);
+    setIsOpenModal(true);
+  };
 
+  const saveChanges = async () => {
     await api
       .patch(`/peticiones/${id}`, changes)
       .then((response) => {
@@ -201,6 +206,9 @@ function Management() {
       .catch((error) => {
         console.error("Error en la solicitud PATCH", error);
       });
+
+    setIsOpenModal(false);
+    navigate("/dashboard-pqrsf", { replace: true });
   };
 
   return (
@@ -713,6 +721,25 @@ function Management() {
           </button>
         </div>
       </form>
+
+      {isOpenModal && (
+        <div className="modal-container">
+          <div className="modal">
+            <p>Desea guardar los cambios realizados</p>
+            <div className="modal-grid">
+              <button className="button form__button" onClick={saveChanges}>
+                Si, guardar
+              </button>
+              <button
+                className="button form__button button--red"
+                onClick={() => setIsOpenModal(false)}
+              >
+                Regresar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -30,6 +30,8 @@ function Write() {
   };
   //   Traer las opciones para los distintos selects
 
+  const [peticion, setPeticion] = useState(null);
+
   const [tipoPeticionOptions, seTipoPeticionOptions] = useState([]);
   const [epsOption, setEpsOption] = useState([]);
   const [regimenOption, setRegimenOption] = useState([]);
@@ -122,9 +124,28 @@ function Write() {
   const returnToDashboard = () => {
     navigate("/dashboard-pqrsf");
   };
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    data.seGestiono = Boolean(data.seGestiono);
+    data.seDioRespuesta = Boolean(data.seDioRespuesta);
+
+    setPeticion(data);
+    setIsOpenModal(true);
   };
+
+  const saveChanges = async () => {
+    console.log(peticion);
+    await api
+      .post("/peticiones", peticion)
+      .then((response) => {
+        console.log("éxito", response);
+      })
+      .catch((error) => {
+        console.error("Error en la solicitud PATCH", error);
+      });
+
+    setIsOpenModal(false);
+  };
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
   return (
     <div className="container container-form">
@@ -165,7 +186,8 @@ function Write() {
                   message: "Campo requerido",
                 },
                 validate: (v) => {
-                  if (v != null && v != "NA") setIsPeticionarioRequiere(true);
+                  if (v != null && v != "NA" && v != "")
+                    setIsPeticionarioRequiere(true);
                 },
               })}
             >
@@ -197,7 +219,7 @@ function Write() {
                   message: "Ingresa solo números o caracteres alfanuméricos",
                 },
                 validate: (v) => {
-                  if (v != null) setIsPeticionarioRequiere(true);
+                  if (v != null && v != "") setIsPeticionarioRequiere(true);
                 },
               })}
             />
@@ -315,7 +337,8 @@ function Write() {
                   message: "Campo requerido",
                 },
                 validate: (v) => {
-                  if (v != null && v != "NA") setIsPacienteRequiere(true);
+                  if (v != null && v != "NA" && v != "")
+                    setIsPacienteRequiere(true);
                 },
               })}
             >
@@ -347,7 +370,7 @@ function Write() {
                   message: "Ingresa solo números o caracteres alfanuméricos",
                 },
                 validate: (v) => {
-                  if (v != null) setIsPacienteRequiere(true);
+                  if (v != null && v != "") setIsPacienteRequiere(true);
                 },
               })}
             />
@@ -649,6 +672,10 @@ function Write() {
                 valueAsNumber: true,
               })}
             >
+              <option defaultValue={true} hidden={true} value="1">
+                Sin comenzar
+              </option>
+
               {estadoOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
@@ -666,7 +693,7 @@ function Write() {
                 valueAsNumber: true,
               })}
             >
-              <option defaultValue={true} hidden={true} value=""></option>
+              <option defaultValue={true} hidden={true} value="5"></option>
               {canalOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
@@ -804,6 +831,24 @@ function Write() {
           </button>
         </div>
       </form>
+      {isOpenModal && (
+        <div className="modal-container">
+          <div className="modal">
+            <p>Desea guardar los cambios realizados</p>
+            <div className="modal-grid">
+              <button className="button form__button" onClick={saveChanges}>
+                Si, guardar
+              </button>
+              <button
+                className="button form__button button--red"
+                onClick={() => setIsOpenModal(false)}
+              >
+                Regresar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
