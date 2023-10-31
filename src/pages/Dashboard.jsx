@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
@@ -12,6 +12,9 @@ function Dashboard() {
 
   const { user } = useAuth();
 
+  const [estadosOptions, setEstadosOptions] = useState([]);
+  const [lideresOptions, setlideresOptions] = useState([]);
+  const [tiposOptions, settiposdosOptions] = useState([]);
   const [peticiones, setPeticiones] = useState([]);
 
   const formatDate = (fecha) => {
@@ -23,7 +26,7 @@ function Dashboard() {
     return `${day}/${month}/${year}`;
   };
   const endpoint =
-    user.role === "atencion" ? "/pqrsf" : "profile/mis-peticiones";
+    user.role === "atencion" ? "/pqrsf" : "/profile/mis-peticiones";
 
   const fetchData = async () => {
     await api
@@ -34,8 +37,33 @@ function Dashboard() {
         console.error("Error:", error);
       });
 
-    console.log(peticiones[0]);
+    await api
+      .get("referencias/estados")
+      .then((response) => response.data)
+      .then((data) => {
+        //     const options = data.map((opc) => opc?.nombre);
+        setEstadosOptions(data);
+      });
+
+    await api
+      .get("referencias/lideres")
+      .then((response) => response.data)
+      .then((data) => {
+        //     const options = data.map((opc) => opc?.nombre);
+        setlideresOptions(data);
+      });
+
+    await api
+      .get("referencias/tipos_peticion")
+      .then((response) => response.data)
+      .then((data) => {
+        //     const options = data.map((opc) => opc?.nombre);
+        settiposdosOptions(data);
+      });
+
+    await console.log(peticiones[0]);
   };
+
   useEffect(() => {
     fetchData();
     // eslint-disable-next-li ne react-hooks/exhaustive-deps
@@ -70,17 +98,25 @@ function Dashboard() {
     {
       field: "lider",
       headerName: "Líder encargado",
+      type: "singleSelect",
       width: 140,
       valueGetter: (params) => {
         return `${params.row.lider?.cargo || "-"}`;
       },
+      valueOptions: () => {
+        return lideresOptions.map((opc) => opc?.cargo);
+      },
     },
     {
       field: "tipoPeticion",
+      type: "singleSelect",
       headerName: "Tipo",
       width: 120,
       valueGetter: (params) => {
         return `${params.row.tipoPeticion.nombre}`;
+      },
+      valueOptions: () => {
+        return tiposOptions.map((opc) => opc?.nombre);
       },
     },
     {
@@ -92,19 +128,15 @@ function Dashboard() {
       },
     },
     {
-      field: "estado",
+      field: "estadoId",
       headerName: "Estado",
+      type: "singleSelect",
       width: 180,
       valueGetter: (params) => {
-        return params.row.estado.nombre;
+        return params.row.estado?.nombre;
       },
-    },
-    {
-      field: "dueDate",
-      headerName: "Fecha Vencimiento",
-      width: 120,
-      valueGetter: (params) => {
-        return formatDate(params.row.dueDate);
+      valueOptions: () => {
+        return estadosOptions.map((opc) => opc?.nombre);
       },
     },
     {
@@ -167,13 +199,31 @@ function Dashboard() {
             rows={peticiones}
             columns={columns}
             autoHeight
+            // showToolbar
+            slots={{ toolbar: CustomToolbar }}
             style={{ fontSize: "1.6rem" }}
+            initialState={{
+              filter: {
+                filterModel: {
+                  items: [{ field: "estadoId", operator: "is", value: "" }],
+                },
+              },
+              pagination: { paginationModel: { pageSize: 14 } },
+            }}
             // autoPageSize // Esto permite que el DataGrid se ajuste automáticamente al ancho del contenedor.
             disableExtendRowFullWidth // Evita que la fila se extienda al ancho total de la pantalla.
           />
         </div>
       </div>
     </>
+  );
+}
+
+function CustomToolbar() {
+  return (
+    <GridToolbar
+      style={{ fontSize: "1.8rem" }} // Cambia el tamaño de letra de la barra de herramientas
+    />
   );
 }
 
