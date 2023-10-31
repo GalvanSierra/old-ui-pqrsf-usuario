@@ -93,6 +93,17 @@ function Management() {
     });
   };
 
+  const convertISOToDate = (isoDate) => {
+    if (!isoDate) return;
+
+    const date = new Date(isoDate);
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const year = date.getFullYear();
+
+    return `${year}-${month}-${day}`;
+  };
+
   //   Traer toda la información de la petición
   const fetchPeticionData = async () => {
     const peticion = await api
@@ -105,17 +116,6 @@ function Management() {
       .catch((error) => {
         console.error("Error:", error);
       });
-
-    const convertISOToDate = (isoDate) => {
-      if (!isoDate) return;
-
-      const date = new Date(isoDate);
-      const day = date.getDate().toString().padStart(2, "0");
-      const month = (date.getMonth() + 1).toString().padStart(2, "0");
-      const year = date.getFullYear();
-
-      return `${year}-${month}-${day}`;
-    };
 
     setValue("radicado", peticion.radicado);
     setValue("tipoPeticionId", peticion.tipoPeticionId);
@@ -156,8 +156,12 @@ function Management() {
     setValue("fechaRespuesta", convertISOToDate(peticion.fechaRespuesta));
     setValue("descripcionGestion", peticion.descripcionGestion);
     setValue("calidadId", peticion.calidadId);
+
+    console.log(peticion.estadoId);
+    if ([5, 6].includes(peticion.estadoId)) setIsCompleted(true);
   };
 
+  const [isCompleted, setIsCompleted] = useState(false);
   useEffect(() => {
     fetchSelectedOptions(urls);
 
@@ -525,7 +529,7 @@ function Management() {
               type="date"
               {...register("fechaDiligencia", {
                 required: "Campo requerido",
-                disabled: isDisabled,
+                disabled: isDisabled || isCompleted,
               })}
             />
             {errors.fechaDiligencia && (
@@ -542,8 +546,10 @@ function Management() {
               {...register("estadoId", {
                 valueAsNumber: true,
                 required: "Campo requerido",
+                disabled: isCompleted,
               })}
             >
+              <option defaultValue={true} hidden={true} value=""></option>
               {estadoOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
@@ -589,7 +595,7 @@ function Management() {
               className="input"
               {...register("clasePeticionId", {
                 valueAsNumber: true,
-                disabled: isDisabled,
+                disabled: isDisabled || isCompleted,
               })}
             >
               <option defaultValue={true} hidden={true} value=""></option>
@@ -607,7 +613,7 @@ function Management() {
               className="input"
               {...register("complejidadId", {
                 valueAsNumber: true,
-                disabled: isDisabled,
+                disabled: isDisabled || isCompleted,
               })}
             >
               <option defaultValue={true} hidden={true} value=""></option>
@@ -625,7 +631,7 @@ function Management() {
               className="input"
               {...register("liderId", {
                 valueAsNumber: true,
-                disabled: isDisabled,
+                disabled: isDisabled || isCompleted,
               })}
             >
               <option defaultValue={true} hidden={true} value=""></option>
@@ -641,7 +647,9 @@ function Management() {
             <label>Respuesta a solicitud</label>
             <textarea
               className="input"
-              {...register("respuesta", {})}
+              {...register("respuesta", {
+                disabled: isCompleted,
+              })}
             ></textarea>
           </div>
 
@@ -654,7 +662,7 @@ function Management() {
                 value="1"
                 {...register("seDioRespuesta", {
                   valueAsNumber: true,
-                  disabled: isDisabled,
+                  disabled: isDisabled || isCompleted,
                 })}
               />
               <label>Si</label>
@@ -664,7 +672,7 @@ function Management() {
                 value="0"
                 {...register("seDioRespuesta", {
                   valueAsNumber: true,
-                  disabled: isDisabled,
+                  disabled: isDisabled || isCompleted,
                 })}
               />
               <label>No</label>
@@ -676,7 +684,9 @@ function Management() {
             <input
               className="input"
               type="date"
-              {...register("fechaRespuesta", { disabled: isDisabled })}
+              {...register("fechaRespuesta", {
+                disabled: isDisabled || isCompleted,
+              })}
             />
           </div>
 
@@ -684,7 +694,9 @@ function Management() {
             <label>Descripcion de la gestión</label>
             <textarea
               className="input"
-              {...register("descripcionGestion", { disabled: isDisabled })}
+              {...register("descripcionGestion", {
+                disabled: isDisabled || isCompleted,
+              })}
             ></textarea>
           </div>
 
@@ -694,7 +706,7 @@ function Management() {
               className="input"
               {...register("calidadId", {
                 valueAsNumber: true,
-                disabled: isDisabled,
+                disabled: isDisabled || isCompleted,
               })}
             >
               <option defaultValue={true} hidden={true} value=""></option>

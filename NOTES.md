@@ -7,7 +7,8 @@ _navbar_
 _Management_
 
 - [x] Cambiar type de "numero de identificación" por text y agregar sus validaciones
-- [ ] Habilitar campos en base al rol del usuario
+- [x] Habilitar campos en base al rol del usuario
+- [x] Habilitar campos en base al estado de la petición
 
 _Logout_
 
