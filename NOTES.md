@@ -9,6 +9,11 @@ _Management_
 - [x] Cambiar type de "numero de identificación" por text y agregar sus validaciones
 - [x] Habilitar campos en base al rol del usuario
 - [x] Habilitar campos en base al estado de la petición
+- [ ] Las fechas de los campos date no pueden ser menores al dia de hoy
+
+_Write_
+
+- [ ] Las fechas de los campos date no pueden ser menores al dia de hoy
 
 _Logout_
 

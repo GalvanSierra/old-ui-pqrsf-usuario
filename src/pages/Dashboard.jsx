@@ -29,31 +29,6 @@ function Dashboard() {
     await api
       .get(endpoint)
       .then((response) => response.data)
-      .then((data) =>
-        data.map((peticion) => {
-          peticion.tipoPeticion = peticion.tipoPeticion.nombre;
-          peticion.estado = peticion.estado.nombre;
-          peticion.lider = peticion.lider?.cargo || "N/A";
-          peticion.radicado = peticion.radicado || "N/A";
-
-          peticion.paciente =
-            peticion.paciente?.nombre + " " + peticion.paciente?.apellido ||
-            "N/A";
-
-          peticion.peticionario =
-            peticion.peticionario?.nombre +
-              " " +
-              peticion.peticionario?.apellido || "N/A";
-
-          peticion.fechaRecepcion = formatDate(peticion.fechaRecepcion);
-          peticion.fechaEnvioResponsableAreas = formatDate(
-            peticion.fechaEnvioResponsableAreas
-          );
-          peticion.dueDate = formatDate(peticion.dueDate);
-
-          return peticion;
-        })
-      )
       .then((data) => setPeticiones(data))
       .catch((error) => {
         console.error("Error:", error);
@@ -76,19 +51,82 @@ function Dashboard() {
 
   const columns = [
     { field: "id", headerName: "ID", width: 40 },
-    { field: "radicado", headerName: "Radico", width: 80 },
-    { field: "fechaRecepcion", headerName: "Fecha Recepción", width: 140 },
-    { field: "lider", headerName: "Líder encargado", width: 140 },
-    { field: "tipoPeticion", headerName: "Tipo", width: 120 },
+    {
+      field: "radicado",
+      headerName: "Radico",
+      width: 80,
+      valueGetter: (params) => {
+        return `${params.row.radicado || "-"}`;
+      },
+    },
+    {
+      field: "fechaRecepcion",
+      headerName: "Fecha Recepción",
+      width: 140,
+      valueGetter: (params) => {
+        return formatDate(params.row.fechaRecepcion);
+      },
+    },
+    {
+      field: "lider",
+      headerName: "Líder encargado",
+      width: 140,
+      valueGetter: (params) => {
+        return `${params.row.lider?.cargo || "-"}`;
+      },
+    },
+    {
+      field: "tipoPeticion",
+      headerName: "Tipo",
+      width: 120,
+      valueGetter: (params) => {
+        return `${params.row.tipoPeticion.nombre}`;
+      },
+    },
     {
       field: "fechaEnvioResponsableArea",
       headerName: "Fecha Envio Responsable",
       width: 180,
+      valueGetter: (params) => {
+        return formatDate(params.row.fechaEnvioResponsableArea);
+      },
     },
-    { field: "estado", headerName: "Estado", width: 180 },
-    { field: "dueDate", headerName: "Fecha Vencimiento", width: 120 },
-    { field: "peticionario", headerName: "Peticionario", width: 120 },
-    { field: "paciente", headerName: "Paciente", width: 120 },
+    {
+      field: "estado",
+      headerName: "Estado",
+      width: 180,
+      valueGetter: (params) => {
+        return params.row.estado.nombre;
+      },
+    },
+    {
+      field: "dueDate",
+      headerName: "Fecha Vencimiento",
+      width: 120,
+      valueGetter: (params) => {
+        return formatDate(params.row.dueDate);
+      },
+    },
+    {
+      field: "peticionario",
+      headerName: "Peticionario",
+      width: 120,
+      valueGetter: (params) => {
+        return `${params.row.peticionario?.nombre || "-"} ${
+          params.row.peticionario?.apellido || "-"
+        }`;
+      },
+    },
+    {
+      field: "paciente",
+      headerName: "Paciente",
+      width: 120,
+      valueGetter: (params) => {
+        return `${params.row.paciente?.nombre || "-"} ${
+          params.row.paciente?.apellido || "-"
+        }`;
+      },
+    },
     {
       field: "actions",
       headerName: "Action",
