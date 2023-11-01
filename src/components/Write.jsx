@@ -46,6 +46,8 @@ function Write() {
   const [lideresOptions, setLideresOptions] = useState([]);
   const [calidadOptions, setCalidadOptions] = useState([]);
   const [canalOptions, setCanalOptions] = useState([]);
+  const [derechosOptions, setDerechosOptions] = useState([]);
+  const [derechosSelected, setDerechosSelected] = useState([]);
 
   const urls = {
     tipoPeticion: "/referencias/tipos_peticion",
@@ -61,6 +63,7 @@ function Write() {
     lideres: `/referencias/lideres`,
     calidad: `/referencias/calidad`,
     canales: "referencias/canales",
+    derechos: "/referencias/derechos_paciente",
   };
 
   const fetchDataReference = async (url) => {
@@ -100,6 +103,7 @@ function Write() {
       setLideresOptions(referenceData.lideres);
       setCalidadOptions(referenceData.calidad);
       setCanalOptions(referenceData.canales);
+      setDerechosOptions(referenceData.derechos);
     });
   };
 
@@ -144,6 +148,8 @@ function Write() {
       delete data.paciente;
     }
 
+    delete data.derechos;
+
     for (let key in data) {
       if (
         data[key] === "" ||
@@ -159,6 +165,7 @@ function Write() {
   };
 
   const saveChanges = async () => {
+    let id = null;
     await api
       .post("/peticiones", peticionWrite)
       .then((response) => {
@@ -166,12 +173,31 @@ function Write() {
         return response.data;
       })
       .then((data) => {
+        id = data.id;
         setIdentificador(data.id);
         setIsOpenModalSuccess(true);
       })
       .catch((error) => {
         console.error("Error en la solicitud POST", error);
       });
+    console.log(id);
+
+    Promise.all(
+      derechosSelected.map(async (derecho) => {
+        console.log(derecho);
+        return await api
+          .post("/peticiones/add-item", {
+            peticionId: id,
+            derechoId: derecho,
+          })
+          .then((response) => {
+            console.log("éxito de derecho", response);
+          })
+          .catch((error) => {
+            console.error("Error en la solicitud DERECHO", error);
+          });
+      })
+    );
 
     setIsOpenModalConfirm(false);
   };
@@ -849,6 +875,49 @@ function Write() {
                 </option>
               ))}
             </select>
+          </div>
+          <div className="input-box form__input--textarea">
+            <label>Derechos del paciente</label>
+            <select
+              multiple
+              className="select-derechos"
+              {...register("derechos")}
+              value={derechosSelected}
+              onChange={(e) => {
+                const selectedValues = Array.from(e.target.selectedOptions).map(
+                  (option) => {
+                    return option.value;
+                  }
+                );
+                setDerechosSelected(selectedValues);
+              }}
+            >
+              {derechosOptions.map((derecho) => (
+                <option key={derecho.id} value={derecho.id}>
+                  {derecho.derecho}
+                </option>
+              ))}
+            </select>
+            <ul className="derechos-list">
+              {derechosSelected.map((selectedId) => {
+                const selectedDerecho = derechosOptions.find(
+                  (derecho) => derecho.id === parseInt(selectedId, 10)
+                );
+                return (
+                  <li className="derecho" key={selectedId}>
+                    <strong>Derecho:</strong> {selectedDerecho.derecho}
+                    <br />
+                    <strong>Valor:</strong> {selectedDerecho.valor}
+                    <br />
+                    <strong>Deber:</strong>
+                    {selectedDerecho.deber}
+                    <br />
+                    <strong>Interpretación:</strong>
+                    {selectedDerecho.interpretacion}
+                  </li>
+                );
+              })}
+            </ul>
           </div>
         </fieldset>
 
