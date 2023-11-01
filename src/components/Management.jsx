@@ -43,6 +43,7 @@ function Management() {
   const [calidadOptions, setCalidadOptions] = useState([]);
   const [regimenOptions, setRegimenOptions] = useState([]);
   const [canalOptions, setCanalOptions] = useState([]);
+  const [derechosOptions, setDerechosOptions] = useState([]);
 
   const urls = {
     tipoPeticion: "/referencias/tipos_peticion",
@@ -59,12 +60,15 @@ function Management() {
     calidad: `/referencias/calidad`,
     regimen: "/referencias/regimenes",
     canal: "/referencias/canales",
+    derechos: "/referencias/derechos_paciente",
   };
 
   const fetchDataReference = async (url) => {
     const response = await api.get(url).then((response) => response.data);
     return response;
   };
+
+  const [derechosSelected, setDerechosSelected] = useState([]);
 
   const fetchSelectedOptions = async (apiReferences) => {
     const urls = Object.values(apiReferences);
@@ -90,6 +94,7 @@ function Management() {
       setCalidadOptions(referenceData.calidad);
       setRegimenOptions(referenceData.regimen);
       setCanalOptions(referenceData.canal);
+      setDerechosOptions(referenceData.derechos);
     });
   };
 
@@ -157,7 +162,6 @@ function Management() {
     setValue("descripcionGestion", peticion.descripcionGestion);
     setValue("calidadId", peticion.calidadId);
 
-    console.log(peticion.estadoId);
     if ([5, 6].includes(peticion.estadoId)) setIsCompleted(true);
   };
 
@@ -187,6 +191,7 @@ function Management() {
 
     delete differences.paciente;
     delete differences.peticionario;
+    delete differences.derechos;
 
     return differences;
   };
@@ -197,6 +202,7 @@ function Management() {
     changes.seGestiono = Boolean(changes.seGestiono);
     changes.seDioRespuesta = Boolean(changes.seDioRespuesta);
 
+    console.log(changes);
     setChanges(changes);
     setIsOpenModal(true);
   };
@@ -211,8 +217,25 @@ function Management() {
         console.error("Error en la solicitud PATCH", error);
       });
 
-    setIsOpenModal(false);
-    navigate("/dashboard-pqrsf", { replace: true });
+    Promise.all(
+      derechosSelected.map(async (derecho) => {
+        console.log(derecho);
+        return await api
+          .post("/peticiones/add-item", {
+            peticionId: id,
+            derechoId: derecho,
+          })
+          .then((response) => {
+            console.log("éxito de derecho", response);
+          })
+          .catch((error) => {
+            console.error("Error en la solicitud DERECHO", error);
+          });
+      })
+    );
+
+    // setIsOpenModal(false);
+    // navigate("/dashboard-pqrsf", { replace: true });
   };
 
   return (
@@ -717,6 +740,50 @@ function Management() {
               ))}
             </select>
           </div>
+
+          <div className="input-box form__input--textarea">
+            <label>Derechos del paciente</label>
+            <select
+              multiple
+              className="select-derechos"
+              {...register("derechos")}
+              value={derechosSelected}
+              onChange={(e) => {
+                const selectedValues = Array.from(e.target.selectedOptions).map(
+                  (option) => {
+                    return option.value;
+                  }
+                );
+                setDerechosSelected(selectedValues);
+              }}
+            >
+              {derechosOptions.map((derecho) => (
+                <option key={derecho.id} value={derecho.id}>
+                  {derecho.derecho}
+                </option>
+              ))}
+            </select>
+            <ul className="derechos-list">
+              {derechosSelected.map((selectedId) => {
+                const selectedDerecho = derechosOptions.find(
+                  (derecho) => derecho.id === parseInt(selectedId, 10)
+                );
+                return (
+                  <li className="derecho" key={selectedId}>
+                    <strong>Derecho:</strong> {selectedDerecho.derecho}
+                    <br />
+                    <strong>Valor:</strong> {selectedDerecho.valor}
+                    <br />
+                    <strong>Deber:</strong>
+                    {selectedDerecho.deber}
+                    <br />
+                    <strong>Interpretación:</strong>
+                    {selectedDerecho.interpretacion}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         </fieldset>
 
         <div className="form-grid">
@@ -739,7 +806,10 @@ function Management() {
           <div className="modal">
             <p>Desea guardar los cambios realizados</p>
             <div className="modal-grid">
-              <button className="button form__button" onClick={saveChanges}>
+              <button
+                className="button form__button"
+                onClick={() => saveChanges()}
+              >
                 Si, guardar
               </button>
               <button

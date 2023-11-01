@@ -334,3 +334,22 @@ input[type="number"]::-webkit-outer-spin-button {
   display: flex;
   gap: 2rem;
 }
+
+.select-derechos {
+  height: 300px;
+}
+.derechos-list {
+  list-style: none;
+  padding: 0;
+}
+
+.derecho {
+  background-color: var(--lima-200);
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.derecho strong {
+  color: var(--lima-950);
+}
