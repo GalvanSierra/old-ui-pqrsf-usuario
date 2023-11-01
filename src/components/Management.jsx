@@ -124,12 +124,12 @@ function Management() {
 
     setValue("radicado", peticion.radicado);
     setValue("tipoPeticionId", peticion.tipoPeticionId);
-    setValue("peticionario.tipoId", peticion.peticionario.tipoId);
-    setValue("peticionario.id", peticion.peticionario.id);
-    setValue("peticionario.nombre", peticion.peticionario.nombre);
-    setValue("peticionario.apellido", peticion.peticionario.apellido);
-    setValue("peticionario.telefono", peticion.peticionario.telefono);
-    setValue("peticionario.email", peticion.peticionario.email);
+    setValue("peticionario.tipoId", peticion.peticionario?.tipoId);
+    setValue("peticionario.id", peticion.peticionario?.id);
+    setValue("peticionario.nombre", peticion.peticionario?.nombre);
+    setValue("peticionario.apellido", peticion.peticionario?.apellido);
+    setValue("peticionario.telefono", peticion.peticionario?.telefono);
+    setValue("peticionario.email", peticion.peticionario?.email);
 
     setValue("paciente.tipoId", peticion.paciente?.tipoId);
     setValue("paciente.id", peticion.paciente?.id);
@@ -156,12 +156,15 @@ function Management() {
     setValue("dueDate", peticion.dueDate);
     setValue("liderId", peticion.liderId);
 
+    setValue("derechos", peticion.derechos);
+
     setValue("respuesta", peticion.respuesta);
     setValue("seDioRespuesta", peticion.seDioRespuesta ? "1" : "0");
     setValue("fechaRespuesta", convertISOToDate(peticion.fechaRespuesta));
     setValue("descripcionGestion", peticion.descripcionGestion);
     setValue("calidadId", peticion.calidadId);
 
+    setDerechosSelected(peticion.derechos.map((derecho) => derecho.id));
     if ([5, 6].includes(peticion.estadoId)) setIsCompleted(true);
   };
 
@@ -234,8 +237,8 @@ function Management() {
       })
     );
 
-    // setIsOpenModal(false);
-    // navigate("/dashboard-pqrsf", { replace: true });
+    setIsOpenModal(false);
+    navigate("/dashboard-pqrsf", { replace: true });
   };
 
   return (
@@ -746,7 +749,9 @@ function Management() {
             <select
               multiple
               className="select-derechos"
-              {...register("derechos")}
+              {...register("derechos", {
+                disabled: isDisabled || isCompleted,
+              })}
               value={derechosSelected}
               onChange={(e) => {
                 const selectedValues = Array.from(e.target.selectedOptions).map(

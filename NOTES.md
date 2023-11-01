@@ -1,6 +1,10 @@
 # TODOs:
 
-_navbar_
+_Otros_
+
+- [ ] Al recargar la pagina, esta no redirection al login
+
+_Navbar_
 
 - [x] Corrección de rutas visualización de rutas privadas y publicas
 
@@ -21,6 +25,6 @@ _Logout_
 
 _Dashboard_
 
-- [ ] Agregar columnas ocultas para consultar por otros campos
-  - [ ] paciente
-  - [ ] peticionario
+- [x] Agregar columnas ocultas para consultar por otros campos
+  - [x] paciente
+  - [x] peticionario

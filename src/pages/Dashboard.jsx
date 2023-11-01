@@ -208,7 +208,7 @@ function Dashboard() {
                   items: [{ field: "estadoId", operator: "is", value: "" }],
                 },
               },
-              pagination: { paginationModel: { pageSize: 20 } },
+              pagination: { paginationModel: { pageSize: 25 } },
             }}
             // autoPageSize // Esto permite que el DataGrid se ajuste automáticamente al ancho del contenedor.
             disableExtendRowFullWidth // Evita que la fila se extienda al ancho total de la pantalla.
