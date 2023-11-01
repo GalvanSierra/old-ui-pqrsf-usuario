@@ -26,7 +26,7 @@ function Dashboard() {
     return `${day}/${month}/${year}`;
   };
   const endpoint =
-    user.role === "atencion" ? "/pqrsf" : "/profile/mis-peticiones";
+    user.role === "atencion" ? "/pqrsf" : "profile/mis-peticiones";
 
   const fetchData = async () => {
     await api
@@ -208,7 +208,7 @@ function Dashboard() {
                   items: [{ field: "estadoId", operator: "is", value: "" }],
                 },
               },
-              pagination: { paginationModel: { pageSize: 14 } },
+              pagination: { paginationModel: { pageSize: 20 } },
             }}
             // autoPageSize // Esto permite que el DataGrid se ajuste automáticamente al ancho del contenedor.
             disableExtendRowFullWidth // Evita que la fila se extienda al ancho total de la pantalla.

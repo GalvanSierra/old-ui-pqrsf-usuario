@@ -209,7 +209,8 @@ Login
 legend {
   background-color: var(--lima-500);
   padding: 1rem 2rem;
-  color: var(--white);
+  color: var(--dark);
+  font-weight: var(--fw-bold);
   border-radius: 6px;
   text-transform: capitalize;
 }
