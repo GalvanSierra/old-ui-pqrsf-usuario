@@ -748,7 +748,7 @@ function Management() {
             <label>Derechos del paciente</label>
             <select
               multiple
-              className="select-derechos"
+              className="input--multi-select"
               {...register("derechos", {
                 disabled: isDisabled || isCompleted,
               })}

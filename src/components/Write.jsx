@@ -880,7 +880,7 @@ function Write() {
             <label>Derechos del paciente</label>
             <select
               multiple
-              className="select-derechos"
+              className="input--multi-select"
               {...register("derechos")}
               value={derechosSelected}
               onChange={(e) => {
