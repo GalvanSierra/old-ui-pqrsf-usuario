@@ -131,7 +131,7 @@ function Dashboard() {
       field: "estadoId",
       headerName: "Estado",
       type: "singleSelect",
-      width: 180,
+      width: 160,
       valueGetter: (params) => {
         return params.row.estado?.nombre;
       },
