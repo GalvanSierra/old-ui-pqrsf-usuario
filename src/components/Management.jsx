@@ -16,6 +16,7 @@ function Management() {
   const [isOpenModal, setIsOpenModal] = useState(false);
 
   const navigate = useNavigate();
+  const today = new Date().toISOString().split("T")[0];
 
   const {
     register,
@@ -556,6 +557,12 @@ function Management() {
               {...register("fechaDiligencia", {
                 required: "Campo requerido",
                 disabled: isDisabled || isCompleted,
+                validate: (value) => {
+                  if (value < today) {
+                    return "La fecha debe ser posterior o igual al día de hoy";
+                  }
+                  return true;
+                },
               })}
             />
             {errors.fechaDiligencia && (
@@ -660,7 +667,7 @@ function Management() {
                 disabled: isDisabled || isCompleted,
               })}
             >
-              <option defaultValue={true} hidden={true} value=""></option>
+              <option defaultValue={true} value=""></option>
               {lideresOptions.map(({ id, cargo }) => (
                 <option key={id} value={id}>
                   {cargo}
@@ -712,6 +719,12 @@ function Management() {
               type="date"
               {...register("fechaRespuesta", {
                 disabled: isDisabled || isCompleted,
+                validate: (value) => {
+                  if (value < today) {
+                    return "La fecha debe ser posterior o igual al día de hoy";
+                  }
+                  return true;
+                },
               })}
             />
           </div>

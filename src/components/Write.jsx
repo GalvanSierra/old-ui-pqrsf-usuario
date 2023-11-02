@@ -14,6 +14,7 @@ function Write() {
     formState: { errors },
   } = useForm();
 
+  const today = new Date().toISOString().split("T")[0];
   const departamentoSelected = watch("paciente.departamentoId") || 0;
   const epsSelected = watch("paciente.epsId");
 
@@ -720,7 +721,14 @@ function Write() {
             <input
               className="input"
               type="date"
-              {...register("fechaDiligencia", {})}
+              {...register("fechaDiligencia", {
+                validate: (value) => {
+                  if (value < today) {
+                    return "La fecha debe ser posterior o igual al día de hoy";
+                  }
+                  return true;
+                },
+              })}
             />
           </div>
 
