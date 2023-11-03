@@ -13,8 +13,8 @@ function Dashboard() {
   const { user } = useAuth();
 
   const [estadosOptions, setEstadosOptions] = useState([]);
-  const [lideresOptions, setlideresOptions] = useState([]);
-  const [tiposOptions, settiposdosOptions] = useState([]);
+  const [lideresOptions, setLideresOptions] = useState([]);
+  const [tipoPeticionOptions, setTipoPeticionOptions] = useState([]);
   const [peticiones, setPeticiones] = useState([]);
 
   const formatDate = (fecha) => {
@@ -26,7 +26,7 @@ function Dashboard() {
     return `${day}/${month}/${year}`;
   };
   const endpoint =
-    user.role === "atencion" ? "/pqrsf" : "profile/mis-peticiones";
+    user.role === "atencion" ? "/pqrsf" : "/profile/mis-peticiones";
 
   const fetchData = async () => {
     await api
@@ -50,7 +50,7 @@ function Dashboard() {
       .then((response) => response.data)
       .then((data) => {
         //     const options = data.map((opc) => opc?.nombre);
-        setlideresOptions(data);
+        setLideresOptions(data);
       });
 
     await api
@@ -58,7 +58,7 @@ function Dashboard() {
       .then((response) => response.data)
       .then((data) => {
         //     const options = data.map((opc) => opc?.nombre);
-        settiposdosOptions(data);
+        setTipoPeticionOptions(data);
       });
 
     await console.log(peticiones[0]);
@@ -116,7 +116,7 @@ function Dashboard() {
         return `${params.row.tipoPeticion.nombre}`;
       },
       valueOptions: () => {
-        return tiposOptions.map((opc) => opc?.nombre);
+        return tipoPeticionOptions.map((opc) => opc?.nombre);
       },
     },
     {
