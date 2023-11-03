@@ -216,6 +216,8 @@ function Management() {
       .patch(`/peticiones/${id}`, changes)
       .then((response) => {
         console.log("éxito", response);
+        setIsOpenModal(false);
+        navigate("/dashboard-pqrsf", { replace: true });
       })
       .catch((error) => {
         console.error("Error en la solicitud PATCH", error);
@@ -237,9 +239,6 @@ function Management() {
           });
       })
     );
-
-    setIsOpenModal(false);
-    navigate("/dashboard-pqrsf", { replace: true });
   };
 
   return (
@@ -719,12 +718,12 @@ function Management() {
               type="date"
               {...register("fechaRespuesta", {
                 disabled: isDisabled || isCompleted,
-                validate: (value) => {
-                  if (value < today) {
-                    return "La fecha debe ser posterior o igual al día de hoy";
-                  }
-                  return true;
-                },
+                // validate: (value) => {
+                //   if (value < today) {
+                //     return "La fecha debe ser posterior o igual al día de hoy";
+                //   }
+                //   return true;
+                // },
               })}
             />
           </div>

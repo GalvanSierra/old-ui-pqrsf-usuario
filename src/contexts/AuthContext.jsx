@@ -11,14 +11,19 @@ function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
   const login = async (data) => {
-    const response = await api
-      .post("auth/login", data)
-      .then((response) => response.data);
+    try {
+      const response = await api.post("auth/login", data);
+      const responseData = response.data;
 
-    localStorage.setItem("token", response.token);
-    setUser(response.user);
+      localStorage.setItem("token", responseData.token);
+      setUser(responseData.user);
 
-    navigate("/dashboard-pqrsf");
+      navigate("/dashboard-pqrsf");
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        return false;
+      }
+    }
   };
 
   const logout = () => {

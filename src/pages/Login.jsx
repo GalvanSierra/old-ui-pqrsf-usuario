@@ -1,8 +1,10 @@
 import { useForm } from "react-hook-form";
 import { useAuth } from "../hooks/useAuth";
+import { useState } from "react";
 
 function Login() {
   const auth = useAuth();
+  const [isInvalido, setIsInvalido] = useState(false);
 
   const {
     register,
@@ -10,8 +12,10 @@ function Login() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    auth.login(data);
+  const onSubmit = async (data) => {
+    const response = await auth.login(data);
+
+    if (!response) setIsInvalido(true);
   };
 
   return (
@@ -60,6 +64,9 @@ function Login() {
             value="Iniciar sesión"
           />
         </form>
+        {isInvalido && (
+          <p className="alert login__alert">email y/o contraseña inválidos</p>
+        )}
       </div>
     </div>
   );
