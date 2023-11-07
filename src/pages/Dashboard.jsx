@@ -17,16 +17,8 @@ function Dashboard() {
   const [tipoPeticionOptions, setTipoPeticionOptions] = useState([]);
   const [peticiones, setPeticiones] = useState([]);
 
-  const formatDate = (fecha) => {
-    const date = new Date(fecha);
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-
-    return `${day}/${month}/${year}`;
-  };
   const endpoint =
-    user.role === "atencion" ? "/pqrsf" : "/profile/mis-peticiones";
+    user.role === "atencion" ? "/pqrsf" : "profile/mis-peticiones";
 
   const fetchData = async () => {
     await api
@@ -78,9 +70,10 @@ function Dashboard() {
   };
 
   const columns = [
-    { field: "id", headerName: "ID", width: 40 },
+    { field: "id", type: "number", headerName: "ID", width: 40 },
     {
       field: "radicado",
+      type: "number",
       headerName: "Radico",
       width: 80,
       valueGetter: (params) => {
@@ -89,10 +82,12 @@ function Dashboard() {
     },
     {
       field: "fechaRecepcion",
+      type: "date",
       headerName: "Fecha Recepción",
       width: 140,
       valueGetter: (params) => {
-        return formatDate(params.row.fechaRecepcion);
+        const fechaRecepcion = new Date(params.row.fechaRecepcion);
+        return fechaRecepcion;
       },
     },
     {
@@ -121,10 +116,12 @@ function Dashboard() {
     },
     {
       field: "fechaEnvioResponsableArea",
+      type: "date",
       headerName: "Fecha Envio Responsable",
       width: 180,
       valueGetter: (params) => {
-        return formatDate(params.row.fechaEnvioResponsableArea);
+        const fechaEnvio = new Date(params.row.fechaEnvioResponsableArea);
+        return fechaEnvio;
       },
     },
     {
