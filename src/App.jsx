@@ -10,6 +10,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import { AuthRoute } from "./components/AuthRoute";
 import { Management } from "./components/Management";
 import { Write } from "./components/Write";
+import { DashboardAdmin } from "./pages/DashboardAdmin";
 
 import "./style.css";
 const AppRoute = () => {
@@ -48,7 +49,14 @@ const AppRoute = () => {
         </AuthRoute>
       ),
     },
-
+    {
+      path: "/dashboard-pqrsf-admin",
+      element: (
+        <AuthRoute>
+          <DashboardAdmin />
+        </AuthRoute>
+      ),
+    },
     { path: "*", element: <NotFound /> },
   ]);
 

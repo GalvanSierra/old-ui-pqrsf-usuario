@@ -9,6 +9,7 @@ function Navbar() {
     { to: "/dashboard-pqrsf", text: "Dashboard", private: true },
     { to: "/login", text: "Login", private: false, publicOnly: true },
     { to: "/Logout", text: "Logout", private: true },
+    { to: "/dashboard-pqrsf-admin", text: "admin" },
   ];
 
   return (
