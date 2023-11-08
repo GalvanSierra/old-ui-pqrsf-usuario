@@ -1,5 +1,6 @@
 import { utils, writeFile } from "xlsx";
 import api from "../service/api";
+import { useForm } from "react-hook-form";
 
 function DashboardAdmin() {
   function formatDateToDdMmYyyy(isoDate) {
@@ -53,9 +54,9 @@ function DashboardAdmin() {
     };
   };
 
-  const handleDownload = async () => {
+  const handleDownload = async (data) => {
     const peticiones = await api
-      .get("/peticiones")
+      .post("/peticiones/export/xlsx", data)
       .then((response) => response.data)
       .then((data) => data.map((peticion) => parsePeticion(peticion)));
 
@@ -66,10 +67,56 @@ function DashboardAdmin() {
 
     await writeFile(libro, "reporte-pqrsf.xlsx");
   };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    console.log(data);
+    handleDownload(data);
+  };
 
   return (
     <div>
-      <button onClick={handleDownload}>default export</button>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="input-box form__input">
+          <label>Fecha de inicio</label>
+          <input
+            className="input"
+            type="date"
+            {...register("startDate", {
+              required: "Campo requerido",
+              valueAsDate: true,
+            })}
+          />
+          {errors.startDate && (
+            <p role="alert" className="alert">
+              {errors.startDate.message}
+            </p>
+          )}
+        </div>
+
+        <div className="input-box form__input">
+          <label>Fecha de finalización</label>
+          <input
+            className="input"
+            type="date"
+            {...register("endDate", {
+              required: "Campo requerido",
+              valueAsDate: true,
+            })}
+          />
+          {errors.endDate && (
+            <p role="alert" className="alert">
+              {errors.endDate.message}
+            </p>
+          )}
+        </div>
+
+        <input type="submit" value="Exportar datos" />
+      </form>
     </div>
   );
 }
