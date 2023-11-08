@@ -87,6 +87,7 @@ body {
 }
 .nav {
   display: flex;
+  height: 60px;
 }
 
 .nav__logo {
