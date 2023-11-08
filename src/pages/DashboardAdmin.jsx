@@ -15,43 +15,41 @@ function DashboardAdmin() {
     return {
       id: p.id,
       radicado: p.radicado,
-      fechaRecepcion: formatDateToDdMmYyyy(p.fechaRecepcion),
+      "fecha de recepción": formatDateToDdMmYyyy(p.fechaRecepcion),
       estado: p.estado.nombre,
-      tipoPeticion: p.tipoPeticion.nombre,
+      "tipo de solicitud": p.tipoPeticion.nombre,
       servicio: p.servicio.nombre,
       area: p.area.nombre,
       motivo: p.motivo,
-      dirigidaA: p.dirigidaA,
+      "solicitud dirigida a": p.dirigidaA,
       canal: p.canal.nombre,
-      tutela: p.tutela,
-      radicadoTutela: p.radicadoTutela,
-      fechaDiligencia: formatDateToDdMmYyyy(p.fechaDiligencia),
-      clasePeticion: p.clasePeticion?.nombre,
+      "aplica tutela": p.tutela,
+      "radicado tutela": p.radicadoTutela,
+      "fecha de diligencia": formatDateToDdMmYyyy(p.fechaDiligencia),
+      "clase de peticion": p.clasePeticion?.nombre,
       complejidad: p.complejidad?.nombre,
       dueDate: formatDateToDdMmYyyy(p.dueDate),
-      lider: p.lider?.cargo,
+      "lider asignado": p.lider?.cargo,
 
-      fechaEnvioResponsableArea: formatDateToDdMmYyyy(
-        p.fechaEnvioResponsableArea
-      ),
-      seDioRespuesta: p.seDioRespuesta,
-      fechaRespuesta: formatDateToDdMmYyyy(p.fechaRespuesta),
+      envió: formatDateToDdMmYyyy(p.fechaEnvioResponsableArea),
+      "se dio respuesta": p.seDioRespuesta,
+      "fecha de respuesta": formatDateToDdMmYyyy(p.fechaRespuesta),
 
-      pacienteId: p.paciente?.id,
-      pacienteTipoId: p.paciente?.tipoId,
-      pacienteNombre: p.paciente?.nombre,
-      pacienteApellido: p.paciente?.apellido,
-      pacienteEps: p.paciente?.epsId,
-      pacienteRegimen: p.paciente?.regimen.nombre,
-      pacienteDepartamento: p.paciente?.departamento.nombre,
-      pacienteMunicipio: p.paciente?.municipio.nombre,
+      "identificación del paciente": p.paciente?.id,
+      "tipo identificación del paciente": p.paciente?.tipoId,
+      "nombre del paciente": p.paciente?.nombre,
+      "apellido del paciente": p.paciente?.apellido,
+      "eps del paciente": p.paciente?.epsId,
+      "regimen del paciente": p.paciente?.regimen.nombre,
+      "departamento del paciente": p.paciente?.departamento.nombre,
+      "municipio del paciente": p.paciente?.municipio.nombre,
 
-      peticionarioId: p.peticionario?.id,
-      peticionarioTipoId: p.peticionario?.tipoId,
-      peticionarioNombre: p.peticionario?.nombre,
-      peticionarioApellido: p.peticionario?.apellido,
-      peticionarioEmail: p.peticionario?.email,
-      peticionarioTelefono: p.peticionario?.telefono,
+      "identificación del peticionario": p.peticionario?.id,
+      "tipo identificación del peticionario": p.peticionario?.tipoId,
+      "nombre del peticionario": p.peticionario?.nombre,
+      "apellido del peticionario": p.peticionario?.apellido,
+      "email del peticionario": p.peticionario?.email,
+      "telefono del peticionario": p.peticionario?.telefono,
     };
   };
 
@@ -66,7 +64,7 @@ function DashboardAdmin() {
 
     utils.book_append_sheet(libro, hoja, "peticiones");
 
-    writeFile(libro, "reporte-pqrsf.xlsx");
+    await writeFile(libro, "reporte-pqrsf.xlsx");
   };
 
   return (

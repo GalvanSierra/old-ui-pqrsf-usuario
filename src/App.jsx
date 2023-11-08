@@ -13,6 +13,7 @@ import { Write } from "./components/Write";
 import { DashboardAdmin } from "./pages/DashboardAdmin";
 
 import "./style.css";
+import { ManagementLider } from "./components/ManagementLider";
 const AppRoute = () => {
   const routes = useRoutes([
     { path: "/", element: <Login /> },
@@ -38,6 +39,14 @@ const AppRoute = () => {
       element: (
         <AuthRoute>
           <Management />
+        </AuthRoute>
+      ),
+    },
+    {
+      path: "/management-pqrsf-lider/:id",
+      element: (
+        <AuthRoute>
+          <ManagementLider />
         </AuthRoute>
       ),
     },

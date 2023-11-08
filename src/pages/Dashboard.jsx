@@ -59,10 +59,13 @@ function Dashboard() {
   useEffect(() => {
     fetchData();
     // eslint-disable-next-li ne react-hooks/exhaustive-deps
-  }, []);
+  });
 
   const handleEdit = (peticionId) => {
-    navigate(`/management-pqrsf/${peticionId}`);
+    if (user.role === "atencion")
+      navigate(`/management-pqrsf/${peticionId}`, { replace: true });
+    if (user.role === "lider")
+      navigate(`/management-pqrsf-lider/${peticionId}`, { replace: true });
   };
 
   const write = () => {
@@ -122,6 +125,16 @@ function Dashboard() {
       valueGetter: (params) => {
         const fechaEnvio = new Date(params.row.fechaEnvioResponsableArea);
         return fechaEnvio;
+      },
+    },
+    {
+      field: "dueDate",
+      type: "date",
+      headerName: "Fecha Vencimiento",
+      width: 140,
+      valueGetter: (params) => {
+        const dueDate = new Date(params.row.dueDate);
+        return dueDate;
       },
     },
     {

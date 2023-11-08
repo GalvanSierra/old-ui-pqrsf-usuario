@@ -3,9 +3,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import api from "../service/api";
+import { useAuth } from "../hooks/useAuth";
 
-function Management() {
+function ManagementLider() {
   const { id } = useParams();
+  const auth = useAuth();
+
+  const { user } = auth;
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const [changes, setChanges] = useState(null);
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -83,7 +88,7 @@ function Management() {
       setMunicipioOptions(referenceData.municipios);
       setAreasOptions(referenceData.areas);
       setServiciosOptions(referenceData.servicios);
-      setEstadoOptions(referenceData.estado);
+      setEstadoOptions(referenceData.estado.slice(2, 4));
       setClasePeticionOptions(referenceData.clasePeticion);
       setComplejidadOptions(referenceData.complejidad);
       setLideresOptions(referenceData.lideres);
@@ -161,21 +166,16 @@ function Management() {
     setValue("calidadId", peticion.calidadId);
 
     setDerechosSelected(peticion.derechos.map((derecho) => derecho.id));
-
-    const STATES_DONE = [5, 6];
-
-    if (STATES_DONE.includes(peticion.estadoId)) setIdDonePeticion(true);
-
-    const STATES_RESPONDED = [4];
-    if (STATES_RESPONDED.includes(peticion.estadoId)) setIsResponded(true);
+    if ([4, 5, 6].includes(peticion.estadoId)) setIsCompleted(true);
   };
 
-  const [isResponded, setIsResponded] = useState(false);
-  const [isDonePeticion, setIdDonePeticion] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
   useEffect(() => {
     fetchSelectedOptions(urls);
 
     fetchPeticionData();
+    if (user.role === "atencion") setIsDisabled(false);
+    else setIsDisabled(true);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -243,7 +243,7 @@ function Management() {
 
   return (
     <div className="container form-container">
-      <h2>Tipo: {peticionData?.tipoPeticion.nombre}</h2>
+      <h2>Tipo: Lider {peticionData?.tipoPeticion.nombre}</h2>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="input-box form__input">
@@ -555,7 +555,7 @@ function Management() {
               type="date"
               {...register("fechaDiligencia", {
                 required: "Campo requerido",
-                disabled: isDonePeticion || isResponded,
+                disabled: isDisabled || isCompleted,
                 validate: (value) => {
                   if (value < today) {
                     return "La fecha debe ser posterior o igual al día de hoy";
@@ -578,7 +578,7 @@ function Management() {
               {...register("estadoId", {
                 valueAsNumber: true,
                 required: "Campo requerido",
-                disabled: isDonePeticion,
+                disabled: isCompleted,
               })}
             >
               <option defaultValue={true} hidden={true} value=""></option>
@@ -604,7 +604,7 @@ function Management() {
                 value="1"
                 {...register("seGestiono", {
                   valueAsNumber: true,
-                  disabled: isDonePeticion || isResponded,
+                  disabled: isDisabled,
                 })}
               />
               <label>Si</label>
@@ -614,7 +614,7 @@ function Management() {
                 value="0"
                 {...register("seGestiono", {
                   valueAsNumber: true,
-                  disabled: isDonePeticion || isResponded,
+                  disabled: isDisabled,
                 })}
               />
               <label>No</label>
@@ -627,7 +627,7 @@ function Management() {
               className="input"
               {...register("clasePeticionId", {
                 valueAsNumber: true,
-                disabled: isDonePeticion || isResponded,
+                disabled: isDisabled || isCompleted,
               })}
             >
               <option defaultValue={true} hidden={true} value=""></option>
@@ -645,7 +645,7 @@ function Management() {
               className="input"
               {...register("complejidadId", {
                 valueAsNumber: true,
-                disabled: isDonePeticion || isResponded,
+                disabled: isDisabled || isCompleted,
               })}
             >
               <option defaultValue={true} hidden={true} value=""></option>
@@ -663,7 +663,7 @@ function Management() {
               className="input"
               {...register("liderId", {
                 valueAsNumber: true,
-                disabled: isDonePeticion || isResponded,
+                disabled: isDisabled || isCompleted,
               })}
             >
               <option defaultValue={true} value=""></option>
@@ -680,7 +680,7 @@ function Management() {
             <textarea
               className="input"
               {...register("respuesta", {
-                disabled: isDonePeticion || isResponded,
+                disabled: isCompleted,
               })}
             ></textarea>
           </div>
@@ -694,7 +694,7 @@ function Management() {
                 value="1"
                 {...register("seDioRespuesta", {
                   valueAsNumber: true,
-                  disabled: isDonePeticion,
+                  disabled: isDisabled || isCompleted,
                 })}
               />
               <label>Si</label>
@@ -704,7 +704,7 @@ function Management() {
                 value="0"
                 {...register("seDioRespuesta", {
                   valueAsNumber: true,
-                  disabled: isDonePeticion,
+                  disabled: isDisabled || isCompleted,
                 })}
               />
               <label>No</label>
@@ -717,7 +717,7 @@ function Management() {
               className="input"
               type="date"
               {...register("fechaRespuesta", {
-                disabled: isDonePeticion,
+                disabled: isDisabled || isCompleted,
                 // validate: (value) => {
                 //   if (value < today) {
                 //     return "La fecha debe ser posterior o igual al día de hoy";
@@ -733,7 +733,7 @@ function Management() {
             <textarea
               className="input"
               {...register("descripcionGestion", {
-                disabled: isDonePeticion,
+                disabled: isDisabled || isCompleted,
               })}
             ></textarea>
           </div>
@@ -744,7 +744,7 @@ function Management() {
               className="input"
               {...register("calidadId", {
                 valueAsNumber: true,
-                disabled: isDonePeticion,
+                disabled: isDisabled || isCompleted,
               })}
             >
               <option defaultValue={true} hidden={true} value=""></option>
@@ -762,7 +762,7 @@ function Management() {
               multiple
               className="input--multi-select"
               {...register("derechos", {
-                disabled: isDonePeticion,
+                disabled: isDisabled || isCompleted,
               })}
               value={derechosSelected}
               onChange={(e) => {
@@ -843,4 +843,4 @@ function Management() {
   );
 }
 
-export { Management };
+export { ManagementLider };
