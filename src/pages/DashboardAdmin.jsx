@@ -35,6 +35,7 @@ function DashboardAdmin() {
       envió: formatDateToDdMmYyyy(p.fechaEnvioResponsableArea),
       "se dio respuesta": p.seDioRespuesta,
       "fecha de respuesta": formatDateToDdMmYyyy(p.fechaRespuesta),
+      respuesta: p.respuesta,
 
       "identificación del paciente": p.paciente?.id,
       "tipo identificación del paciente": p.paciente?.tipoId,
