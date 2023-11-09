@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useAuth } from "../hooks/useAuth";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function Login() {
   const auth = useAuth();
@@ -64,6 +65,9 @@ function Login() {
             value="Iniciar sesión"
           />
         </form>
+        <Link to="/recovery-password">
+          <p>¿Olvídate tu contraseña?</p>
+        </Link>
         {isInvalido && (
           <p className="alert login__alert">email y/o contraseña inválidos</p>
         )}

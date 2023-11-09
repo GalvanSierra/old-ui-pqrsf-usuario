@@ -14,6 +14,9 @@ import { DashboardAdmin } from "./pages/DashboardAdmin";
 
 import "./style.css";
 import { ManagementLider } from "./components/ManagementLider";
+import { RecoveryPassword } from "./pages/RecoveryPassword";
+import { EmailRecoveryPassword } from "./pages/EmailRecoveryPassword";
+
 const AppRoute = () => {
   const routes = useRoutes([
     { path: "/", element: <Login /> },
@@ -65,6 +68,14 @@ const AppRoute = () => {
           <DashboardAdmin />
         </AuthRoute>
       ),
+    },
+    {
+      path: "/recovery",
+      element: <RecoveryPassword />,
+    },
+    {
+      path: "/recovery-password",
+      element: <EmailRecoveryPassword />,
     },
     { path: "*", element: <NotFound /> },
   ]);
