@@ -1,27 +1,29 @@
-import { useForm } from "react-hook-form";
 import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 function Logout() {
-  const { handleSubmit } = useForm();
-
+  const navigate = useNavigate();
   const auth = useAuth();
-
-  const onSubmit = () => {
-    auth.logout();
-  };
 
   return (
     <div className="container ">
       <div className="logout__container">
-        <form className="logout__form" onSubmit={handleSubmit(onSubmit)}>
-          <label htmlFor="email">¿Deseas cerrar sesión?</label>
+        <div className="logout__form">
+          <label>¿Deseas cerrar sesión?</label>
 
-          <input
+          <button
             className="logout__button button"
-            type="submit"
-            value="Salir"
-          />
-        </form>
+            onClick={() => auth.logout()}
+          >
+            Si
+          </button>
+          <button
+            className="logout__button button"
+            onClick={() => navigate(-1)}
+          >
+            No
+          </button>
+        </div>
       </div>
     </div>
   );

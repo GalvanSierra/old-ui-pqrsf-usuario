@@ -8,19 +8,21 @@ function Navbar() {
   const routes = [
     { to: "/dashboard-pqrsf", text: "Dashboard", private: true },
     { to: "/login", text: "Login", private: false, publicOnly: true },
-    { to: "/Logout", text: "Logout", private: true },
     {
       to: "/dashboard-pqrsf-admin",
-      text: "admin",
+      text: "Admin",
       private: true,
       isAdmin: true,
     },
+    { to: "/Logout", text: "Logout", private: true },
   ];
 
   return (
     <header className="header">
       <nav className=" container nav">
-        <img src={logo} alt="logo" className="nav__logo" />
+        <NavLink to="/dashboard-pqrsf">
+          <img src={logo} alt="logo" className="nav__logo" />
+        </NavLink>
         <ul className="nav__list">
           {routes.map((route) => {
             if (route.publicOnly && auth.user) return null;

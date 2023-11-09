@@ -41,50 +41,58 @@ function RecoveryPassword() {
   };
 
   return (
-    <>
-      <h1>Nueva contraseña</h1>
-      <p>Ingresa el email de la cuenta a recuperar</p>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="input-box login-input">
-          <label className="label">Contraseña</label>
-          <input
-            className="input"
-            type="password"
-            name="password"
-            {...register("password", {
-              required: "Campo requerido",
-            })}
-          />
-          {errors.password && (
-            <p className="alert" role="alert">
-              {errors.password.message}
-            </p>
-          )}
-        </div>
+    <div className="container">
+      <div className="small-container">
+        <h1>Nueva contraseña</h1>
+        <p>Ingresa la nueva contraseña para la cuenta</p>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="input-box recovery-input">
+            <label className="label">Contraseña</label>
+            <input
+              className="input"
+              type="password"
+              name="password"
+              {...register("password", {
+                required: "Campo requerido",
+              })}
+            />
+            {errors.password && (
+              <p className="alert" role="alert">
+                {errors.password.message}
+              </p>
+            )}
+          </div>
 
-        <div className="input-box login-input">
-          <label className="label">Confirmar contraseña</label>
-          <input
-            className="input"
-            type="password"
-            name="newPassword"
-            {...register("newPassword", {
-              required: "Campo requerido",
-              validate: (value) =>
-                value === password || "Las contraseñas no coinciden",
-            })}
-          />
-          {errors.newPassword && (
-            <p className="alert" role="alert">
-              {errors.newPassword.message}
-            </p>
-          )}
-        </div>
+          <div className="input-box recovery-input">
+            <label className="label">Confirmar contraseña</label>
+            <input
+              className="input"
+              type="password"
+              name="newPassword"
+              {...register("newPassword", {
+                required: "Campo requerido",
+                validate: (value) =>
+                  value === password || "Las contraseñas no coinciden",
+              })}
+            />
+            {errors.newPassword && (
+              <p className="alert" role="alert">
+                {errors.newPassword.message}
+              </p>
+            )}
+          </div>
 
-        <input type="submit" value="enviar" />
-      </form>
-      <Link to="/login">Regresar al inicio de sesión</Link>
-    </>
+          <input
+            type="submit"
+            value="Guardar"
+            className=" button recovery-button"
+          />
+        </form>
+        <Link to="/login" className="login__link">
+          Regresar al inicio de sesión
+        </Link>
+      </div>
+    </div>
   );
 }
 

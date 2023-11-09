@@ -79,7 +79,7 @@ function DashboardAdmin() {
   };
 
   return (
-    <div>
+    <div className="container admin-container">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="input-box form__input">
           <label>Fecha de inicio</label>
@@ -115,7 +115,11 @@ function DashboardAdmin() {
           )}
         </div>
 
-        <input type="submit" value="Exportar datos" />
+        <input
+          type="submit"
+          value="Exportar datos"
+          className="button admin-button"
+        />
       </form>
     </div>
   );

@@ -22,34 +22,42 @@ function EmailRecoveryPassword() {
       });
   };
   return (
-    <>
-      <h1>Recuperar contraseña</h1>
-      <p>Ingresa el email de la cuenta a recuperar</p>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="input-box login-input">
-          <label className="label">Correo electrónico</label>
+    <div className="container">
+      <div className="small-container">
+        <h1>Recuperar contraseña</h1>
+        <p>Ingresa el email de la cuenta a recuperar</p>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="input-box login-input">
+            <input
+              className="input"
+              type="email"
+              placeholder="example@hisantaana.com"
+              {...register("email", {
+                required: "Campo requerido",
+                pattern: {
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  message: "Por favor, ingresa un email válida",
+                },
+              })}
+            />
+            {errors.email && (
+              <p className="alert" role="alert">
+                {errors.email.message}
+              </p>
+            )}
+          </div>
           <input
-            className="input"
-            type="text"
-            {...register("email", {
-              required: "Campo requerido",
-              pattern: {
-                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                message: "Por favor, ingresa un email válida",
-              },
-            })}
+            className="button recovery-button"
+            type="submit"
+            value="Enviar"
           />
-          {errors.email && (
-            <p className="alert" role="alert">
-              {errors.email.message}
-            </p>
-          )}
-        </div>
-        <input type="submit" value="Enviar" />
-      </form>
-      <Link to="/login">Regresar al inicio de sesión</Link>
-      {isOkay && <p>El email se envió exitosamente a tu correo registrado</p>}
-    </>
+        </form>
+        <Link to="/login" className="login__link">
+          Regresar al inicio de sesión
+        </Link>
+        {isOkay && <p>El email se envió exitosamente a tu correo registrado</p>}
+      </div>
+    </div>
   );
 }
 

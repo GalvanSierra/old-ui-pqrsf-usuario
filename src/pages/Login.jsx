@@ -65,7 +65,7 @@ function Login() {
             value="Iniciar sesión"
           />
         </form>
-        <Link to="/recovery-password">
+        <Link to="/recovery-password" className="login__link">
           <p>¿Olvídate tu contraseña?</p>
         </Link>
         {isInvalido && (
