@@ -112,7 +112,6 @@ function Write() {
   const [isPacienteRequiere, setIsPacienteRequiere] = useState(false);
   const [isDisable, setIsDisable] = useState(false);
   const [tutelaOpen, setTutelaOpen] = useState(false);
-  const [pacienteOpen, setPacienteOpen] = useState(false);
   const [isOpenModalSuccess, setIsOpenModalSuccess] = useState(false);
   const [identificador, setIdentificador] = useState(false);
 
@@ -382,188 +381,183 @@ function Write() {
           </div>
         </fieldset>
 
-        <input type="checkbox" onClick={() => setPacienteOpen(!pacienteOpen)} />
-        <label> Agregar paciente</label>
+        <fieldset>
+          <legend>Información del Paciente</legend>
+          <div className="input-box form__input">
+            <label>Tipo de identificación</label>
+            <select
+              className="input"
+              {...register("paciente.tipoId", {
+                required: {
+                  value: isPacienteRequiere,
+                  message: "Campo requerido",
+                },
+                validate: (v) => {
+                  if (v != null && v != "NA" && v != "")
+                    setIsPacienteRequiere(true);
+                },
+              })}
+            >
+              <option defaultValue={true} value=""></option>
+              {tipoIdOptions.map(({ id, nombre }) => (
+                <option key={id} value={id}>
+                  {nombre}
+                </option>
+              ))}
+            </select>
+            {errors.paciente?.tipoId && (
+              <p role="alert" className="alert">
+                {errors.paciente?.tipoId.message}
+              </p>
+            )}
+          </div>
 
-        {pacienteOpen && (
-          <fieldset>
-            <legend>Información del Paciente</legend>
-            <div className="input-box form__input">
-              <label>Tipo de identificación</label>
-              <select
-                className="input"
-                {...register("paciente.tipoId", {
-                  required: {
-                    value: isPacienteRequiere,
-                    message: "Campo requerido",
-                  },
-                  validate: (v) => {
-                    if (v != null && v != "NA" && v != "")
-                      setIsPacienteRequiere(true);
-                  },
-                })}
-              >
-                <option defaultValue={true} value=""></option>
-                {tipoIdOptions.map(({ id, nombre }) => (
-                  <option key={id} value={id}>
-                    {nombre}
-                  </option>
-                ))}
-              </select>
-              {errors.paciente?.tipoId && (
-                <p role="alert" className="alert">
-                  {errors.paciente?.tipoId.message}
-                </p>
-              )}
-            </div>
+          <div className="input-box form__input">
+            <label>Numero de identificación</label>
+            <input
+              className="input"
+              {...register("paciente.id", {
+                required: {
+                  value: isPacienteRequiere,
+                  message: "Campo requerido",
+                },
+                pattern: {
+                  value: /^(\d+|[a-zA-Z0-9]+)$/, // Patrón que permite alfanuméricos
+                  message: "Ingresa solo números o caracteres alfanuméricos",
+                },
+                validate: (v) => {
+                  if (v != null && v != "") setIsPacienteRequiere(true);
+                },
+              })}
+            />
+          </div>
 
-            <div className="input-box form__input">
-              <label>Numero de identificación</label>
-              <input
-                className="input"
-                {...register("paciente.id", {
-                  required: {
-                    value: isPacienteRequiere,
-                    message: "Campo requerido",
-                  },
-                  pattern: {
-                    value: /^(\d+|[a-zA-Z0-9]+)$/, // Patrón que permite alfanuméricos
-                    message: "Ingresa solo números o caracteres alfanuméricos",
-                  },
-                  validate: (v) => {
-                    if (v != null && v != "") setIsPacienteRequiere(true);
-                  },
-                })}
-              />
-            </div>
+          <div className="input-box form__input">
+            <label>Nombre(s)</label>
+            <input
+              className="input"
+              type="text"
+              {...register("paciente.nombre", {
+                required: {
+                  value: isPacienteRequiere,
+                  message: "Campo requerido",
+                },
+              })}
+            />
+            {errors.paciente?.nombre && (
+              <p role="alert" className="alert">
+                {errors.paciente?.nombre.message}
+              </p>
+            )}
+          </div>
 
-            <div className="input-box form__input">
-              <label>Nombre(s)</label>
-              <input
-                className="input"
-                type="text"
-                {...register("paciente.nombre", {
-                  required: {
-                    value: isPacienteRequiere,
-                    message: "Campo requerido",
-                  },
-                })}
-              />
-              {errors.paciente?.nombre && (
-                <p role="alert" className="alert">
-                  {errors.paciente?.nombre.message}
-                </p>
-              )}
-            </div>
+          <div className="input-box form__input">
+            <label>Apellido(s)</label>
+            <input
+              className="input"
+              type="text"
+              {...register("paciente.apellido", {
+                required: {
+                  value: isPacienteRequiere,
+                  message: "Campo requerido",
+                },
+              })}
+            />
+            {errors.paciente?.apellido && (
+              <p role="alert" className="alert">
+                {errors.paciente?.apellido.message}
+              </p>
+            )}
+          </div>
 
-            <div className="input-box form__input">
-              <label>Apellido(s)</label>
-              <input
-                className="input"
-                type="text"
-                {...register("paciente.apellido", {
-                  required: {
-                    value: isPacienteRequiere,
-                    message: "Campo requerido",
-                  },
-                })}
-              />
-              {errors.paciente?.apellido && (
-                <p role="alert" className="alert">
-                  {errors.paciente?.apellido.message}
-                </p>
-              )}
-            </div>
+          <div className="input-box form__input">
+            <label>EPS</label>
+            <select
+              className="input"
+              {...register("paciente.epsId", {
+                valueAsNumber: true,
+                required: {
+                  value: isPacienteRequiere,
+                  message: "Campo requerido",
+                },
+              })}
+              onClick={changeRegimen}
+            >
+              <option defaultValue={true} value=""></option>
+              {epsOption.map(({ id, nombre }) => (
+                <option key={id} value={id}>
+                  {nombre}
+                </option>
+              ))}
+            </select>
+            {errors.paciente?.epsId && (
+              <p role="alert" className="alert">
+                {errors.paciente?.epsId.message}
+              </p>
+            )}
+          </div>
 
-            <div className="input-box form__input">
-              <label>EPS</label>
-              <select
-                className="input"
-                {...register("paciente.epsId", {
-                  valueAsNumber: true,
-                  required: {
-                    value: isPacienteRequiere,
-                    message: "Campo requerido",
-                  },
-                })}
-                onClick={changeRegimen}
-              >
-                <option defaultValue={true} value=""></option>
-                {epsOption.map(({ id, nombre }) => (
-                  <option key={id} value={id}>
-                    {nombre}
-                  </option>
-                ))}
-              </select>
-              {errors.paciente?.epsId && (
-                <p role="alert" className="alert">
-                  {errors.paciente?.epsId.message}
-                </p>
-              )}
-            </div>
+          <div className="input-box form__input">
+            <label>Regimen</label>
+            <select
+              className="input"
+              {...register("paciente.regimenId", {
+                valueAsNumber: true,
+                required: {
+                  value: isPacienteRequiere,
+                  message: "Campo requerido",
+                },
+                disabled: isDisable,
+              })}
+            >
+              {regimenOption.map(({ id, nombre }) => (
+                <option key={id} value={id}>
+                  {nombre}
+                </option>
+              ))}
+              <option defaultValue={true} value=""></option>
+            </select>
+            {errors.paciente?.regimenId && (
+              <p role="alert" className="alert">
+                {errors.paciente?.regimenId.message}
+              </p>
+            )}
+          </div>
 
-            <div className="input-box form__input">
-              <label>Regimen</label>
-              <select
-                className="input"
-                {...register("paciente.regimenId", {
-                  valueAsNumber: true,
-                  required: {
-                    value: isPacienteRequiere,
-                    message: "Campo requerido",
-                  },
-                  disabled: isDisable,
-                })}
-              >
-                {regimenOption.map(({ id, nombre }) => (
-                  <option key={id} value={id}>
-                    {nombre}
-                  </option>
-                ))}
-                <option defaultValue={true} value=""></option>
-              </select>
-              {errors.paciente?.regimenId && (
-                <p role="alert" className="alert">
-                  {errors.paciente?.regimenId.message}
-                </p>
-              )}
-            </div>
+          <div className="input-box form__input">
+            <label>Departamento</label>
+            <select
+              className="input"
+              {...register("paciente.departamentoId", {
+                valueAsNumber: true,
+              })}
+            >
+              <option defaultValue={true} value=""></option>
+              {departamentoOptions.map(({ id, nombre }) => (
+                <option key={id} value={id}>
+                  {nombre}
+                </option>
+              ))}
+            </select>
+          </div>
 
-            <div className="input-box form__input">
-              <label>Departamento</label>
-              <select
-                className="input"
-                {...register("paciente.departamentoId", {
-                  valueAsNumber: true,
-                })}
-              >
-                <option defaultValue={true} value=""></option>
-                {departamentoOptions.map(({ id, nombre }) => (
-                  <option key={id} value={id}>
-                    {nombre}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="input-box form__input">
-              <label>Municipio</label>
-              <select
-                className="input"
-                {...register("paciente.municipioId", {
-                  valueAsNumber: true,
-                })}
-              >
-                <option defaultValue={true} value=""></option>
-                {municipioOptions.map(({ id, nombre }) => (
-                  <option key={id} value={id}>
-                    {nombre}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </fieldset>
-        )}
+          <div className="input-box form__input">
+            <label>Municipio</label>
+            <select
+              className="input"
+              {...register("paciente.municipioId", {
+                valueAsNumber: true,
+              })}
+            >
+              <option defaultValue={true} value=""></option>
+              {municipioOptions.map(({ id, nombre }) => (
+                <option key={id} value={id}>
+                  {nombre}
+                </option>
+              ))}
+            </select>
+          </div>
+        </fieldset>
 
         <fieldset>
           <legend>información de la Petición</legend>
