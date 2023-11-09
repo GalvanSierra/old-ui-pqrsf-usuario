@@ -596,7 +596,7 @@ function ManagementLider() {
           </div>
 
           <div className="input-box form__input">
-            <label>¿Se va a gestiono?</label>
+            <label>¿Se va a gestionar?</label>
             <div>
               <input
                 className="input--radio"
