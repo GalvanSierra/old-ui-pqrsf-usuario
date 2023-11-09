@@ -662,10 +662,6 @@ function Write() {
               className="input"
               {...register("motivo", {
                 required: "Campo requerido",
-                minLength: {
-                  value: 20,
-                  message: "Mínimo 20 caracteres",
-                },
               })}
             ></textarea>
             {errors.motivo && (
