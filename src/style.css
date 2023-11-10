@@ -239,6 +239,7 @@ fieldset {
 
 .form__input--textarea textarea {
   min-height: 12rem;
+  form-sizing: content;
 }
 
 /* input[type="number"]::-webkit-inner-spin-button,

@@ -105,6 +105,8 @@ function Write() {
       setCalidadOptions(referenceData.calidad);
       setCanalOptions(referenceData.canales);
       setDerechosOptions(referenceData.derechos);
+
+      setValue("derechos", derechosSelected);
     });
   };
 
@@ -711,6 +713,7 @@ function Write() {
             <input
               className="input"
               type="date"
+              defaultValue={today}
               {...register("fechaDiligencia", {
                 validate: (value) => {
                   if (value < today) {
@@ -855,6 +858,11 @@ function Write() {
               className="input"
               {...register("descripcionGestion", {})}
             ></textarea>
+          </div>
+
+          <div className="input-box form__input--textarea">
+            <label>Notas de la petición</label>
+            <textarea className="input" {...register("nota", {})}></textarea>
           </div>
 
           {/* calidadId:null */}

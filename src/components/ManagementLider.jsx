@@ -164,6 +164,7 @@ function ManagementLider() {
     setValue("fechaRespuesta", convertISOToDate(peticion.fechaRespuesta));
     setValue("descripcionGestion", peticion.descripcionGestion);
     setValue("calidadId", peticion.calidadId);
+    setValue("nota", peticion.nota);
 
     setDerechosSelected(peticion.derechos.map((derecho) => derecho.id));
     if ([4, 5, 6].includes(peticion.estadoId)) setIsCompleted(true);
@@ -738,6 +739,11 @@ function ManagementLider() {
             ></textarea>
           </div>
 
+          <div className="input-box form__input--textarea">
+            <label>Notas de la petición</label>
+            <textarea className="input" {...register("nota", {})}></textarea>
+          </div>
+
           <div className="input-box form__input">
             <label>Calidad</label>
             <select
@@ -807,7 +813,7 @@ function ManagementLider() {
           <input
             className="button form__button"
             type="submit"
-            value="Enviar petición"
+            value="Guardar"
           />
           <button
             className="button form__button button--red"

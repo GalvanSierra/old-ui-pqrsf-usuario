@@ -52,14 +52,12 @@ function Dashboard() {
         //     const options = data.map((opc) => opc?.nombre);
         setTipoPeticionOptions(data);
       });
-
-    await console.log(peticiones[0]);
   };
 
   useEffect(() => {
     fetchData();
     // eslint-disable-next-li ne react-hooks/exhaustive-deps
-  });
+  }, []);
 
   const handleEdit = (peticionId) => {
     if (user.role === "atencion")
@@ -80,7 +78,7 @@ function Dashboard() {
       headerName: "Radico",
       width: 80,
       valueGetter: (params) => {
-        return `${params.row.radicado || "-"}`;
+        return `${params.row.radicado || ""}`;
       },
     },
     {
@@ -99,7 +97,7 @@ function Dashboard() {
       type: "singleSelect",
       width: 140,
       valueGetter: (params) => {
-        return `${params.row.lider?.cargo || "-"}`;
+        return `${params.row.lider?.cargo || ""}`;
       },
       valueOptions: () => {
         return lideresOptions.map((opc) => opc?.cargo);
@@ -154,8 +152,8 @@ function Dashboard() {
       headerName: "Peticionario",
       width: 120,
       valueGetter: (params) => {
-        return `${params.row.peticionario?.nombre || "-"} ${
-          params.row.peticionario?.apellido || "-"
+        return `${params.row.peticionario?.nombre || ""} ${
+          params.row.peticionario?.apellido || ""
         }`;
       },
     },
@@ -164,8 +162,8 @@ function Dashboard() {
       headerName: "Paciente",
       width: 120,
       valueGetter: (params) => {
-        return `${params.row.paciente?.nombre || "-"} ${
-          params.row.paciente?.apellido || "-"
+        return `${params.row.paciente?.nombre || ""} ${
+          params.row.paciente?.apellido || ""
         }`;
       },
     },

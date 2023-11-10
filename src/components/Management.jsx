@@ -159,6 +159,7 @@ function Management() {
     setValue("fechaRespuesta", convertISOToDate(peticion.fechaRespuesta));
     setValue("descripcionGestion", peticion.descripcionGestion);
     setValue("calidadId", peticion.calidadId);
+    setValue("nota", peticion.nota);
 
     setDerechosSelected(peticion.derechos.map((derecho) => derecho.id));
 
@@ -553,6 +554,7 @@ function Management() {
             <input
               className="input"
               type="date"
+              defaultValue={today}
               {...register("fechaDiligencia", {
                 required: "Campo requerido",
                 disabled: isDonePeticion || isResponded,
@@ -738,6 +740,11 @@ function Management() {
             ></textarea>
           </div>
 
+          <div className="input-box form__input--textarea">
+            <label>Notas de la petición</label>
+            <textarea className="input" {...register("nota", {})}></textarea>
+          </div>
+
           <div className="input-box form__input">
             <label>Calidad</label>
             <select
@@ -807,7 +814,7 @@ function Management() {
           <input
             className="button form__button"
             type="submit"
-            value="Enviar petición"
+            value="Guardar"
           />
           <button
             className="button form__button button--red"
