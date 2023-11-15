@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
+import { CircularProgress } from "@mui/material";
+
 import api from "../service/api";
 
 function Write() {
@@ -49,6 +51,8 @@ function Write() {
   const [canalOptions, setCanalOptions] = useState([]);
   const [derechosOptions, setDerechosOptions] = useState([]);
   const [derechosSelected, setDerechosSelected] = useState([]);
+
+  const [loading, setLoading] = useState(false);
 
   const urls = {
     tipoPeticion: "/referencias/tipos_peticion",
@@ -105,8 +109,6 @@ function Write() {
       setCalidadOptions(referenceData.calidad);
       setCanalOptions(referenceData.canales);
       setDerechosOptions(referenceData.derechos);
-
-      setValue("derechos", derechosSelected);
     });
   };
 
@@ -167,42 +169,50 @@ function Write() {
   };
 
   const saveChanges = async () => {
-    let id = null;
-    await api
-      .post("/peticiones", peticionWrite)
-      .then((response) => {
-        console.log("éxito", response.data);
-        return response.data;
-      })
-      .then((data) => {
-        id = data.id;
-        setIdentificador(data.id);
-        setIsOpenModalSuccess(true);
-      })
-      .catch((error) => {
-        console.error("Error en la solicitud POST", error);
-      });
-    console.log(id);
+    try {
+      setLoading(true); // Activar el indicador de carga
 
-    Promise.all(
-      derechosSelected.map(async (derecho) => {
-        console.log(derecho);
-        return await api
-          .post("/peticiones/add-item", {
-            peticionId: id,
-            derechoId: derecho,
-          })
-          .then((response) => {
-            console.log("éxito de derecho", response);
-          })
-          .catch((error) => {
-            console.error("Error en la solicitud DERECHO", error);
-          });
-      })
-    );
+      let id = null;
 
-    setIsOpenModalConfirm(false);
+      await api
+        .post("/peticiones", peticionWrite)
+        .then((response) => response.data)
+        .then((data) => {
+          id = data.id;
+          setIdentificador(data.id);
+          setIsOpenModalSuccess(true);
+        })
+        .catch((error) => {
+          console.error("Error en la solicitud POST", error);
+        });
+
+      console.log(id);
+
+      await Promise.all(
+        derechosSelected.map(async (derecho) => {
+          console.log(derecho);
+          return await api
+            .post("/peticiones/add-item", {
+              peticionId: id,
+              derechoId: derecho,
+            })
+            .then((response) => {
+              console.log("éxito de derecho", response);
+            })
+            .catch((error) => {
+              console.error("Error en la solicitud DERECHO", error);
+            });
+        })
+      );
+
+      setIsOpenModalConfirm(false);
+    } catch (error) {
+      console.error("Error en la función saveChanges", error);
+    } finally {
+      setLoading(false); // Desactivar el indicador de carga, ya sea éxito o error
+    }
   };
+
   const [isOpenModalConfirm, setIsOpenModalConfirm] = useState(false);
 
   return (
@@ -959,6 +969,7 @@ function Write() {
                 Regresar
               </button>
             </div>
+            {loading && <CircularProgress />}
           </div>
         </div>
       )}

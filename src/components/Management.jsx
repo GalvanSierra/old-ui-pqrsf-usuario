@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { CircularProgress } from "@mui/material";
 
 import api from "../service/api";
 
@@ -40,6 +41,7 @@ function Management() {
   const [regimenOptions, setRegimenOptions] = useState([]);
   const [canalOptions, setCanalOptions] = useState([]);
   const [derechosOptions, setDerechosOptions] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const urls = {
     tipoPeticion: "/referencias/tipos_peticion",
@@ -213,33 +215,37 @@ function Management() {
   };
 
   const saveChanges = async () => {
-    await api
-      .patch(`/peticiones/${id}`, changes)
-      .then((response) => {
-        console.log("éxito", response);
-        setIsOpenModal(false);
-        navigate("/dashboard-pqrsf", { replace: true });
-      })
-      .catch((error) => {
-        console.error("Error en la solicitud PATCH", error);
-      });
+    try {
+      setLoading(true); // Activar el indicador de carga
 
-    Promise.all(
-      derechosSelected.map(async (derecho) => {
-        console.log(derecho);
-        return await api
-          .post("/peticiones/add-item", {
-            peticionId: id,
-            derechoId: derecho,
-          })
-          .then((response) => {
-            console.log("éxito de derecho", response);
-          })
-          .catch((error) => {
-            console.error("Error en la solicitud DERECHO", error);
-          });
-      })
-    );
+      console.log(changes);
+      const resultado = await api.patch(`/peticiones/${id}`, changes);
+      console.log(resultado);
+
+      await Promise.all(
+        derechosSelected.map(async (derecho) => {
+          return await api
+            .post("/peticiones/add-item", {
+              peticionId: id,
+              derechoId: derecho,
+            })
+            .then((response) => {
+              console.log("éxito de derecho", response);
+            })
+            .catch((error) => {
+              console.error("Error en la solicitud DERECHO", error);
+            });
+        })
+      );
+
+      console.log("Cambios guardados con éxito");
+      setIsOpenModal(false);
+      navigate("/dashboard-pqrsf", { replace: true });
+    } catch (error) {
+      console.error("Error en la solicitud PATCH", error);
+    } finally {
+      setLoading(false); // Desactivar el indicador de carga, ya sea éxito o error
+    }
   };
 
   return (
@@ -843,6 +849,7 @@ function Management() {
                 Regresar
               </button>
             </div>
+            {loading && <CircularProgress />}
           </div>
         </div>
       )}

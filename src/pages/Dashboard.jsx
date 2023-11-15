@@ -121,7 +121,10 @@ function Dashboard() {
       headerName: "Fecha Envio Responsable",
       width: 180,
       valueGetter: (params) => {
-        const fechaEnvio = new Date(params.row.fechaEnvioResponsableArea);
+        const fechaEnvio = params.row.fechaEnvioResponsableArea
+          ? new Date(params.row.fechaEnvioResponsableArea)
+          : null;
+
         return fechaEnvio;
       },
     },
@@ -131,7 +134,9 @@ function Dashboard() {
       headerName: "Fecha Vencimiento",
       width: 140,
       valueGetter: (params) => {
-        const dueDate = new Date(params.row.dueDate);
+        const dueDate = params.row.dueDate
+          ? new Date(params.row.dueDate)
+          : null;
         return dueDate;
       },
     },
@@ -185,6 +190,7 @@ function Dashboard() {
     },
   ];
 
+  console.log(peticiones);
   return (
     <>
       <div className="container dashboard-container">
@@ -230,11 +236,7 @@ function Dashboard() {
 }
 
 function CustomToolbar() {
-  return (
-    <GridToolbar
-      style={{ fontSize: "1.8rem" }} // Cambia el tamaño de letra de la barra de herramientas
-    />
-  );
+  return <GridToolbar />;
 }
 
 export { Dashboard };
