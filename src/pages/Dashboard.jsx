@@ -211,11 +211,9 @@ function Dashboard() {
           }}
         >
           <DataGrid
-            // No es necesario aplicar estilos para width aquí, ya que se adaptará al ancho del contenedor.
             rows={peticiones}
             columns={columns}
             autoHeight
-            // showToolbar
             slots={{ toolbar: CustomToolbar }}
             style={{ fontSize: "1.6rem" }}
             initialState={{
@@ -225,9 +223,20 @@ function Dashboard() {
                 },
               },
               pagination: { paginationModel: { pageSize: 25 } },
+              sorting: {
+                sortModel: [
+                  {
+                    field: "id",
+                    sort: "desc",
+                  },
+                  // {
+                  //   field: "fechaRecepcion",
+                  //   sort: "desc",
+                  // },
+                ],
+              },
             }}
-            // autoPageSize // Esto permite que el DataGrid se ajuste automáticamente al ancho del contenedor.
-            disableExtendRowFullWidth // Evita que la fila se extienda al ancho total de la pantalla.
+            disableExtendRowFullWidth
           />
         </div>
       </div>

@@ -660,11 +660,7 @@ function Write() {
           {tutelaOpen && (
             <div className="input-box form__input">
               <label>Radicado de la tutela</label>
-              <input
-                className="input"
-                type="number"
-                {...register("radicadoTutela", {})}
-              />
+              <input className="input" {...register("radicadoTutela", {})} />
             </div>
           )}
 
@@ -726,10 +722,11 @@ function Write() {
               defaultValue={today}
               {...register("fechaDiligencia", {
                 validate: (value) => {
-                  if (value < today) {
+                  if (value < today && value) {
                     return "La fecha debe ser posterior o igual al día de hoy";
+                  } else {
+                    return true;
                   }
-                  return true;
                 },
               })}
             />
