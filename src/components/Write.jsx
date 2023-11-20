@@ -19,11 +19,18 @@ function Write() {
   const today = new Date().toISOString().split("T")[0];
   const departamentoSelected = watch("paciente.departamentoId") || 0;
   const epsSelected = watch("paciente.epsId");
+  // const epsSelected = watch("paciente.epsId");
+
+  const [isDisabledNumeroIdPeticionario, setIsDisabledNumeroIdPeticionario] =
+    useState(false);
+
+  const [isDisabledNumeroIdPaciente, setIsDisabledNumeroIdPaciente] =
+    useState(false);
+
+  const REGIMEN_NA = 5;
 
   const changeRegimen = () => {
     if (epsSelected === 15) {
-      const REGIMEN_NA = 1;
-
       setValue("paciente.regimenId", REGIMEN_NA);
       setIsDisable(true);
     } else {
@@ -31,6 +38,25 @@ function Write() {
       setValue("paciente.regimenId", null);
     }
   };
+
+  const changeDisableTipoIdPeticionario = (value) => {
+    console.log(value);
+    if (TIPOS_NA.includes(value)) {
+      setIsDisabledNumeroIdPeticionario(true);
+    } else {
+      setIsDisabledNumeroIdPeticionario(false);
+    }
+  };
+
+  const changeDisableTipoIdPaciente = (value) => {
+    console.log(value);
+    if (TIPOS_NA.includes(value)) {
+      setIsDisabledNumeroIdPaciente(true);
+    } else {
+      setIsDisabledNumeroIdPaciente(false);
+    }
+  };
+  const TIPOS_NA = ["AS", "MS", "NA"];
   //   Traer las opciones para los distintos selects
 
   const [peticionWrite, setPeticionWrite] = useState(null);
@@ -145,12 +171,19 @@ function Write() {
     data.seDioRespuesta = Boolean(data.seDioRespuesta);
 
     console.log(data);
-    if (!data.peticionario?.id) {
+    if (!data.peticionario?.tipoId) {
       delete data.peticionario;
     }
-    if (!data.paciente?.id) {
+    if (!data.paciente?.tipoId) {
       delete data.paciente;
     }
+
+    if (TIPOS_NA.includes(data.peticionario?.tipoId))
+      data.peticionario.id = "NA";
+
+    if (TIPOS_NA.includes(data.paciente?.tipoId)) data.paciente.id = "NA";
+
+    if (data.paciente?.epsId === 15) data.paciente.regimenId = REGIMEN_NA;
 
     delete data.derechos;
 
@@ -185,8 +218,6 @@ function Write() {
         .catch((error) => {
           console.error("Error en la solicitud POST", error);
         });
-
-      console.log(id);
 
       await Promise.all(
         derechosSelected.map(async (derecho) => {
@@ -248,6 +279,7 @@ function Write() {
             <label>Tipo identificación</label>
             <select
               className="input"
+              onClick={(e) => changeDisableTipoIdPeticionario(e.target.value)}
               {...register("peticionario.tipoId", {
                 required: {
                   value: isPeticionarioRequiere,
@@ -286,6 +318,7 @@ function Write() {
                   value: /^(\d+|[a-zA-Z0-9]+)$/, // Patrón que permite alfanuméricos
                   message: "Ingresa solo números o caracteres alfanuméricos",
                 },
+                disabled: isDisabledNumeroIdPeticionario,
                 validate: (v) => {
                   if (v != null && v != "") setIsPeticionarioRequiere(true);
                 },
@@ -399,6 +432,7 @@ function Write() {
             <label>Tipo de identificación</label>
             <select
               className="input"
+              onClick={(e) => changeDisableTipoIdPaciente(e.target.value)}
               {...register("paciente.tipoId", {
                 required: {
                   value: isPacienteRequiere,
@@ -437,6 +471,7 @@ function Write() {
                   value: /^(\d+|[a-zA-Z0-9]+)$/, // Patrón que permite alfanuméricos
                   message: "Ingresa solo números o caracteres alfanuméricos",
                 },
+                disabled: isDisabledNumeroIdPaciente,
                 validate: (v) => {
                   if (v != null && v != "") setIsPacienteRequiere(true);
                 },
@@ -715,7 +750,7 @@ function Write() {
 
           {/* fechaDiligencia:"2023-10-19T00:00:00.000Z" */}
           <div className="input-box form__input">
-            <label>Fecha de diligencia de la solicitud</label>
+            <label>Fecha de recepción por Atención al Usuario</label>
             <input
               className="input"
               type="date"

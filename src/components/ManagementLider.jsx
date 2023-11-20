@@ -550,7 +550,7 @@ function ManagementLider() {
           </div>
 
           <div className="input-box form__input">
-            <label>Fecha de diligencia de la solicitud</label>
+            <label>Fecha de recepción por Atención al Usuario</label>
             <input
               className="input"
               type="date"
