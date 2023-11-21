@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
-import api from "../service/api";
+
 import { useAuth } from "../hooks/useAuth";
+import api from "../service/api";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -17,44 +18,44 @@ function Dashboard() {
   const [tipoPeticionOptions, setTipoPeticionOptions] = useState([]);
   const [peticiones, setPeticiones] = useState([]);
 
-  const endpoint =
-    user.role === "atencion" ? "/pqrsf" : "profile/mis-peticiones";
-
-  const fetchData = async () => {
-    await api
-      .get(endpoint)
-      .then((response) => response.data)
-      .then((data) => setPeticiones(data))
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-
-    await api
-      .get("referencias/estados")
-      .then((response) => response.data)
-      .then((data) => {
-        //     const options = data.map((opc) => opc?.nombre);
-        setEstadosOptions(data);
-      });
-
-    await api
-      .get("referencias/lideres")
-      .then((response) => response.data)
-      .then((data) => {
-        //     const options = data.map((opc) => opc?.nombre);
-        setLideresOptions(data);
-      });
-
-    await api
-      .get("referencias/tipos_peticion")
-      .then((response) => response.data)
-      .then((data) => {
-        //     const options = data.map((opc) => opc?.nombre);
-        setTipoPeticionOptions(data);
-      });
-  };
-
   useEffect(() => {
+    const fetchData = async () => {
+      const endpoint =
+        user.role === "atencion" ? "/pqrsf" : "profile/mis-peticiones";
+
+      await api
+        .get(endpoint)
+        .then((response) => response.data)
+        .then((data) => setPeticiones(data))
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+
+      await api
+        .get("referencias/estados")
+        .then((response) => response.data)
+        .then((data) => {
+          //     const options = data.map((opc) => opc?.nombre);
+          setEstadosOptions(data);
+        });
+
+      await api
+        .get("referencias/lideres")
+        .then((response) => response.data)
+        .then((data) => {
+          //     const options = data.map((opc) => opc?.nombre);
+          setLideresOptions(data);
+        });
+
+      await api
+        .get("referencias/tipos_peticion")
+        .then((response) => response.data)
+        .then((data) => {
+          //     const options = data.map((opc) => opc?.nombre);
+          setTipoPeticionOptions(data);
+        });
+    };
+
     fetchData();
     // eslint-disable-next-li ne react-hooks/exhaustive-deps
   }, []);
@@ -229,10 +230,6 @@ function Dashboard() {
                     field: "id",
                     sort: "desc",
                   },
-                  // {
-                  //   field: "fechaRecepcion",
-                  //   sort: "desc",
-                  // },
                 ],
               },
             }}

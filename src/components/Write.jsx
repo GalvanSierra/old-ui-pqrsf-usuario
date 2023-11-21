@@ -27,7 +27,52 @@ function Write() {
   const [isDisabledNumeroIdPaciente, setIsDisabledNumeroIdPaciente] =
     useState(false);
 
+  const [peticionWrite, setPeticionWrite] = useState(null);
+  const [tipoPeticionOptions, seTipoPeticionOptions] = useState([]);
+  const [epsOption, setEpsOption] = useState([]);
+  const [regimenOption, setRegimenOption] = useState([]);
+  const [tipoIdOptions, setTipoIdOptions] = useState([]);
+  const [departamentoOptions, setDepartamentoOptions] = useState([]);
+  const [municipioOptions, setMunicipioOptions] = useState([]);
+  const [areasOptions, setAreasOptions] = useState([]);
+  const [serviciosOptions, setServiciosOptions] = useState([]);
+  const [estadoOptions, setEstadoOptions] = useState([]);
+  const [clasePeticionOptions, setClasePeticionOptions] = useState([]);
+  const [complejidadOptions, setComplejidadOptions] = useState([]);
+  const [lideresOptions, setLideresOptions] = useState([]);
+  const [calidadOptions, setCalidadOptions] = useState([]);
+  const [canalOptions, setCanalOptions] = useState([]);
+  const [derechosOptions, setDerechosOptions] = useState([]);
+  const [derechosSelected, setDerechosSelected] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [isPeticionarioRequiere, setIsPeticionarioRequiere] = useState(false);
+  const [isPacienteRequiere, setIsPacienteRequiere] = useState(false);
+  const [isDisable, setIsDisable] = useState(false);
+  const [tutelaOpen, setTutelaOpen] = useState(false);
+  const [isOpenModalSuccess, setIsOpenModalSuccess] = useState(false);
+  const [identificador, setIdentificador] = useState(false);
+  const [isOpenModalConfirm, setIsOpenModalConfirm] = useState(false);
+
+  console.log(derechosSelected);
   const REGIMEN_NA = 5;
+  const TIPOS_NA = ["AS", "MS", "NA"];
+
+  const urls = {
+    tipoPeticion: "/referencias/tipos_peticion",
+    eps: "referencias/eps",
+    regimen: "referencias/regimenes",
+    tipoId: `/referencias/tipos_identificacion`,
+    departamentos: `/referencias/departamentos`,
+    areas: "/referencias/areas",
+    servicios: "/referencias/servicios",
+    estado: `/referencias/estados`,
+    clasePeticion: `/referencias/clases_peticion`,
+    complejidad: `/referencias/complejidades`,
+    lideres: `/referencias/lideres`,
+    calidad: `/referencias/calidad`,
+    canales: "referencias/canales",
+    derechos: "/referencias/derechos_paciente",
+  };
 
   const changeRegimen = () => {
     if (epsSelected === 15) {
@@ -56,46 +101,7 @@ function Write() {
       setIsDisabledNumeroIdPaciente(false);
     }
   };
-  const TIPOS_NA = ["AS", "MS", "NA"];
   //   Traer las opciones para los distintos selects
-
-  const [peticionWrite, setPeticionWrite] = useState(null);
-
-  const [tipoPeticionOptions, seTipoPeticionOptions] = useState([]);
-  const [epsOption, setEpsOption] = useState([]);
-  const [regimenOption, setRegimenOption] = useState([]);
-  const [tipoIdOptions, setTipoIdOptions] = useState([]);
-  const [departamentoOptions, setDepartamentoOptions] = useState([]);
-  const [municipioOptions, setMunicipioOptions] = useState([]);
-  const [areasOptions, setAreasOptions] = useState([]);
-  const [serviciosOptions, setServiciosOptions] = useState([]);
-  const [estadoOptions, setEstadoOptions] = useState([]);
-  const [clasePeticionOptions, setClasePeticionOptions] = useState([]);
-  const [complejidadOptions, setComplejidadOptions] = useState([]);
-  const [lideresOptions, setLideresOptions] = useState([]);
-  const [calidadOptions, setCalidadOptions] = useState([]);
-  const [canalOptions, setCanalOptions] = useState([]);
-  const [derechosOptions, setDerechosOptions] = useState([]);
-  const [derechosSelected, setDerechosSelected] = useState([]);
-
-  const [loading, setLoading] = useState(false);
-
-  const urls = {
-    tipoPeticion: "/referencias/tipos_peticion",
-    eps: "referencias/eps",
-    regimen: "referencias/regimenes",
-    tipoId: `/referencias/tipos_identificacion`,
-    departamentos: `/referencias/departamentos`,
-    areas: "/referencias/areas",
-    servicios: "/referencias/servicios",
-    estado: `/referencias/estados`,
-    clasePeticion: `/referencias/clases_peticion`,
-    complejidad: `/referencias/complejidades`,
-    lideres: `/referencias/lideres`,
-    calidad: `/referencias/calidad`,
-    canales: "referencias/canales",
-    derechos: "/referencias/derechos_paciente",
-  };
 
   const fetchDataReference = async (url) => {
     const response = await api.get(url).then((response) => response.data);
@@ -107,43 +113,8 @@ function Write() {
     const municipios = await fetchDataReference(
       `referencias/departamentos/${departamentoSelected}/municipios`
     );
-
     setMunicipioOptions(municipios);
   };
-
-  const fetchSelectedOptions = async (apiReferences) => {
-    const urls = Object.values(apiReferences);
-    const names = Object.keys(apiReferences);
-
-    Promise.all(urls.map(fetchDataReference)).then((results) => {
-      const referenceData = {};
-      results.forEach((result, index) => {
-        referenceData[names[index]] = result;
-      });
-
-      seTipoPeticionOptions(referenceData.tipoPeticion);
-      setTipoIdOptions(referenceData.tipoId);
-      setEpsOption(referenceData.eps);
-      setRegimenOption(referenceData.regimen);
-      setDepartamentoOptions(referenceData.departamentos);
-      setAreasOptions(referenceData.areas);
-      setServiciosOptions(referenceData.servicios);
-      setEstadoOptions(referenceData.estado);
-      setClasePeticionOptions(referenceData.clasePeticion);
-      setComplejidadOptions(referenceData.complejidad);
-      setLideresOptions(referenceData.lideres);
-      setCalidadOptions(referenceData.calidad);
-      setCanalOptions(referenceData.canales);
-      setDerechosOptions(referenceData.derechos);
-    });
-  };
-
-  const [isPeticionarioRequiere, setIsPeticionarioRequiere] = useState(false);
-  const [isPacienteRequiere, setIsPacienteRequiere] = useState(false);
-  const [isDisable, setIsDisable] = useState(false);
-  const [tutelaOpen, setTutelaOpen] = useState(false);
-  const [isOpenModalSuccess, setIsOpenModalSuccess] = useState(false);
-  const [identificador, setIdentificador] = useState(false);
 
   const openTutelaModal = () => {
     setTutelaOpen(true);
@@ -154,7 +125,35 @@ function Write() {
   };
 
   useEffect(() => {
+    const fetchSelectedOptions = async (apiReferences) => {
+      const urls = Object.values(apiReferences);
+      const names = Object.keys(apiReferences);
+
+      Promise.all(urls.map(fetchDataReference)).then((results) => {
+        const referenceData = {};
+        results.forEach((result, index) => {
+          referenceData[names[index]] = result;
+        });
+        seTipoPeticionOptions(referenceData.tipoPeticion);
+        setTipoIdOptions(referenceData.tipoId);
+        setEpsOption(referenceData.eps);
+        setRegimenOption(referenceData.regimen);
+        setDepartamentoOptions(referenceData.departamentos);
+        setAreasOptions(referenceData.areas);
+        setServiciosOptions(referenceData.servicios);
+        setEstadoOptions(referenceData.estado);
+        setClasePeticionOptions(referenceData.clasePeticion);
+        setComplejidadOptions(referenceData.complejidad);
+        setLideresOptions(referenceData.lideres);
+        setCalidadOptions(referenceData.calidad);
+        setCanalOptions(referenceData.canales);
+        setDerechosOptions(referenceData.derechos);
+      });
+    };
+
     fetchSelectedOptions(urls);
+
+    setDerechosSelected([]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -243,8 +242,6 @@ function Write() {
       setLoading(false); // Desactivar el indicador de carga, ya sea éxito o error
     }
   };
-
-  const [isOpenModalConfirm, setIsOpenModalConfirm] = useState(false);
 
   return (
     <div className="container container-form">
@@ -729,7 +726,7 @@ function Write() {
 
           {/* seGestiono:false */}
           <div className="input-box form__input">
-            <label>¿Se va a gestionar?</label>
+            <label>¿Se va a radicar?</label>
             <div>
               <input
                 className="input--radio"
@@ -916,7 +913,7 @@ function Write() {
                 valueAsNumber: true,
               })}
             >
-              <option defaultValue={true} hidden={true} value=""></option>
+              <option defaultValue={true} value=""></option>
               {calidadOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
@@ -930,10 +927,10 @@ function Write() {
               multiple
               className="input--multi-select"
               {...register("derechos")}
-              value={derechosSelected}
               onChange={(e) => {
                 const selectedValues = Array.from(e.target.selectedOptions).map(
                   (option) => {
+                    if (!option.value) return null;
                     return option.value;
                   }
                 );

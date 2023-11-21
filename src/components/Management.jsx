@@ -604,7 +604,7 @@ function Management() {
           </div>
 
           <div className="input-box form__input">
-            <label>¿Se va a gestionar?</label>
+            <label>¿Se va a radicar?</label>
             <div>
               <input
                 className="input--radio"
@@ -760,7 +760,7 @@ function Management() {
                 disabled: isDonePeticion,
               })}
             >
-              <option defaultValue={true} hidden={true} value=""></option>
+              <option defaultValue={true} value=""></option>
               {calidadOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}

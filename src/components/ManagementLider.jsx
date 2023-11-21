@@ -534,22 +534,6 @@ function ManagementLider() {
           </div>
 
           <div className="input-box form__input">
-            <label>Canal de recepción</label>
-            <select
-              className="input"
-              {...register("canalId", {
-                disabled: true,
-              })}
-            >
-              {canalOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="input-box form__input">
             <label>Fecha de recepción por Atención al Usuario</label>
             <input
               className="input"
@@ -573,31 +557,23 @@ function ManagementLider() {
           </div>
 
           <div className="input-box form__input">
-            <label>Estado de la solicitud</label>
+            <label>Canal de recepción</label>
             <select
               className="input"
-              {...register("estadoId", {
-                valueAsNumber: true,
-                required: "Campo requerido",
-                disabled: isCompleted,
+              {...register("canalId", {
+                disabled: true,
               })}
             >
-              <option defaultValue={true} hidden={true} value=""></option>
-              {estadoOptions.map(({ id, nombre }) => (
+              {canalOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
                 </option>
               ))}
             </select>
-            {errors.estadoId && (
-              <p role="alert" className="alert">
-                {errors.estadoId.message}
-              </p>
-            )}
           </div>
 
           <div className="input-box form__input">
-            <label>¿Se va a gestionar?</label>
+            <label>¿Se va a radicar?</label>
             <div>
               <input
                 className="input--radio"
@@ -674,6 +650,30 @@ function ManagementLider() {
                 </option>
               ))}
             </select>
+          </div>
+
+          <div className="input-box form__input">
+            <label>Estado de la solicitud</label>
+            <select
+              className="input"
+              {...register("estadoId", {
+                valueAsNumber: true,
+                required: "Campo requerido",
+                disabled: isCompleted,
+              })}
+            >
+              <option defaultValue={true} hidden={true} value=""></option>
+              {estadoOptions.map(({ id, nombre }) => (
+                <option key={id} value={id}>
+                  {nombre}
+                </option>
+              ))}
+            </select>
+            {errors.estadoId && (
+              <p role="alert" className="alert">
+                {errors.estadoId.message}
+              </p>
+            )}
           </div>
 
           <div className="input-box form__input--textarea">
@@ -763,14 +763,14 @@ function ManagementLider() {
           </div>
 
           <div className="input-box form__input--textarea">
-            <label>Derechos del paciente</label>
+            <label>Derechos del paciente: </label>
             <select
+              hidden
               multiple
               className="input--multi-select"
               {...register("derechos", {
                 disabled: isDisabled || isCompleted,
               })}
-              value={derechosSelected}
               onChange={(e) => {
                 const selectedValues = Array.from(e.target.selectedOptions).map(
                   (option) => {
