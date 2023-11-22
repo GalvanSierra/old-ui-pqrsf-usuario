@@ -244,7 +244,7 @@ function ManagementLider() {
 
   return (
     <div className="container form-container">
-      <h2>Tipo: Lider {peticionData?.tipoPeticion.nombre}</h2>
+      <h2>Tipo: {peticionData?.tipoPeticion.nombre}</h2>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="input-box form__input">
@@ -687,7 +687,7 @@ function ManagementLider() {
           </div>
 
           <div className="input-box form__input">
-            <label>¿Se dio respuesta?</label>
+            <label>¿Se dio respuesta al usuario?</label>
             <div>
               <input
                 className="input--radio"

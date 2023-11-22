@@ -694,7 +694,7 @@ function Management() {
           </div>
 
           <div className="input-box form__input">
-            <label>¿Se dio respuesta?</label>
+            <label>¿Se dio respuesta al usuario?</label>
             <div>
               <input
                 className="input--radio"
