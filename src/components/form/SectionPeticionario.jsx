@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import { useOptions } from "../useOptions";
 
 /* eslint-disable react/prop-types */
-const SectionPeticionario = ({ form }) => {
+const SectionPeticionario = ({
+  form,
+  data: peticionario,
+  options: isDisableSection,
+}) => {
   const {
     watch,
     setValue,
@@ -17,6 +21,15 @@ const SectionPeticionario = ({ form }) => {
 
   const tipoIdSelected = watch("peticionario.tipoId");
   const id = watch("peticionario.id");
+
+  useEffect(() => {
+    setValue("peticionario.tipoId", peticionario?.tipoId);
+    setValue("peticionario.id", peticionario?.id);
+    setValue("peticionario.nombre", peticionario?.nombre);
+    setValue("peticionario.apellido", peticionario?.apellido);
+    setValue("peticionario.telefono", peticionario?.telefono);
+    setValue("peticionario.email", peticionario?.email);
+  }, [peticionario, setValue]);
 
   useEffect(() => {
     const TIPOS_NA = ["AS", "MS", "NA"];
@@ -47,6 +60,7 @@ const SectionPeticionario = ({ form }) => {
               value: isRequired,
               message: "Campo requerido",
             },
+            disabled: isDisableSection,
           })}
         >
           <option defaultValue={true} value=""></option>
@@ -73,6 +87,7 @@ const SectionPeticionario = ({ form }) => {
               value: isRequired,
               message: "Campo requerido",
             },
+            disabled: isDisableSection,
             pattern: {
               value: /^(\d+|[a-zA-Z0-9]+)$/,
               message: "Ingresa solo números o caracteres alfanuméricos",
@@ -96,6 +111,7 @@ const SectionPeticionario = ({ form }) => {
               value: isRequired,
               message: "Campo requerido",
             },
+            disabled: isDisableSection,
           })}
         />
         {errors.peticionario?.nombre && (
@@ -115,6 +131,7 @@ const SectionPeticionario = ({ form }) => {
               value: isRequired,
               message: "Campo requerido",
             },
+            disabled: isDisableSection,
           })}
         />
         {errors.peticionario?.apellido && (
@@ -146,6 +163,7 @@ const SectionPeticionario = ({ form }) => {
               value: isRequired,
               message: "Campo requerido",
             },
+            disabled: isDisableSection,
           })}
         />
         {errors.peticionario?.telefono && (
@@ -170,6 +188,7 @@ const SectionPeticionario = ({ form }) => {
               message:
                 "Por favor, ingresa una dirección de correo electrónico válida",
             },
+            disabled: isDisableSection,
           })}
         />
         {errors.peticionario?.email && (

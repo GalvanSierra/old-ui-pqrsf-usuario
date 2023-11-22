@@ -7,7 +7,7 @@ import { CircularProgress } from "@mui/material";
 import { useOptions } from "./useOptions";
 import { SectionPeticionario } from "./form/SectionPeticionario";
 import { SectionPaciente } from "./form/SectionPaciente";
-import { SectionInformacionPeticion } from "./form/SectionInformacionPeticion";
+import { SectionInformacion } from "./form/SectionInformacion";
 import { SectionGestion } from "./form/SectionGestion";
 
 import api from "../service/api";
@@ -127,7 +127,7 @@ function Write() {
 
         <SectionPaciente form={form} />
 
-        <SectionInformacionPeticion form={form} />
+        <SectionInformacion form={form} />
 
         <SectionGestion
           form={form}

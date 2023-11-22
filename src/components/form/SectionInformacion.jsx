@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useOptions } from "../useOptions";
 
 /* eslint-disable react/prop-types */
-const SectionInformacionPeticion = ({ form }) => {
+const SectionInformacion = ({
+  form,
+  data: peticion,
+  options: isDisableSection,
+}) => {
   const {
+    setValue,
     register,
     formState: { errors },
   } = form;
@@ -15,6 +20,15 @@ const SectionInformacionPeticion = ({ form }) => {
   const openTutelaModal = () => setTutelaOpen(true);
   const closeTutelaModal = () => setTutelaOpen(false);
 
+  useEffect(() => {
+    setValue("areaId", peticion?.areaId);
+    setValue("servicioId", peticion?.servicioId);
+    setValue("dirigidaA", peticion?.dirigidaA);
+    setValue("tutela", peticion?.tutela ? "1" : "0");
+    setValue("radicadoTutela", peticion?.radicadoTutela);
+    setValue("motivo", peticion?.motivo);
+  }, [peticion, setValue]);
+
   return (
     <fieldset>
       <legend>información de la Petición</legend>
@@ -25,6 +39,7 @@ const SectionInformacionPeticion = ({ form }) => {
           {...register("areaId", {
             valueAsNumber: true,
             required: "Campo requerido",
+            disabled: isDisableSection,
           })}
         >
           <option defaultValue={true} hidden={true} value=""></option>
@@ -48,6 +63,7 @@ const SectionInformacionPeticion = ({ form }) => {
           {...register("servicioId", {
             valueAsNumber: true,
             required: "Campo requerido",
+            disabled: isDisableSection,
           })}
         >
           <option defaultValue={true} hidden={true} value=""></option>
@@ -71,6 +87,7 @@ const SectionInformacionPeticion = ({ form }) => {
           type="text"
           {...register("dirigidaA", {
             required: "Campo requerido",
+            disabled: isDisableSection,
           })}
         />
         {errors.dirigidaA && (
@@ -87,7 +104,10 @@ const SectionInformacionPeticion = ({ form }) => {
             className="input--radio"
             type="radio"
             value="1"
-            {...register("tutela", { valueAsNumber: true })}
+            {...register("tutela", {
+              valueAsNumber: true,
+              disabled: isDisableSection,
+            })}
             onClick={openTutelaModal}
           />
           <label>Si</label>
@@ -95,7 +115,10 @@ const SectionInformacionPeticion = ({ form }) => {
             className="input--radio"
             type="radio"
             value="0"
-            {...register("tutela", { valueAsNumber: true })}
+            {...register("tutela", {
+              valueAsNumber: true,
+              disabled: isDisableSection,
+            })}
             onClick={closeTutelaModal}
           />
           <label>No</label>
@@ -105,7 +128,12 @@ const SectionInformacionPeticion = ({ form }) => {
       {tutelaOpen && (
         <div className="input-box form__input">
           <label>Radicado de la tutela</label>
-          <input className="input" {...register("radicadoTutela", {})} />
+          <input
+            className="input"
+            {...register("radicadoTutela", {
+              disabled: isDisableSection,
+            })}
+          />
         </div>
       )}
 
@@ -115,6 +143,7 @@ const SectionInformacionPeticion = ({ form }) => {
           className="input"
           {...register("motivo", {
             required: "Campo requerido",
+            disabled: isDisableSection,
           })}
         ></textarea>
         {errors.motivo && (
@@ -127,4 +156,4 @@ const SectionInformacionPeticion = ({ form }) => {
   );
 };
 
-export { SectionInformacionPeticion };
+export { SectionInformacion };

@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import { useOptions } from "../useOptions";
 
 /* eslint-disable react/prop-types */
-const SectionPaciente = ({ form }) => {
+const SectionPaciente = ({
+  form,
+  data: paciente,
+  options: isDisableSection,
+}) => {
   const {
     watch,
     setValue,
@@ -25,6 +29,17 @@ const SectionPaciente = ({ form }) => {
   const tipoIdSelected = watch("paciente.tipoId");
   const id = watch("paciente.id");
   const epsSelected = watch("paciente.epsId");
+
+  useEffect(() => {
+    setValue("paciente.tipoId", paciente?.tipoId);
+    setValue("paciente.id", paciente?.id);
+    setValue("paciente.nombre", paciente?.nombre);
+    setValue("paciente.apellido", paciente?.apellido);
+    setValue("paciente.epsId", paciente?.epsId);
+    setValue("paciente.regimenId", paciente?.regimenId);
+    setValue("paciente.departamentoId", paciente?.departamentoId);
+    setValue("paciente.municipioId", paciente?.municipioId);
+  }, [paciente, setValue]);
 
   useEffect(() => {
     const TIPOS_NA = ["AS", "MS", "NA"];
@@ -68,6 +83,7 @@ const SectionPaciente = ({ form }) => {
               value: isRequired,
               message: "Campo requerido",
             },
+            disabled: isDisableSection,
           })}
         >
           <option defaultValue={true} value=""></option>
@@ -94,6 +110,7 @@ const SectionPaciente = ({ form }) => {
               value: isRequired,
               message: "Campo requerido",
             },
+            disabled: isDisableSection,
             pattern: {
               value: /^(\d+|[a-zA-Z0-9]+)$/,
               message: "Ingresa solo números o caracteres alfanuméricos",
@@ -112,6 +129,7 @@ const SectionPaciente = ({ form }) => {
               value: isRequired,
               message: "Campo requerido",
             },
+            disabled: isDisableSection,
           })}
         />
         {errors.paciente?.nombre && (
@@ -131,6 +149,7 @@ const SectionPaciente = ({ form }) => {
               value: isRequired,
               message: "Campo requerido",
             },
+            disabled: isDisableSection,
           })}
         />
         {errors.paciente?.apellido && (
@@ -150,6 +169,7 @@ const SectionPaciente = ({ form }) => {
               value: isRequired,
               message: "Campo requerido",
             },
+            disabled: isDisableSection,
           })}
         >
           <option defaultValue={true} value=""></option>
@@ -177,6 +197,7 @@ const SectionPaciente = ({ form }) => {
               value: isRequired,
               message: "Campo requerido",
             },
+            disabled: isDisableSection,
           })}
         >
           {regimenOptions.map(({ id, nombre }) => (
@@ -199,6 +220,7 @@ const SectionPaciente = ({ form }) => {
           className="input"
           {...register("paciente.departamentoId", {
             valueAsNumber: true,
+            disabled: isDisableSection,
           })}
         >
           <option defaultValue={true} value=""></option>
@@ -216,6 +238,7 @@ const SectionPaciente = ({ form }) => {
           className="input"
           {...register("paciente.municipioId", {
             valueAsNumber: true,
+            disabled: isDisableSection,
           })}
         >
           <option defaultValue={true} value=""></option>

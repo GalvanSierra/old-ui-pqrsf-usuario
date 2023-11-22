@@ -1,9 +1,18 @@
+import { useEffect, useState } from "react";
 import { useOptions } from "../useOptions";
 
 /* eslint-disable react/prop-types */
-const SectionGestion = ({ form, derechos }) => {
-  const { register } = form;
+const SectionGestion = ({
+  form,
+  data: peticion,
+  derechos,
+  options: isDisableSection,
+}) => {
+  const { register, setValue } = form;
+
   const [derechosSelected, setDerechosSelected] = derechos;
+  const [isResponded, setIsResponded] = useState(false);
+  const [isDone, setIsDone] = useState(true);
 
   const { options: estadoOptions } = useOptions("/estados");
   const { options: clasePeticionOptions } = useOptions("/clases_peticion");
@@ -15,9 +24,44 @@ const SectionGestion = ({ form, derechos }) => {
 
   const currentDate = new Date().toISOString().split("T")[0];
 
+  const convertISOToDate = (isoDate) => {
+    if (!isoDate) return;
+    const date = new Date(isoDate);
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const year = date.getFullYear();
+    return `${year}-${month}-${day}`;
+  };
+
+  useEffect(() => {
+    setValue("fechaRecepcion", convertISOToDate(peticion?.fechaRecepcion));
+    setValue("seGestiono", peticion?.seGestiono ? "1" : "0");
+    setValue("fechaDiligencia", convertISOToDate(peticion?.fechaDiligencia));
+    setValue("estadoId", peticion?.estadoId);
+    setValue("canalId", peticion?.canalId);
+    setValue("clasePeticionId", peticion?.clasePeticionId);
+    setValue("complejidadId", peticion?.complejidadId);
+    setValue("dueDate", peticion?.dueDate);
+    setValue("liderId", peticion?.liderId);
+    setValue("derechos", peticion?.derechos);
+    setValue("respuesta", peticion?.respuesta);
+    setValue("seDioRespuesta", peticion?.seDioRespuesta ? "1" : "0");
+    setValue("fechaRespuesta", convertISOToDate(peticion?.fechaRespuesta));
+    setValue("descripcionGestion", peticion?.descripcionGestion);
+    setValue("calidadId", peticion?.calidadId);
+    setValue("nota", peticion?.nota);
+
+    const STATES_DONE = [5, 6];
+    if (STATES_DONE.includes(peticion?.estadoId)) setIsDone(true);
+
+    const STATES_RESPONDED = [4];
+    if (STATES_RESPONDED.includes(peticion?.estadoId)) setIsResponded(true);
+  }, [peticion, setValue]);
+
   return (
     <fieldset>
       <legend>Gestión de la solicitud</legend>
+
       <div className="input-box form__input">
         <label>¿Se va a radicar?</label>
         <div>
@@ -25,17 +69,50 @@ const SectionGestion = ({ form, derechos }) => {
             className="input--radio"
             type="radio"
             value="1"
-            {...register("seGestiono", { valueAsNumber: true })}
+            {...register("seGestiono", {
+              valueAsNumber: true,
+              disabled: isDone || isResponded,
+            })}
           />
           <label>Si</label>
           <input
             className="input--radio"
             type="radio"
             value="0"
-            {...register("seGestiono", { valueAsNumber: true })}
+            {...register("seGestiono", {
+              valueAsNumber: true,
+              disabled: isDone || isResponded,
+            })}
           />
           <label>No</label>
         </div>
+      </div>
+
+      <div className="input-box form__input">
+        <label>Canal de recepción</label>
+        <select
+          className="input"
+          {...register("canalId", {
+            disabled: isDone || isDisableSection,
+          })}
+        >
+          {canalOptions.map(({ id, nombre }) => (
+            <option key={id} value={id}>
+              {nombre}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="input-box form__input">
+        <label>Fecha de Creación</label>
+        <input
+          className="input"
+          type="date"
+          {...register("fechaRecepcion", {
+            disabled: isDisableSection || isDone || isResponded,
+          })}
+        />
       </div>
 
       <div className="input-box form__input">
@@ -45,11 +122,12 @@ const SectionGestion = ({ form, derechos }) => {
           type="date"
           defaultValue={currentDate}
           {...register("fechaDiligencia", {
-            validate: (value) => {
-              return value < currentDate && value
-                ? "La fecha debe ser posterior o igual al día de hoy"
-                : true;
-            },
+            disabled: isDone,
+            // validate: (value) => {
+            //   return value < currentDate && value
+            //     ? "La fecha debe ser posterior o igual al día de hoy"
+            //     : true;
+            // },
           })}
         />
       </div>
@@ -60,6 +138,7 @@ const SectionGestion = ({ form, derechos }) => {
           className="input"
           {...register("estadoId", {
             valueAsNumber: true,
+            disabled: isDone,
           })}
         >
           <option defaultValue={true} hidden={true} value="1">
@@ -75,28 +154,12 @@ const SectionGestion = ({ form, derechos }) => {
       </div>
 
       <div className="input-box form__input">
-        <label>Canal de recepción</label>
-        <select
-          className="input"
-          {...register("canalId", {
-            valueAsNumber: true,
-          })}
-        >
-          <option defaultValue={true} hidden={true} value={5}></option>
-          {canalOptions.map(({ id, nombre }) => (
-            <option key={id} value={id}>
-              {nombre}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className="input-box form__input">
         <label>Clase de peticion</label>
         <select
           className="input"
           {...register("clasePeticionId", {
             valueAsNumber: true,
+            disabled: isDone || isResponded,
           })}
         >
           <option defaultValue={true} hidden={true} value=""></option>
@@ -114,6 +177,7 @@ const SectionGestion = ({ form, derechos }) => {
           className="input"
           {...register("complejidadId", {
             valueAsNumber: true,
+            disabled: isDone || isResponded,
           })}
         >
           <option defaultValue={true} hidden={true} value=""></option>
@@ -131,9 +195,10 @@ const SectionGestion = ({ form, derechos }) => {
           className="input"
           {...register("liderId", {
             valueAsNumber: true,
+            disabled: isDone || isResponded,
           })}
         >
-          <option defaultValue={true} hidden={true} value=""></option>
+          <option defaultValue={true} value=""></option>
           {liderOptions.map(({ id, cargo }) => (
             <option key={id} value={id}>
               {cargo}
@@ -144,7 +209,10 @@ const SectionGestion = ({ form, derechos }) => {
 
       <div className="input-box form__input--textarea">
         <label>Respuesta a solicitud</label>
-        <textarea className="input" {...register("respuesta", {})}></textarea>
+        <textarea
+          className="input"
+          {...register("respuesta", { disabled: isDone || isResponded })}
+        ></textarea>
       </div>
 
       <div className="input-box form__input">
@@ -154,14 +222,20 @@ const SectionGestion = ({ form, derechos }) => {
             className="input--radio"
             type="radio"
             value="1"
-            {...register("seDioRespuesta", { valueAsNumber: true })}
+            {...register("seDioRespuesta", {
+              valueAsNumber: true,
+              disabled: isDone,
+            })}
           />
           <label>Si</label>
           <input
             className="input--radio"
             type="radio"
             value="0"
-            {...register("seDioRespuesta", { valueAsNumber: true })}
+            {...register("seDioRespuesta", {
+              valueAsNumber: true,
+              disabled: isDone,
+            })}
           />
           <label>No</label>
         </div>
@@ -171,7 +245,7 @@ const SectionGestion = ({ form, derechos }) => {
         <label>Descripcion de la gestión</label>
         <textarea
           className="input"
-          {...register("descripcionGestion", {})}
+          {...register("descripcionGestion", { disabled: isDone })}
         ></textarea>
       </div>
 
@@ -186,6 +260,7 @@ const SectionGestion = ({ form, derechos }) => {
           className="input"
           {...register("calidadId", {
             valueAsNumber: true,
+            disabled: isDone,
           })}
         >
           <option defaultValue={true} value=""></option>
@@ -201,7 +276,8 @@ const SectionGestion = ({ form, derechos }) => {
         <select
           multiple
           className="input--multi-select"
-          {...register("derechos")}
+          hidden={isDone}
+          {...register("derechos", { disabled: isDone })}
           onChange={(e) => {
             const selectedValues = Array.from(e.target.selectedOptions).map(
               (option) => (!option.value ? null : option.value)
@@ -222,15 +298,15 @@ const SectionGestion = ({ form, derechos }) => {
             );
             return (
               <li className="derecho" key={selectedId}>
-                <strong>Derecho:</strong> {selectedDerecho.derecho}
+                <strong>Derecho:</strong> {selectedDerecho?.derecho}
                 <br />
-                <strong>Valor:</strong> {selectedDerecho.valor}
+                <strong>Valor:</strong> {selectedDerecho?.valor}
                 <br />
                 <strong>Deber:</strong>
-                {selectedDerecho.deber}
+                {selectedDerecho?.deber}
                 <br />
                 <strong>Interpretación:</strong>
-                {selectedDerecho.interpretacion}
+                {selectedDerecho?.interpretacion}
               </li>
             );
           })}
