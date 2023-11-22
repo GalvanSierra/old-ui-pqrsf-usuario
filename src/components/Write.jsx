@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
 
+import { useForm } from "react-hook-form";
 import { CircularProgress } from "@mui/material";
 
+import { useOptions } from "./useOptions";
 import api from "../service/api";
 
 function Write() {
-  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -16,66 +16,57 @@ function Write() {
     formState: { errors },
   } = useForm();
 
-  const today = new Date().toISOString().split("T")[0];
+  const navigate = useNavigate();
+
+  // cargar opciones de los selects
   const departamentoSelected = watch("paciente.departamentoId") || 0;
-  const epsSelected = watch("paciente.epsId");
-  // const epsSelected = watch("paciente.epsId");
+  const { options: tipoPeticionOptions } = useOptions("/tipos_peticion");
+  const { options: epsOptions } = useOptions("/eps");
+  const { options: regimenOptions } = useOptions("/regimenes");
+  const { options: tipoIdOptions } = useOptions("/tipos_identificacion");
+  const { options: areaOptions } = useOptions("/areas");
+  const { options: servicioOptions } = useOptions("/servicios");
+  const { options: estadoOptions } = useOptions("/estados");
+  const { options: clasePeticionOptions } = useOptions("/clases_peticion");
+  const { options: complejidadOptions } = useOptions("/complejidades");
+  const { options: liderOptions } = useOptions("/lideres");
+  const { options: calidadOptions } = useOptions("/calidad");
+  const { options: canalOptions } = useOptions("/canales");
+  const { options: derechoOptions } = useOptions("/derechos_paciente");
+  const { options: departamentoOptions } = useOptions("/departamentos");
+  const { options: municipioOptions } = useOptions(
+    `/departamentos/${departamentoSelected}/municipios`
+  );
 
-  const [isDisabledNumeroIdPeticionario, setIsDisabledNumeroIdPeticionario] =
-    useState(false);
+  // validaciones de peticionario
+  const [isPeticionarioRequiere, setIsPeticionarioRequiere] = useState(false);
+  const [isDisabledIdPet, setIsDisabledIdPet] = useState(false);
 
-  const [isDisabledNumeroIdPaciente, setIsDisabledNumeroIdPaciente] =
-    useState(false);
+  // validaciones de paciente
+  const [isPacienteRequiere, setIsPacienteRequiere] = useState(false);
+  const [isDisabledIdPaciente, setIsDisabledIdPaciente] = useState(false);
 
-  const [peticionWrite, setPeticionWrite] = useState(null);
-  const [tipoPeticionOptions, seTipoPeticionOptions] = useState([]);
-  const [epsOption, setEpsOption] = useState([]);
-  const [regimenOption, setRegimenOption] = useState([]);
-  const [tipoIdOptions, setTipoIdOptions] = useState([]);
-  const [departamentoOptions, setDepartamentoOptions] = useState([]);
-  const [municipioOptions, setMunicipioOptions] = useState([]);
-  const [areasOptions, setAreasOptions] = useState([]);
-  const [serviciosOptions, setServiciosOptions] = useState([]);
-  const [estadoOptions, setEstadoOptions] = useState([]);
-  const [clasePeticionOptions, setClasePeticionOptions] = useState([]);
-  const [complejidadOptions, setComplejidadOptions] = useState([]);
-  const [lideresOptions, setLideresOptions] = useState([]);
-  const [calidadOptions, setCalidadOptions] = useState([]);
-  const [canalOptions, setCanalOptions] = useState([]);
-  const [derechosOptions, setDerechosOptions] = useState([]);
+  const [tutelaOpen, setTutelaOpen] = useState(false);
+  const openTutelaModal = () => setTutelaOpen(true);
+  const closeTutelaModal = () => setTutelaOpen(false);
+
   const [derechosSelected, setDerechosSelected] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [isPeticionarioRequiere, setIsPeticionarioRequiere] = useState(false);
-  const [isPacienteRequiere, setIsPacienteRequiere] = useState(false);
+  const [peticionWrite, setPeticionWrite] = useState(null);
   const [isDisable, setIsDisable] = useState(false);
-  const [tutelaOpen, setTutelaOpen] = useState(false);
   const [isOpenModalSuccess, setIsOpenModalSuccess] = useState(false);
   const [identificador, setIdentificador] = useState(false);
   const [isOpenModalConfirm, setIsOpenModalConfirm] = useState(false);
 
-  console.log(derechosSelected);
   const REGIMEN_NA = 5;
+  const EPS_NA = 15;
   const TIPOS_NA = ["AS", "MS", "NA"];
 
-  const urls = {
-    tipoPeticion: "/referencias/tipos_peticion",
-    eps: "referencias/eps",
-    regimen: "referencias/regimenes",
-    tipoId: `/referencias/tipos_identificacion`,
-    departamentos: `/referencias/departamentos`,
-    areas: "/referencias/areas",
-    servicios: "/referencias/servicios",
-    estado: `/referencias/estados`,
-    clasePeticion: `/referencias/clases_peticion`,
-    complejidad: `/referencias/complejidades`,
-    lideres: `/referencias/lideres`,
-    calidad: `/referencias/calidad`,
-    canales: "referencias/canales",
-    derechos: "/referencias/derechos_paciente",
-  };
+  const currentDate = new Date().toISOString().split("T")[0];
+  const epsSelected = watch("paciente.epsId");
 
   const changeRegimen = () => {
-    if (epsSelected === 15) {
+    if (epsSelected === EPS_NA) {
       setValue("paciente.regimenId", REGIMEN_NA);
       setIsDisable(true);
     } else {
@@ -87,79 +78,20 @@ function Write() {
   const changeDisableTipoIdPeticionario = (value) => {
     console.log(value);
     if (TIPOS_NA.includes(value)) {
-      setIsDisabledNumeroIdPeticionario(true);
+      setIsDisabledIdPet(true);
     } else {
-      setIsDisabledNumeroIdPeticionario(false);
+      setIsDisabledIdPet(false);
     }
   };
 
   const changeDisableTipoIdPaciente = (value) => {
     console.log(value);
     if (TIPOS_NA.includes(value)) {
-      setIsDisabledNumeroIdPaciente(true);
+      setIsDisabledIdPaciente(true);
     } else {
-      setIsDisabledNumeroIdPaciente(false);
+      setIsDisabledIdPaciente(false);
     }
   };
-  //   Traer las opciones para los distintos selects
-
-  const fetchDataReference = async (url) => {
-    const response = await api.get(url).then((response) => response.data);
-    return response;
-  };
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const fetchMunicipiosByDepId = async () => {
-    const municipios = await fetchDataReference(
-      `referencias/departamentos/${departamentoSelected}/municipios`
-    );
-    setMunicipioOptions(municipios);
-  };
-
-  const openTutelaModal = () => {
-    setTutelaOpen(true);
-  };
-
-  const closeTutelaModal = () => {
-    setTutelaOpen(false);
-  };
-
-  useEffect(() => {
-    const fetchSelectedOptions = async (apiReferences) => {
-      const urls = Object.values(apiReferences);
-      const names = Object.keys(apiReferences);
-
-      Promise.all(urls.map(fetchDataReference)).then((results) => {
-        const referenceData = {};
-        results.forEach((result, index) => {
-          referenceData[names[index]] = result;
-        });
-        seTipoPeticionOptions(referenceData.tipoPeticion);
-        setTipoIdOptions(referenceData.tipoId);
-        setEpsOption(referenceData.eps);
-        setRegimenOption(referenceData.regimen);
-        setDepartamentoOptions(referenceData.departamentos);
-        setAreasOptions(referenceData.areas);
-        setServiciosOptions(referenceData.servicios);
-        setEstadoOptions(referenceData.estado);
-        setClasePeticionOptions(referenceData.clasePeticion);
-        setComplejidadOptions(referenceData.complejidad);
-        setLideresOptions(referenceData.lideres);
-        setCalidadOptions(referenceData.calidad);
-        setCanalOptions(referenceData.canales);
-        setDerechosOptions(referenceData.derechos);
-      });
-    };
-
-    fetchSelectedOptions(urls);
-
-    setDerechosSelected([]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    fetchMunicipiosByDepId();
-  }, [fetchMunicipiosByDepId]);
 
   const returnToDashboard = () => {
     navigate("/dashboard-pqrsf");
@@ -314,7 +246,7 @@ function Write() {
                   value: /^(\d+|[a-zA-Z0-9]+)$/, // Patrón que permite alfanuméricos
                   message: "Ingresa solo números o caracteres alfanuméricos",
                 },
-                disabled: isDisabledNumeroIdPeticionario,
+                disabled: isDisabledIdPet,
                 validate: (v) => {
                   if (v != null && v != "") setIsPeticionarioRequiere(true);
                 },
@@ -467,7 +399,7 @@ function Write() {
                   value: /^(\d+|[a-zA-Z0-9]+)$/, // Patrón que permite alfanuméricos
                   message: "Ingresa solo números o caracteres alfanuméricos",
                 },
-                disabled: isDisabledNumeroIdPaciente,
+                disabled: isDisabledIdPaciente,
                 validate: (v) => {
                   if (v != null && v != "") setIsPacienteRequiere(true);
                 },
@@ -527,7 +459,7 @@ function Write() {
               onClick={changeRegimen}
             >
               <option defaultValue={true} value=""></option>
-              {epsOption.map(({ id, nombre }) => (
+              {epsOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
                 </option>
@@ -553,7 +485,7 @@ function Write() {
                 disabled: isDisable,
               })}
             >
-              {regimenOption.map(({ id, nombre }) => (
+              {regimenOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
                 </option>
@@ -614,7 +546,7 @@ function Write() {
               })}
             >
               <option defaultValue={true} hidden={true} value=""></option>
-              {areasOptions.map(({ id, nombre }) => (
+              {areaOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
                 </option>
@@ -637,7 +569,7 @@ function Write() {
               })}
             >
               <option defaultValue={true} hidden={true} value=""></option>
-              {serviciosOptions.map(({ id, nombre }) => (
+              {servicioOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
                 </option>
@@ -713,17 +645,6 @@ function Write() {
 
         <fieldset>
           <legend>Gestión de la solicitud</legend>
-          {/* fechaRecepcion:"2023-10-04T14:42:34.312Z" */}
-          {/* <div className="input-box form__input">
-            <label>Fecha de recepción</label>
-            <input
-              className="input"
-              type="date"
-              {...register("fechaRecepcion", {})}
-            />
-          </div> */}
-
-          {/* seGestiono:false */}
           <div className="input-box form__input">
             <label>¿Se va a radicar?</label>
             <div>
@@ -744,16 +665,15 @@ function Write() {
             </div>
           </div>
 
-          {/* fechaDiligencia:"2023-10-19T00:00:00.000Z" */}
           <div className="input-box form__input">
             <label>Fecha de recepción por Atención al Usuario</label>
             <input
               className="input"
               type="date"
-              defaultValue={today}
+              defaultValue={currentDate}
               {...register("fechaDiligencia", {
                 validate: (value) => {
-                  if (value < today && value) {
+                  if (value < currentDate && value) {
                     return "La fecha debe ser posterior o igual al día de hoy";
                   } else {
                     return true;
@@ -763,7 +683,6 @@ function Write() {
             />
           </div>
 
-          {/* estadoId:1 */}
           <div className="input-box form__input">
             <label>Estado de la solicitud</label>
             <select
@@ -784,7 +703,6 @@ function Write() {
             </select>
           </div>
 
-          {/* canalId:5 */}
           <div className="input-box form__input">
             <label>Canal de recepción</label>
             <select
@@ -802,7 +720,6 @@ function Write() {
             </select>
           </div>
 
-          {/* clasePeticionId:1 */}
           <div className="input-box form__input">
             <label>Clase de peticion</label>
             <select
@@ -820,7 +737,6 @@ function Write() {
             </select>
           </div>
 
-          {/* complejidadId:1 */}
           <div className="input-box form__input">
             <label>Complejidad</label>
             <select
@@ -838,8 +754,6 @@ function Write() {
             </select>
           </div>
 
-          {/* dueDate:"2023-10-26T12:18:09.194Z" */}
-          {/* liderId:3 */}
           <div className="input-box form__input">
             <label>Lider a asignar</label>
             <select
@@ -849,7 +763,7 @@ function Write() {
               })}
             >
               <option defaultValue={true} hidden={true} value=""></option>
-              {lideresOptions.map(({ id, cargo }) => (
+              {liderOptions.map(({ id, cargo }) => (
                 <option key={id} value={id}>
                   {cargo}
                 </option>
@@ -857,8 +771,6 @@ function Write() {
             </select>
           </div>
 
-          {/* fechaEnvioResponsableArea:"2023-10-24" */}
-          {/* respuesta:"wqwqwqwqwqwqwqwqwq" */}
           <div className="input-box form__input--textarea">
             <label>Respuesta a solicitud</label>
             <textarea
@@ -867,7 +779,6 @@ function Write() {
             ></textarea>
           </div>
 
-          {/* seDioRespuesta:true */}
           <div className="input-box form__input">
             <label>¿Se dio respuesta al usuario?</label>
             <div>
@@ -888,8 +799,6 @@ function Write() {
             </div>
           </div>
 
-          {/* fechaRespuesta:null */}
-          {/* descripcionGestion:null */}
           <div className="input-box form__input--textarea">
             <label>Descripcion de la gestión</label>
             <textarea
@@ -903,7 +812,6 @@ function Write() {
             <textarea className="input" {...register("nota", {})}></textarea>
           </div>
 
-          {/* calidadId:null */}
           <div className="input-box form__input">
             <label>Calidad</label>
             <select
@@ -936,7 +844,7 @@ function Write() {
                 setDerechosSelected(selectedValues);
               }}
             >
-              {derechosOptions.map((derecho) => (
+              {derechoOptions.map((derecho) => (
                 <option key={derecho.id} value={derecho.id}>
                   {derecho.derecho}
                 </option>
@@ -944,7 +852,7 @@ function Write() {
             </select>
             <ul className="derechos-list">
               {derechosSelected.map((selectedId) => {
-                const selectedDerecho = derechosOptions.find(
+                const selectedDerecho = derechoOptions.find(
                   (derecho) => derecho.id === parseInt(selectedId, 10)
                 );
                 return (
