@@ -31,8 +31,6 @@ function Write() {
   const [identificador, setIdentificador] = useState(false);
   const [isOpenModalConfirm, setIsOpenModalConfirm] = useState(false);
 
-  const REGIMEN_NA = 5;
-
   const returnToDashboard = () => {
     navigate("/dashboard-pqrsf");
   };
@@ -41,26 +39,15 @@ function Write() {
     data.seGestiono = Boolean(data.seGestiono);
     data.seDioRespuesta = Boolean(data.seDioRespuesta);
 
-    console.log(data);
-    if (!data.peticionario?.tipoId) {
+    if (!data.peticionario?.tipoId && !data.peticionario?.id)
       delete data.peticionario;
-    }
-    if (!data.paciente?.tipoId) {
-      delete data.paciente;
-    }
-
-    if (data.paciente?.epsId === 15) data.paciente.regimenId = REGIMEN_NA;
-
+    if (!data.paciente?.tipoId && !data.paciente?.id) delete data.paciente;
     delete data.derechos;
 
+    console.log(data);
+
     for (let key in data) {
-      if (
-        data[key] === "" ||
-        data[key] === null ||
-        data[key] === undefined ||
-        (typeof data[key] === "number" && isNaN(data[key]))
-      )
-        delete data[key];
+      if (!data[key]) delete data[key];
     }
 
     setPeticionWrite(data);
