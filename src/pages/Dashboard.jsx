@@ -6,59 +6,33 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 
 import { useAuth } from "../hooks/useAuth";
+import { useOptions } from "../components/useOptions";
+
 import api from "../service/api";
 
 function Dashboard() {
   const navigate = useNavigate();
 
   const { user } = useAuth();
-
-  const [estadosOptions, setEstadosOptions] = useState([]);
-  const [lideresOptions, setLideresOptions] = useState([]);
-  const [tipoPeticionOptions, setTipoPeticionOptions] = useState([]);
   const [peticiones, setPeticiones] = useState([]);
+
+  const { options: estadosOptions } = useOptions("/estados");
+  const { options: lideresOptions } = useOptions("/lideres");
+  const { options: tipoPeticionOptions } = useOptions("/tipos-peticiones");
 
   useEffect(() => {
     const fetchData = async () => {
       const endpoint =
-        user.role === "atencion" ? "/pqrsf" : "profile/mis-peticiones";
+        user.role === "atencion" ? "/pqrsf" : "/profile/mis-peticiones";
 
       await api
         .get(endpoint)
         .then((response) => response.data)
         .then((data) => setPeticiones(data))
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-
-      await api
-        .get("referencias/estados")
-        .then((response) => response.data)
-        .then((data) => {
-          //     const options = data.map((opc) => opc?.nombre);
-          setEstadosOptions(data);
-        });
-
-      await api
-        .get("referencias/lideres")
-        .then((response) => response.data)
-        .then((data) => {
-          //     const options = data.map((opc) => opc?.nombre);
-          setLideresOptions(data);
-        });
-
-      await api
-        .get("referencias/tipos_peticion")
-        .then((response) => response.data)
-        .then((data) => {
-          //     const options = data.map((opc) => opc?.nombre);
-          setTipoPeticionOptions(data);
-        });
+        .catch((error) => console.error("Error:", error));
     };
-
     fetchData();
-    // eslint-disable-next-li ne react-hooks/exhaustive-deps
-  }, []);
+  }, [user.role]);
 
   const handleEdit = (peticionId) => {
     if (user.role === "atencion")
@@ -215,6 +189,7 @@ function Dashboard() {
             rows={peticiones}
             columns={columns}
             autoHeight
+            disableExtendRowFullWidth
             slots={{ toolbar: CustomToolbar }}
             style={{ fontSize: "1.6rem" }}
             initialState={{
@@ -233,7 +208,6 @@ function Dashboard() {
                 ],
               },
             }}
-            disableExtendRowFullWidth
           />
         </div>
       </div>

@@ -218,9 +218,9 @@ const SectionPaciente = ({
         <label>Departamento</label>
         <select
           className="input"
+          disabled={isDisableSection}
           {...register("paciente.departamentoId", {
             valueAsNumber: true,
-            disabled: isDisableSection,
           })}
         >
           <option defaultValue={true} value=""></option>

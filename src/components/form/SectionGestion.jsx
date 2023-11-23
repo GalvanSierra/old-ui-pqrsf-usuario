@@ -41,6 +41,7 @@ const SectionGestion = ({
     setValue("seGestiono", peticion?.seGestiono ? "1" : "0");
     setValue("fechaDiligencia", convertISOToDate(peticion?.fechaDiligencia));
     setValue("estadoId", peticion?.estadoId);
+    console.log(estadoOptions);
     setValue("canalId", peticion?.canalId);
     setValue("clasePeticionId", peticion?.clasePeticionId);
     setValue("complejidadId", peticion?.complejidadId);
@@ -139,9 +140,9 @@ const SectionGestion = ({
         <label>Estado de la solicitud</label>
         <select
           className="input"
+          disabled={isDone}
           {...register("estadoId", {
             valueAsNumber: true,
-            disabled: isDone,
           })}
         >
           <option defaultValue={true} hidden={true} value="1">
