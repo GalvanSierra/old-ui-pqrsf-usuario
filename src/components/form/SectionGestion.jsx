@@ -12,7 +12,10 @@ const SectionGestion = ({
 
   const [derechosSelected, setDerechosSelected] = derechos;
   const [isResponded, setIsResponded] = useState(false);
-  const [isDone, setIsDone] = useState(true);
+  const [isDone, setIsDone] = useState(false);
+
+  console.log(isResponded);
+  console.log(isDone);
 
   const { options: estadoOptions } = useOptions("/estados");
   const { options: clasePeticionOptions } = useOptions("/clases_peticion");
@@ -259,11 +262,10 @@ const SectionGestion = ({
         <select
           className="input"
           {...register("calidadId", {
-            valueAsNumber: true,
             disabled: isDone,
           })}
         >
-          <option defaultValue={true} value=""></option>
+          <option defaultValue={true} value={null}></option>
           {calidadOptions.map(({ id, nombre }) => (
             <option key={id} value={id}>
               {nombre}
