@@ -5,60 +5,36 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 
+import { useOptions } from "../hooks/useOptions";
 import { useAuth } from "../hooks/useAuth";
+
 import api from "../service/api";
 
 function Dashboard() {
-  const navigate = useNavigate();
-
   const { user } = useAuth();
 
-  const [estadosOptions, setEstadosOptions] = useState([]);
-  const [lideresOptions, setLideresOptions] = useState([]);
-  const [tipoPeticionOptions, setTipoPeticionOptions] = useState([]);
+  const navigate = useNavigate();
+
+  const { options: tipoPeticionOptions } = useOptions("/tipos_peticion");
+  const { options: estadoOptions } = useOptions("/estados");
+  const { options: liderOptions } = useOptions("/lideres");
+
   const [peticiones, setPeticiones] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       const endpoint =
-        user.role === "atencion" ? "/pqrsf" : "profile/mis-peticiones";
+        user.role === "atencion" ? "/pqrsf" : "/profile/mis-peticiones";
 
       await api
         .get(endpoint)
         .then((response) => response.data)
         .then((data) => setPeticiones(data))
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-
-      await api
-        .get("referencias/estados")
-        .then((response) => response.data)
-        .then((data) => {
-          //     const options = data.map((opc) => opc?.nombre);
-          setEstadosOptions(data);
-        });
-
-      await api
-        .get("referencias/lideres")
-        .then((response) => response.data)
-        .then((data) => {
-          //     const options = data.map((opc) => opc?.nombre);
-          setLideresOptions(data);
-        });
-
-      await api
-        .get("referencias/tipos_peticion")
-        .then((response) => response.data)
-        .then((data) => {
-          //     const options = data.map((opc) => opc?.nombre);
-          setTipoPeticionOptions(data);
-        });
+        .catch((error) => console.error("Error:", error));
     };
 
     fetchData();
-    // eslint-disable-next-li ne react-hooks/exhaustive-deps
-  }, []);
+  }, [user.role]);
 
   const handleEdit = (peticionId) => {
     if (user.role === "atencion")
@@ -101,7 +77,7 @@ function Dashboard() {
         return `${params.row.lider?.cargo || ""}`;
       },
       valueOptions: () => {
-        return lideresOptions.map((opc) => opc?.cargo);
+        return liderOptions.map((opc) => opc?.cargo);
       },
     },
     {
@@ -150,7 +126,7 @@ function Dashboard() {
         return params.row.estado?.nombre;
       },
       valueOptions: () => {
-        return estadosOptions.map((opc) => opc?.nombre);
+        return estadoOptions.map((opc) => opc?.nombre);
       },
     },
     {
@@ -215,6 +191,7 @@ function Dashboard() {
             rows={peticiones}
             columns={columns}
             autoHeight
+            disableExtendRowFullWidth
             slots={{ toolbar: CustomToolbar }}
             style={{ fontSize: "1.6rem" }}
             initialState={{
@@ -233,7 +210,6 @@ function Dashboard() {
                 ],
               },
             }}
-            disableExtendRowFullWidth
           />
         </div>
       </div>
