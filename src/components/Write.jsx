@@ -949,15 +949,15 @@ function Write() {
                 );
                 return (
                   <li className="derecho" key={selectedId}>
-                    <strong>Derecho:</strong> {selectedDerecho.derecho}
+                    <strong>Derecho:</strong> {selectedDerecho?.derecho}
                     <br />
-                    <strong>Valor:</strong> {selectedDerecho.valor}
+                    <strong>Valor:</strong> {selectedDerecho?.valor}
                     <br />
                     <strong>Deber:</strong>
-                    {selectedDerecho.deber}
+                    {selectedDerecho?.deber}
                     <br />
                     <strong>Interpretación:</strong>
-                    {selectedDerecho.interpretacion}
+                    {selectedDerecho?.interpretacion}
                   </li>
                 );
               })}
