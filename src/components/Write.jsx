@@ -410,7 +410,7 @@ function Write() {
                 },
               })}
             >
-              <option defaultValue={true} value=""></option>
+              <option defaultValue={true} hidden value=""></option>
               {epsOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
@@ -437,12 +437,12 @@ function Write() {
                 disabled: isDisableRegimen,
               })}
             >
+              <option defaultValue={true} hidden value=""></option>
               {regimenOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
                 </option>
               ))}
-              <option defaultValue={true} value=""></option>
             </select>
             {errors.paciente?.regimenId && (
               <p role="alert" className="alert">
@@ -459,7 +459,7 @@ function Write() {
                 valueAsNumber: true,
               })}
             >
-              <option defaultValue={true} value=""></option>
+              <option defaultValue={true} hidden value=""></option>
               {departamentoOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
@@ -476,7 +476,7 @@ function Write() {
                 valueAsNumber: true,
               })}
             >
-              <option defaultValue={true} value=""></option>
+              <option defaultValue={true} hidden value=""></option>
               {municipioOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
@@ -697,7 +697,7 @@ function Write() {
                 valueAsNumber: true,
               })}
             >
-              <option defaultValue={true} hidden={true} value=""></option>
+              <option defaultValue={true} value=""></option>
               {complejidadOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
@@ -714,7 +714,7 @@ function Write() {
                 valueAsNumber: true,
               })}
             >
-              <option defaultValue={true} hidden={true} value=""></option>
+              <option defaultValue={true} value=""></option>
               {liderOptions.map(({ id, cargo }) => (
                 <option key={id} value={id}>
                   {cargo}
@@ -772,7 +772,7 @@ function Write() {
                 valueAsNumber: true,
               })}
             >
-              <option defaultValue={true} value=""></option>
+              <option defaultValue={true} hidden value=""></option>
               {calidadOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}

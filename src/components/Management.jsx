@@ -23,7 +23,7 @@ function Management() {
   } = useForm();
 
   const [peticionData, setPeticionData] = useState(null);
-  const departamentoSelected = watch("paciente.departamentoId") || 0;
+  let departamentoSelected = watch("paciente.departamentoId") || 0;
   //   Traer las opciones para los distintos selects
 
   const [tipoPeticionOptions, seTipoPeticionOptions] = useState([]);
@@ -43,6 +43,7 @@ function Management() {
   const [derechosOptions, setDerechosOptions] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  console.log(municipioOptions);
   const urls = {
     tipoPeticion: "/referencias/tipos_peticion",
     eps: "referencias/eps",
@@ -445,6 +446,9 @@ function Management() {
                   {nombre}
                 </option>
               ))}
+              <option value={peticionData?.paciente.municipio.id}>
+                {peticionData?.paciente.municipio.nombre}
+              </option>
             </select>
           </div>
         </fieldset>
@@ -582,30 +586,6 @@ function Management() {
           </div>
 
           <div className="input-box form__input">
-            <label>Estado de la solicitud</label>
-            <select
-              className="input"
-              {...register("estadoId", {
-                valueAsNumber: true,
-                required: "Campo requerido",
-                disabled: isDonePeticion,
-              })}
-            >
-              <option defaultValue={true} hidden={true} value=""></option>
-              {estadoOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
-            </select>
-            {errors.estadoId && (
-              <p role="alert" className="alert">
-                {errors.estadoId.message}
-              </p>
-            )}
-          </div>
-
-          <div className="input-box form__input">
             <label>¿Se va a radicar?</label>
             <div>
               <input
@@ -629,6 +609,30 @@ function Management() {
               />
               <label>No</label>
             </div>
+          </div>
+
+          <div className="input-box form__input">
+            <label>Estado de la solicitud</label>
+            <select
+              className="input"
+              {...register("estadoId", {
+                valueAsNumber: true,
+                required: "Campo requerido",
+                disabled: isDonePeticion,
+              })}
+            >
+              <option defaultValue={true} hidden={true} value=""></option>
+              {estadoOptions.map(({ id, nombre }) => (
+                <option key={id} value={id}>
+                  {nombre}
+                </option>
+              ))}
+            </select>
+            {errors.estadoId && (
+              <p role="alert" className="alert">
+                {errors.estadoId.message}
+              </p>
+            )}
           </div>
 
           <div className="input-box form__input">
@@ -774,6 +778,7 @@ function Management() {
           <div className="input-box form__input--textarea">
             <label>Derechos del paciente</label>
             <select
+              hidden={isDonePeticion}
               multiple
               className="input--multi-select"
               {...register("derechos", {

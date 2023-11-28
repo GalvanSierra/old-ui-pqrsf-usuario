@@ -48,12 +48,12 @@ function Dashboard() {
   };
 
   const columns = [
-    { field: "id", type: "number", headerName: "ID", width: 40 },
+    { field: "id", type: "number", headerName: "ID", width: 60 },
     {
       field: "radicado",
       type: "number",
       headerName: "Radico",
-      width: 80,
+      width: 100,
       valueGetter: (params) => {
         return `${params.row.radicado || ""}`;
       },
@@ -72,7 +72,7 @@ function Dashboard() {
       field: "lider",
       headerName: "Líder encargado",
       type: "singleSelect",
-      width: 140,
+      width: 240,
       valueGetter: (params) => {
         return `${params.row.lider?.cargo || ""}`;
       },
@@ -96,7 +96,7 @@ function Dashboard() {
       field: "fechaEnvioResponsableArea",
       type: "date",
       headerName: "Fecha Envio Responsable",
-      width: 180,
+      width: 200,
       valueGetter: (params) => {
         const fechaEnvio = params.row.fechaEnvioResponsableArea
           ? new Date(params.row.fechaEnvioResponsableArea)
@@ -105,23 +105,23 @@ function Dashboard() {
         return fechaEnvio;
       },
     },
-    {
-      field: "dueDate",
-      type: "date",
-      headerName: "Fecha Vencimiento",
-      width: 140,
-      valueGetter: (params) => {
-        const dueDate = params.row.dueDate
-          ? new Date(params.row.dueDate)
-          : null;
-        return dueDate;
-      },
-    },
+    // {
+    //   field: "dueDate",
+    //   type: "date",
+    //   headerName: "Fecha Vencimiento",
+    //   width: 140,
+    //   valueGetter: (params) => {
+    //     const dueDate = params.row.dueDate
+    //       ? new Date(params.row.dueDate)
+    //       : null;
+    //     return dueDate;
+    //   },
+    // },
     {
       field: "estadoId",
       headerName: "Estado",
       type: "singleSelect",
-      width: 160,
+      width: 120,
       valueGetter: (params) => {
         return params.row.estado?.nombre;
       },
@@ -204,7 +204,7 @@ function Dashboard() {
               sorting: {
                 sortModel: [
                   {
-                    field: "id",
+                    field: "fechaRecepcion",
                     sort: "desc",
                   },
                 ],
