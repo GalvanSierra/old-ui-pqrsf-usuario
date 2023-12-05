@@ -34,7 +34,7 @@ function Dashboard() {
     };
 
     fetchData();
-  }, [user.role]);
+  });
 
   const handleEdit = (peticionId) => {
     if (user.role === "atencion")

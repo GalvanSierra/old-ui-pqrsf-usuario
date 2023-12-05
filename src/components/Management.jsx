@@ -49,7 +49,9 @@ function Management() {
     eps: "referencias/eps",
     tipoId: `/referencias/tipos_identificacion`,
     departamentos: `/referencias/departamentos`,
-    municipios: `referencias/departamentos/${departamentoSelected}/municipios`,
+    municipios: `referencias/departamentos/${
+      departamentoSelected || 0
+    }/municipios`,
     areas: "/referencias/areas",
     servicios: "/referencias/servicios",
     estado: `/referencias/estados`,
@@ -138,7 +140,7 @@ function Management() {
       setValue("paciente.epsId", peticion.paciente?.epsId);
       setValue("paciente.regimenId", peticion.paciente?.regimenId);
       setValue("paciente.departamentoId", peticion.paciente?.departamentoId);
-      setValue("paciente.municipioId", peticion.paciente?.municipioId);
+      // setValue("paciente.municipioId", peticion.paciente?.municipioId);
 
       setValue("areaId", peticion.areaId);
       setValue("servicioId", peticion.servicioId);
@@ -446,8 +448,8 @@ function Management() {
                   {nombre}
                 </option>
               ))}
-              <option value={peticionData?.paciente.municipio.id}>
-                {peticionData?.paciente.municipio.nombre}
+              <option value={peticionData?.paciente?.municipio?.id}>
+                {peticionData?.paciente?.municipio?.nombre}
               </option>
             </select>
           </div>
