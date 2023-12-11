@@ -21,18 +21,34 @@ function Dashboard() {
 
   const [peticiones, setPeticiones] = useState([]);
 
+  const endpoint =
+    user.role === "atencion" ? "/pqrsf" : "/profile/mis-peticiones";
+
   useEffect(() => {
     const fetchData = async () => {
-      const endpoint =
-        user.role === "atencion" ? "/pqrsf" : "/profile/mis-peticiones";
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          // Manejar el caso en que no haya token almacenado, puede redirigir al inicio de sesión
+          return;
+        }
 
-      await api
-        .get(endpoint)
-        .then((response) => response.data)
-        .then((data) => setPeticiones(data))
-        .catch((error) => console.error("Error:", error));
+        const response = await api.get(endpoint, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = response.data;
+        setPeticiones(data);
+      } catch (error) {
+        if (error.response && error.response.status === 401) {
+          // Manejo de error de autorización
+          console.error("Error de autorización:", error);
+        } else {
+          console.error("Error al obtener datos:", error);
+        }
+      }
     };
-
     fetchData();
   });
 

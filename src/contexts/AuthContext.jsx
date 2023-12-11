@@ -12,13 +12,19 @@ function AuthProvider({ children }) {
 
   const login = async (data) => {
     try {
-      const response = await api.post("auth/login", data);
+      const response = await api.post("/auth/login", data);
       const responseData = response.data;
 
-      localStorage.setItem("token", responseData.token);
-      setUser(responseData.user);
+      if (responseData.token) {
+        localStorage.setItem("token", responseData.token);
+        setUser(responseData.user);
 
-      navigate("/dashboard-pqrsf");
+        // Establece el token en las cabeceras por defecto de Axios
+        api.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${responseData.token}`;
+        navigate("/dashboard-pqrsf");
+      }
     } catch (error) {
       if (error.response && error.response.status === 401) {
         return false;

@@ -6,7 +6,7 @@ function Navbar() {
   const auth = useAuth();
 
   const routes = [
-    { to: "/dashboard-pqrsf", text: "Dashboard", private: true },
+    { to: "/dashboard-pqrsf", text: "Listado", private: true },
     { to: "/login", text: "Login", private: false, publicOnly: true },
     {
       to: "/dashboard-pqrsf-admin",
@@ -14,7 +14,7 @@ function Navbar() {
       private: true,
       isAdmin: true,
     },
-    { to: "/Logout", text: "Logout", private: true },
+    { to: "/Logout", text: "Cerrar sesión", private: true },
   ];
 
   return (
