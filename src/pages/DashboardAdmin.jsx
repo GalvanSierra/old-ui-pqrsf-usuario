@@ -1,8 +1,20 @@
 import { utils, writeFile } from "xlsx";
 import api from "../service/api";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { DataGridInfo } from "../components/DataGridInfo";
+import { DataGridInfoEPSandType } from "../components/DataGridInfoEPSandType";
 
 function DashboardAdmin() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const [paramsQuery, setParamsQuery] = useState({});
+  const [isOpen, setIsOpen] = useState(false);
+
   function formatDateToDdMmYyyy(isoDate) {
     const date = new Date(isoDate);
     const day = date.getDate().toString().padStart(2, "0");
@@ -55,73 +67,117 @@ function DashboardAdmin() {
     };
   };
 
-  const handleDownload = async (data) => {
+  const handleDownload = async () => {
     const peticiones = await api
-      .post("/peticiones/export/xlsx", data)
+      .post("/peticiones/export/xlsx", paramsQuery)
       .then((response) => response.data)
       .then((data) => data.map((peticion) => parsePeticion(peticion)));
-
     const libro = utils.book_new();
     const hoja = utils.json_to_sheet(peticiones);
-
     utils.book_append_sheet(libro, hoja, "peticiones");
-
     await writeFile(libro, "reporte-pqrsf.xlsx");
   };
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const [dataEPS, setDataEPS] = useState([]);
+  const [dataServicio, setDataServicio] = useState([]);
+  const [dataTipo, setDataTipo] = useState([]);
+  const [dataTipoAndEps, setDataTipoAndEps] = useState([]);
 
-  const onSubmit = (data) => {
-    console.log(data);
-    handleDownload(data);
+  const getData = async (paramQuery) => {
+    await api
+      .post("/indicadores/por_eps", paramQuery)
+      .then((response) => response.data)
+      .then((data) => setDataEPS(data));
+
+    await api
+      .post("/indicadores/por_servicio", paramQuery)
+      .then((response) => response.data)
+      .then((data) => setDataServicio(data));
+
+    await api
+      .post("/indicadores/por_tipo", paramQuery)
+      .then((response) => response.data)
+      .then((data) => setDataTipo(data));
+
+    await api
+      .post("/indicadores/por_tipo_y_eps", paramQuery)
+      .then((response) => response.data)
+      .then((data) => setDataTipoAndEps(data));
+  };
+  const onSubmit = async (paramQuery) => {
+    setParamsQuery(paramQuery);
+
+    await getData(paramQuery);
+    setIsOpen(true);
   };
 
   return (
-    <div className="container admin-container">
+    <div className="container">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="input-box form__input">
-          <label>Fecha de inicio</label>
-          <input
-            className="input"
-            type="date"
-            {...register("startDate", {
-              required: "Campo requerido",
-              valueAsDate: true,
-            })}
-          />
-          {errors.startDate && (
-            <p role="alert" className="alert">
-              {errors.startDate.message}
-            </p>
-          )}
-        </div>
+        <div className="flex-container admin__container">
+          <div className="input-box admin__input">
+            <label>Fecha de inicio</label>
+            <input
+              className="input"
+              type="date"
+              {...register("startDate", {
+                required: "Campo requerido",
+                valueAsDate: true,
+              })}
+            />
+            {errors.startDate && (
+              <p role="alert" className="alert">
+                {errors.startDate.message}
+              </p>
+            )}
+          </div>
 
-        <div className="input-box form__input">
-          <label>Fecha de finalización</label>
-          <input
-            className="input"
-            type="date"
-            {...register("endDate", {
-              required: "Campo requerido",
-              valueAsDate: true,
-            })}
-          />
-          {errors.endDate && (
-            <p role="alert" className="alert">
-              {errors.endDate.message}
-            </p>
-          )}
-        </div>
+          <div className="input-box admin__input">
+            <label>Fecha de finalización</label>
+            <input
+              className="input"
+              type="date"
+              {...register("endDate", {
+                required: "Campo requerido",
+                valueAsDate: true,
+              })}
+            />
+            {errors.endDate && (
+              <p role="alert" className="alert">
+                {errors.endDate.message}
+              </p>
+            )}
+          </div>
 
-        <input
-          type="submit"
-          value="Exportar datos"
-          className="button admin-button"
-        />
+          <input
+            type="submit"
+            value="Generar informe"
+            className="button admin-button"
+          />
+        </div>
       </form>
+
+      {isOpen && (
+        <div>
+          <button
+            className="button admin-button"
+            onClick={() => handleDownload()}
+          >
+            Exportar datos
+          </button>
+          <h2>Indicadores por EPS</h2>
+          <DataGridInfo data={dataEPS} atributo={"eps"} />
+
+          <h2>Indicadores por Servicio</h2>
+          <DataGridInfo data={dataServicio} atributo={"servicio"} />
+
+          <h2>Indicadores por Tipo de solicitud</h2>
+          <DataGridInfo data={dataTipo} atributo={"tipo"} />
+
+          <h2>Indicadores por Tipo de solicitud</h2>
+          <DataGridInfoEPSandType data={dataTipoAndEps} atributo={"eps"} />
+          <br />
+        </div>
+      )}
     </div>
   );
 }

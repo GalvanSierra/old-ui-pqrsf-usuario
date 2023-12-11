@@ -56,6 +56,7 @@ function Write() {
 
   const peticionarioTipoIdSelected = watch("peticionario.tipoId");
 
+  console.log(departamentoOptions);
   const pacienteTipoIdSelected = watch("paciente.tipoId");
   const epsSelected = watch("paciente.epsId");
 
@@ -200,6 +201,7 @@ function Write() {
           <div className="input-box form__input">
             <label>Numero de identificacion</label>
             <input
+              disabled={isDisabledIdPeticionario}
               className="input"
               {...register("peticionario.id", {
                 required: {
@@ -210,7 +212,6 @@ function Write() {
                   value: /^(\d+|[a-zA-Z0-9]+)$/,
                   message: "Ingresa solo números o caracteres alfanuméricos",
                 },
-                disabled: isDisabledIdPeticionario,
               })}
             />
             {errors.peticionario?.id && (
@@ -346,6 +347,7 @@ function Write() {
             <label>Numero de identificación</label>
             <input
               className="input"
+              disabled={isDisabledIdPaciente}
               {...register("paciente.id", {
                 required: {
                   value: isPacienteRequiere,
@@ -355,7 +357,6 @@ function Write() {
                   value: /^(\d+|[a-zA-Z0-9]+)$/,
                   message: "Ingresa solo números o caracteres alfanuméricos",
                 },
-                disabled: isDisabledIdPaciente,
               })}
             />
           </div>
@@ -428,13 +429,13 @@ function Write() {
             <label>Regimen</label>
             <select
               className="input"
+              disabled={isDisableRegimen}
               {...register("paciente.regimenId", {
                 valueAsNumber: true,
                 required: {
                   value: isPacienteRequiere,
                   message: "Campo requerido",
                 },
-                disabled: isDisableRegimen,
               })}
             >
               <option defaultValue={true} hidden value=""></option>

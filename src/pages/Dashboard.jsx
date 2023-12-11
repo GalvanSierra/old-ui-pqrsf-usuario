@@ -98,11 +98,9 @@ function Dashboard() {
       headerName: "Fecha Envio Responsable",
       width: 200,
       valueGetter: (params) => {
-        const fechaEnvio = params.row.fechaEnvioResponsableArea
+        return params.row.fechaEnvioResponsableArea
           ? new Date(params.row.fechaEnvioResponsableArea)
           : null;
-
-        return fechaEnvio;
       },
     },
     // {
@@ -167,7 +165,6 @@ function Dashboard() {
     },
   ];
 
-  console.log(peticiones);
   return (
     <>
       <div className="container dashboard-container">
