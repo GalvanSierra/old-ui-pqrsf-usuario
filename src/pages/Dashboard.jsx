@@ -190,7 +190,7 @@ function Dashboard() {
           Sistema de gestión de PQRSF del Hospital Infantil Santa Ana
         </h1>
         {user.role === "atencion" && (
-          <>
+          <div className="flex-container">
             <button className="button dashboard-button" onClick={write}>
               Redactar PQRSF a nombre del paciente
             </button>
@@ -202,7 +202,7 @@ function Dashboard() {
             >
               Consultar PQRSF
             </button>
-          </>
+          </div>
         )}
 
         <div

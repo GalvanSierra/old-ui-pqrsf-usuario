@@ -427,6 +427,11 @@ input[type="number"]::-webkit-outer-spin-button {
   width: 200px;
 }
 
+.dashboard-container .flex-container {
+  gap: 2rem;
+  justify-content: center;
+}
+
 table {
   border-collapse: collapse;
   width: 100%;
