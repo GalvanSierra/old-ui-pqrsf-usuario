@@ -116,39 +116,40 @@ function Write() {
       const token = localStorage.getItem("token");
 
       setLoading(true);
-      await api
+      const idPeticion = await api
         .post("/peticiones", newPeticion, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         })
         .then((response) => response.data)
-        .then((data) => setIdentificador(data.id))
-        .then(() => setIsOpenModalSuccess(true))
+        .then((data) => {
+          setIdentificador(data.id);
+          setIsOpenModalSuccess(true);
+
+          return data.id;
+        })
         .catch((error) => {
           console.error("Error en la solicitud POST", error);
         });
 
       await Promise.all(
-        derechosSelected.map(
-          async (derecho) =>
-            await api
-              .post(
-                "/peticiones/add-item",
-                {
-                  peticionId: identificador,
-                  derechoId: derecho,
-                },
-                {
-                  headers: {
-                    Authorization: `Bearer ${token}`,
-                  },
-                }
-              )
-              .catch((error) =>
-                console.error("Error en la solicitud DERECHO", error)
-              )
-        )
+        derechosSelected.map(async (derecho) => {
+          const newDerecho = {
+            peticionId: idPeticion,
+            derechoId: derecho,
+          };
+          await api
+            .post("/peticiones/add-item", newDerecho, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+            .then(() => {})
+            .catch((error) =>
+              console.error("Error en la solicitud DERECHO", error)
+            );
+        })
       );
 
       setIsOpenModalConfirm(false);
