@@ -9,6 +9,7 @@ import { useOptions } from "../hooks/useOptions";
 import { useAuth } from "../hooks/useAuth";
 
 import api from "../service/api";
+import { DashboardSearch } from "./DashboardSearch";
 
 function Dashboard() {
   const { user } = useAuth();
@@ -19,6 +20,7 @@ function Dashboard() {
   const { options: estadoOptions } = useOptions("/estados");
   const { options: liderOptions } = useOptions("/lideres");
 
+  const [openSearch, setOpenSearch] = useState(false);
   const [peticiones, setPeticiones] = useState([]);
 
   const endpoint =
@@ -188,9 +190,19 @@ function Dashboard() {
           Sistema de gestión de PQRSF del Hospital Infantil Santa Ana
         </h1>
         {user.role === "atencion" && (
-          <button className="button dashboard-button" onClick={write}>
-            Redactar PQRSF a nombre del paciente
-          </button>
+          <>
+            <button className="button dashboard-button" onClick={write}>
+              Redactar PQRSF a nombre del paciente
+            </button>
+            <button
+              className="button dashboard-button"
+              onClick={() => {
+                setOpenSearch(true);
+              }}
+            >
+              Consultar PQRSF
+            </button>
+          </>
         )}
 
         <div
@@ -225,6 +237,22 @@ function Dashboard() {
             }}
           />
         </div>
+
+        {openSearch && (
+          <div className="modal-container">
+            <div className="modal">
+              <div className="">
+                <DashboardSearch data={peticiones} />
+              </div>
+              <button
+                className="button search-button"
+                onClick={() => setOpenSearch(false)}
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
