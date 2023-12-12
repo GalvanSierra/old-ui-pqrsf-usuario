@@ -70,7 +70,7 @@ function Dashboard() {
     {
       field: "radicado",
       type: "number",
-      headerName: "Radico",
+      headerName: "Radicado",
       width: 100,
       valueGetter: (params) => {
         return `${params.row.radicado || ""}`;
