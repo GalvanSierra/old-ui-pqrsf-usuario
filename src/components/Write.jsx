@@ -113,9 +113,15 @@ function Write() {
 
   const saveChanges = async () => {
     try {
+      const token = localStorage.getItem("token");
+
       setLoading(true);
       await api
-        .post("/peticiones", newPeticion)
+        .post("/peticiones", newPeticion, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
         .then((response) => response.data)
         .then((data) => setIdentificador(data.id))
         .then(() => setIsOpenModalSuccess(true))
@@ -127,10 +133,18 @@ function Write() {
         derechosSelected.map(
           async (derecho) =>
             await api
-              .post("/peticiones/add-item", {
-                peticionId: identificador,
-                derechoId: derecho,
-              })
+              .post(
+                "/peticiones/add-item",
+                {
+                  peticionId: identificador,
+                  derechoId: derecho,
+                },
+                {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              )
               .catch((error) =>
                 console.error("Error en la solicitud DERECHO", error)
               )

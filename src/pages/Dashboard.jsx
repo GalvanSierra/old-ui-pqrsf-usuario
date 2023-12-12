@@ -64,7 +64,7 @@ function Dashboard() {
   };
 
   const columns = [
-    { field: "id", type: "number", headerName: "ID", width: 60 },
+    { field: "id", type: "number", headerName: "ID", width: 100 },
     {
       field: "radicado",
       type: "number",
@@ -88,7 +88,7 @@ function Dashboard() {
       field: "lider",
       headerName: "Líder encargado",
       type: "singleSelect",
-      width: 240,
+      width: 280,
       valueGetter: (params) => {
         return `${params.row.lider?.cargo || ""}`;
       },
@@ -135,7 +135,7 @@ function Dashboard() {
       field: "estadoId",
       headerName: "Estado",
       type: "singleSelect",
-      width: 120,
+      width: 160,
       valueGetter: (params) => {
         return params.row.estado?.nombre;
       },
@@ -143,26 +143,26 @@ function Dashboard() {
         return estadoOptions.map((opc) => opc?.nombre);
       },
     },
-    {
-      field: "peticionario",
-      headerName: "Peticionario",
-      width: 120,
-      valueGetter: (params) => {
-        return `${params.row.peticionario?.nombre || ""} ${
-          params.row.peticionario?.apellido || ""
-        }`;
-      },
-    },
-    {
-      field: "paciente",
-      headerName: "Paciente",
-      width: 120,
-      valueGetter: (params) => {
-        return `${params.row.paciente?.nombre || ""} ${
-          params.row.paciente?.apellido || ""
-        }`;
-      },
-    },
+    // {
+    //   field: "peticionario",
+    //   headerName: "Peticionario",
+    //   width: 120,
+    //   valueGetter: (params) => {
+    //     return `${params.row.peticionario?.nombre || ""} ${
+    //       params.row.peticionario?.apellido || ""
+    //     }`;
+    //   },
+    // },
+    // {
+    //   field: "paciente",
+    //   headerName: "Paciente",
+    //   width: 120,
+    //   valueGetter: (params) => {
+    //     return `${params.row.paciente?.nombre || ""} ${
+    //       params.row.paciente?.apellido || ""
+    //     }`;
+    //   },
+    // },
     {
       field: "actions",
       headerName: "Action",

@@ -112,8 +112,13 @@ function Management() {
 
   //   Traer toda la información de la petición
   const fetchPeticionData = async () => {
+    const token = localStorage.getItem("token");
     const peticion = await api
-      .get(`/peticiones/${id}`)
+      .get(`/peticiones/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => response.data)
       .then((data) => {
         setPeticionData(data);
@@ -221,10 +226,15 @@ function Management() {
 
   const saveChanges = async () => {
     try {
+      const token = localStorage.getItem("token");
       setLoading(true); // Activar el indicador de carga
 
       console.log(changes);
-      const resultado = await api.patch(`/peticiones/${id}`, changes);
+      const resultado = await api.patch(`/peticiones/${id}`, changes, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       console.log(resultado);
 
       await Promise.all(

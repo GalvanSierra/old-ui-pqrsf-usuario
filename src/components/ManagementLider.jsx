@@ -112,8 +112,14 @@ function ManagementLider() {
 
   //   Traer toda la información de la petición
   const fetchPeticionData = async () => {
+    const token = localStorage.getItem("token");
+
     const peticion = await api
-      .get(`/peticiones/${id}`)
+      .get(`/peticiones/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => response.data)
       .then((data) => {
         setPeticionData(data);
