@@ -511,7 +511,7 @@ function ManagementLider() {
             <label>Radicado de la tutela</label>
             <input
               className="input"
-              type="number"
+              type="text"
               {...register("radicadoTutela", { disabled: true })}
             />
           </div>

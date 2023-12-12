@@ -150,7 +150,7 @@ function Management() {
       setValue("servicioId", peticion.servicioId);
       setValue("dirigidaA", peticion.dirigidaA);
       setValue("tutela", peticion.tutela ? "1" : "0");
-      setValue("radicadoTutela", peticion.radicadoTutela);
+      setValue("radicadoTutela", peticion?.radicadoTutela);
       setValue("motivo", peticion.motivo);
       setValue("fechaRecepcion", convertISOToDate(peticion.fechaRecepcion));
       setValue("seGestiono", peticion.seGestiono ? "1" : "0");
@@ -523,7 +523,7 @@ function Management() {
             <label>Radicado de la tutela</label>
             <input
               className="input"
-              type="number"
+              type="text"
               {...register("radicadoTutela", { disabled: true })}
             />
           </div>
