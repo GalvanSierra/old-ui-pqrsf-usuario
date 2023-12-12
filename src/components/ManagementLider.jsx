@@ -213,7 +213,6 @@ function ManagementLider() {
     changes.seGestiono = Boolean(changes.seGestiono);
     changes.seDioRespuesta = Boolean(changes.seDioRespuesta);
 
-    console.log(changes);
     setChanges(changes);
     setIsOpenModal(true);
   };
@@ -232,15 +231,12 @@ function ManagementLider() {
 
     Promise.all(
       derechosSelected.map(async (derecho) => {
-        console.log(derecho);
         return await api
           .post("/peticiones/add-item", {
             peticionId: id,
             derechoId: derecho,
           })
-          .then((response) => {
-            console.log("éxito de derecho", response);
-          })
+
           .catch((error) => {
             console.error("Error en la solicitud DERECHO", error);
           });
@@ -437,7 +433,9 @@ function ManagementLider() {
               className="input"
               {...register("paciente.municipioId", { disabled: true })}
             >
-              <option defaultValue={true} value=""></option>
+              <option value={peticionData?.paciente?.municipio?.id}>
+                {peticionData?.paciente?.municipio?.nombre}
+              </option>
               {municipioOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}

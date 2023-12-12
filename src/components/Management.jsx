@@ -43,7 +43,6 @@ function Management() {
   const [derechosOptions, setDerechosOptions] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  console.log(municipioOptions);
   const urls = {
     tipoPeticion: "/referencias/tipos_peticion",
     eps: "referencias/eps",
@@ -219,7 +218,6 @@ function Management() {
     changes.seGestiono = Boolean(changes.seGestiono);
     changes.seDioRespuesta = Boolean(changes.seDioRespuesta);
 
-    console.log(changes);
     setChanges(changes);
     setIsOpenModal(true);
   };
@@ -229,7 +227,6 @@ function Management() {
       const token = localStorage.getItem("token");
       setLoading(true); // Activar el indicador de carga
 
-      console.log(changes);
       const resultado = await api.patch(`/peticiones/${id}`, changes, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -244,16 +241,12 @@ function Management() {
               peticionId: id,
               derechoId: derecho,
             })
-            .then((response) => {
-              console.log("éxito de derecho", response);
-            })
             .catch((error) => {
               console.error("Error en la solicitud DERECHO", error);
             });
         })
       );
 
-      console.log("Cambios guardados con éxito");
       setIsOpenModal(false);
       navigate("/dashboard-pqrsf", { replace: true });
     } catch (error) {
@@ -452,15 +445,14 @@ function Management() {
               className="input"
               {...register("paciente.municipioId", { disabled: true })}
             >
-              <option defaultValue={true} value=""></option>
+              <option value={peticionData?.paciente?.municipio?.id}>
+                {peticionData?.paciente?.municipio?.nombre}
+              </option>
               {municipioOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
                 </option>
               ))}
-              <option value={peticionData?.paciente?.municipio?.id}>
-                {peticionData?.paciente?.municipio?.nombre}
-              </option>
             </select>
           </div>
         </fieldset>
