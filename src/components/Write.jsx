@@ -1,19 +1,23 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { CircularProgress } from "@mui/material";
 import api from "../service/api";
 import { useOptions } from "../hooks/useOptions";
 import { EPS_NA, REGIMEN_NA, TIPOS_NA } from "./constants";
+import { InputSelect } from "./form/InputSelect";
+import { Input } from "./form/Input";
 
 function Write() {
   const {
     register,
-    handleSubmit,
+    // handleSubmit,
     watch,
     setValue,
     formState: { errors },
   } = useForm();
+
+  const methods = useForm();
 
   const navigate = useNavigate();
 
@@ -98,11 +102,6 @@ function Write() {
     data.seGestiono = Boolean(data.seGestiono);
     data.seDioRespuesta = Boolean(data.seDioRespuesta);
 
-    if (!data.peticionario?.tipoId && !data.peticionario?.id)
-      delete data.peticionario;
-    if (!data.paciente?.tipoId && !data.paciente?.id) delete data.paciente;
-    delete data.derechos;
-
     for (let key in data) {
       if (!data[key]) delete data[key];
     }
@@ -162,60 +161,46 @@ function Write() {
 
   return (
     <div className="container container-form">
-      <form onSubmit={handleSubmit(onSubmit)}>
+      {/* <FormProvider {...methods}> */}
+      <form onSubmit={methods.handleSubmit(onSubmit)}>
         <div className="input-box form__input">
           <label>Tipo de solicitud</label>
-          <select
-            className="input"
-            {...register("tipoPeticionId", {
-              valueAsNumber: true,
-              required: "Campo requerido",
-            })}
-          >
-            <option defaultValue={true} hidden={true} value=""></option>
-            {tipoPeticionOptions.map(({ id, nombre }) => (
-              <option key={id} value={id}>
-                {nombre}
-              </option>
-            ))}
-          </select>
-          {errors.tipoPeticionId && (
-            <p role="alert" className="alert">
-              {errors.tipoPeticionId.message}
-            </p>
-          )}
+          <InputSelect
+            name="tipoPeticionId"
+            options={tipoPeticionOptions}
+            required
+            inputProps={{ valueAsNumber: true }}
+          />
         </div>
-
         <fieldset>
           <legend>Información del Peticionario</legend>
           <div className="input-box form__input">
             <label>Tipo identificación</label>
-            <select
-              className="input"
-              {...register("peticionario.tipoId", {
+            <InputSelect
+              name="peticionario.tipoId"
+              options={tipoIdOptions}
+              inputProps={{
                 required: {
                   value: isPeticionarioRequiere,
                   message: "Campo requerido",
                 },
-              })}
-            >
-              <option defaultValue={true} value=""></option>
-              {tipoIdOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
-            </select>
-            {errors.peticionario?.tipoId && (
-              <p role="alert" className="alert">
-                {errors.peticionario?.tipoId.message}
-              </p>
-            )}
+              }}
+            />
           </div>
 
           <div className="input-box form__input">
             <label>Numero de identificacion</label>
-            <input
+            <Input
+              name={"peticionario.id"}
+              required={isPeticionarioRequiere}
+              inputOptoins={{
+                pattern: {
+                  value: /^(\d+|[a-zA-Z0-9]+)$/,
+                  message: "Ingresa solo números o caracteres alfanuméricos",
+                },
+              }}
+            />
+            {/* <input
               disabled={isDisabledIdPeticionario}
               className="input"
               {...register("peticionario.id", {
@@ -233,11 +218,15 @@ function Write() {
               <p role="alert" className="alert">
                 {errors.peticionario?.id.message}
               </p>
-            )}
+            )} */}
           </div>
 
           <div className="input-box form__input">
             <label>Nombre(s)</label>
+            <Input
+              name="peticionario.nombre"
+              required={isPeticionarioRequiere}
+            />
             <input
               className="input"
               type="text"
@@ -335,35 +324,26 @@ function Write() {
           <legend>Información del Paciente</legend>
           <div className="input-box form__input">
             <label>Tipo de identificación</label>
-            <select
-              className="input"
-              {...register("paciente.tipoId", {
-                required: {
-                  value: isPacienteRequiere,
-                  message: "Campo requerido",
-                },
-              })}
-            >
-              <option defaultValue={true} value=""></option>
-              {tipoIdOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
-            </select>
-            {errors.paciente?.tipoId && (
-              <p role="alert" className="alert">
-                {errors.paciente?.tipoId.message}
-              </p>
-            )}
+            <InputSelect
+              name="paciente.tipoId"
+              options={tipoIdOptions}
+              inputOptions={{
+                ...register("paciente.tipoId", {
+                  required: {
+                    value: isPacienteRequiere,
+                    message: "Campo requerido",
+                  },
+                }),
+              }}
+            />
           </div>
 
           <div className="input-box form__input">
             <label>Numero de identificación</label>
-            <input
-              className="input"
-              disabled={isDisabledIdPaciente}
-              {...register("paciente.id", {
+            <Input
+              name={"paciente.id"}
+              type={"text"}
+              options={{
                 required: {
                   value: isPacienteRequiere,
                   message: "Campo requerido",
@@ -372,133 +352,99 @@ function Write() {
                   value: /^(\d+|[a-zA-Z0-9]+)$/,
                   message: "Ingresa solo números o caracteres alfanuméricos",
                 },
-              })}
+              }}
             />
           </div>
 
           <div className="input-box form__input">
             <label>Nombre(s)</label>
-            <input
-              className="input"
+            <Input
+              name="paciente.nombre"
               type="text"
-              {...register("paciente.nombre", {
+              options={{
                 required: {
                   value: isPacienteRequiere,
                   message: "Campo requerido",
                 },
-              })}
+              }}
             />
-            {errors.paciente?.nombre && (
-              <p role="alert" className="alert">
-                {errors.paciente?.nombre.message}
-              </p>
-            )}
           </div>
 
           <div className="input-box form__input">
             <label>Apellido(s)</label>
-            <input
-              className="input"
-              type="text"
-              {...register("paciente.apellido", {
+            <Input
+              name={"paciente.apellido"}
+              type={"text"}
+              options={{
                 required: {
                   value: isPacienteRequiere,
                   message: "Campo requerido",
                 },
-              })}
+              }}
             />
-            {errors.paciente?.apellido && (
-              <p role="alert" className="alert">
-                {errors.paciente?.apellido.message}
-              </p>
-            )}
           </div>
 
           <div className="input-box form__input">
             <label>EPS</label>
-            <select
-              className="input"
-              {...register("paciente.epsId", {
+            <InputSelect
+              name="paciente.epsId"
+              options={epsOptions}
+              inputOptions={{
                 valueAsNumber: true,
                 required: {
                   value: isPacienteRequiere,
                   message: "Campo requerido",
                 },
-              })}
-            >
-              <option defaultValue={true} hidden value=""></option>
-              {epsOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
-            </select>
-            {errors.paciente?.epsId && (
-              <p role="alert" className="alert">
-                {errors.paciente?.epsId.message}
-              </p>
-            )}
+              }}
+            />
           </div>
 
           <div className="input-box form__input">
             <label>Regimen</label>
-            <select
-              className="input"
-              disabled={isDisableRegimen}
-              {...register("paciente.regimenId", {
+            <InputSelect
+              name="paciente.regimenId"
+              options={regimenOptions}
+              inputOptions={{
                 valueAsNumber: true,
                 required: {
                   value: isPacienteRequiere,
                   message: "Campo requerido",
                 },
-              })}
-            >
-              <option defaultValue={true} hidden value=""></option>
-              {regimenOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
-            </select>
-            {errors.paciente?.regimenId && (
-              <p role="alert" className="alert">
-                {errors.paciente?.regimenId.message}
-              </p>
-            )}
+              }}
+            />
           </div>
 
           <div className="input-box form__input">
             <label>Departamento</label>
-            <select
-              className="input"
-              {...register("paciente.departamentoId", {
-                valueAsNumber: true,
-              })}
-            >
-              <option defaultValue={true} hidden value=""></option>
-              {departamentoOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
-            </select>
+            <InputSelect
+              name="paciente.departamentoId"
+              options={departamentoOptions}
+              inputOptions={{ valueAsNumber: true }}
+            />
           </div>
 
           <div className="input-box form__input">
             <label>Municipio</label>
-            <select
-              className="input"
-              {...register("paciente.municipioId", {
+            <InputSelect
+              name="paciente.municipioId"
+              options={municipioOptions}
+              inputOptions={{
                 valueAsNumber: true,
-              })}
-            >
-              <option defaultValue={true} hidden value=""></option>
-              {municipioOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
-            </select>
+              }}
+            />
+            {/* <select
+                className="input"
+                {...register("paciente.municipioId", {
+                  valueAsNumber: true,
+                })}
+              >
+                <option defaultValue={true} hidden value=""></option>
+                {municipioOptions.map(({ id, nombre }) => (
+                  <option key={id} value={id}>
+                    {nombre}
+                  </option>
+                ))}
+              </select> */}
           </div>
         </fieldset>
 
@@ -855,6 +801,8 @@ function Write() {
           </button>
         </div>
       </form>
+      {/* </FormProvider> */}
+
       {isOpenModalConfirm && (
         <div className="modal-container">
           <div className="modal">
