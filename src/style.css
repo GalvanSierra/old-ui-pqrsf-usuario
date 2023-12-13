@@ -110,9 +110,10 @@ body {
   }
 }
 .nav__item {
-  width: 10rem;
-  height: 3rem;
+  min-width: 12rem;
   border-radius: 5px;
+  height: 3rem;
+  padding: 3px;
   justify-content: center;
   text-decoration: none;
   background-color: var(--green-500);
@@ -404,6 +405,7 @@ input[type="number"]::-webkit-outer-spin-button {
 .admin__container {
   margin-top: 20px;
   min-width: 400px;
+  align-items: center;
   /* background-color: red; */
 }
 

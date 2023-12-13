@@ -114,6 +114,10 @@ function DashboardAdmin() {
     <div className="container">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex-container admin__container">
+          <p>
+            Señor usuario por favor seleccione las fechas y luego de clic en
+            GENERAR INFORME para ver los resultados.
+          </p>
           <div className="input-box admin__input">
             <label>Fecha de inicio</label>
             <input

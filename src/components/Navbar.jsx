@@ -6,15 +6,15 @@ function Navbar() {
   const auth = useAuth();
 
   const routes = [
-    { to: "/dashboard-pqrsf", text: "Listado", private: true },
+    { to: "/dashboard-pqrsf", text: "GESTIÓN Y CONSULTA PQRSF", private: true },
     { to: "/login", text: "Login", private: false, publicOnly: true },
     {
       to: "/dashboard-pqrsf-admin",
-      text: "Admin",
+      text: "INDICADORES",
       private: true,
       isAdmin: true,
     },
-    { to: "/Logout", text: "Cerrar sesión", private: true },
+    { to: "/Logout", text: "CERRAR SESIÓN", private: true },
   ];
 
   return (
