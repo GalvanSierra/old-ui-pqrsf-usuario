@@ -7,7 +7,7 @@ function Navbar() {
 
   const routes = [
     { to: "/dashboard-pqrsf", text: "GESTIÓN Y CONSULTA PQRSF", private: true },
-    { to: "/login", text: "Login", private: false, publicOnly: true },
+    { to: "/login", text: "INICIA SESIÓN", private: false, publicOnly: true },
     {
       to: "/dashboard-pqrsf-admin",
       text: "INDICADORES",
