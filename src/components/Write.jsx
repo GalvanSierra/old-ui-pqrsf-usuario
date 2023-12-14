@@ -56,7 +56,6 @@ function Write() {
 
   const peticionarioTipoIdSelected = watch("peticionario.tipoId");
 
-  console.log(departamentoOptions);
   const pacienteTipoIdSelected = watch("paciente.tipoId");
   const epsSelected = watch("paciente.epsId");
 
@@ -94,8 +93,9 @@ function Write() {
   const closeTutelaInput = () => setTutelaInput(false);
 
   const onSubmit = async (data) => {
+    console.log("data", data);
     data.tutela = Boolean(data.tutela);
-    data.seGestiono = Boolean(data.seGestiono);
+    data.seGestiono = Boolean(data.seGestiono || false);
     data.seDioRespuesta = Boolean(data.seDioRespuesta);
 
     if (!data.peticionario?.tipoId && !data.peticionario?.id)
@@ -106,6 +106,7 @@ function Write() {
     for (let key in data) {
       if (!data[key]) delete data[key];
     }
+    console.log("data_API", data);
 
     setNewPeticion(data);
     setIsOpenModalConfirm(true);
@@ -115,6 +116,7 @@ function Write() {
     try {
       const token = localStorage.getItem("token");
 
+      console.log(newPeticion);
       setLoading(true);
       const idPeticion = await api
         .post("/peticiones", newPeticion, {
@@ -619,15 +621,15 @@ function Write() {
               <input
                 className="input--radio"
                 type="radio"
-                value="1"
-                {...register("seGestiono", { valueAsNumber: true })}
+                value={true}
+                {...register("seGestiono")}
               />
               <label>Si</label>
               <input
                 className="input--radio"
                 type="radio"
-                value="0"
-                {...register("seGestiono", { valueAsNumber: true })}
+                value=""
+                {...register("seGestiono")}
               />
               <label>No</label>
             </div>
@@ -812,6 +814,7 @@ function Write() {
                 setDerechosSelected(selectedValues);
               }}
             >
+              <option value=""></option>
               {derechosOptions.map((derecho) => (
                 <option key={derecho.id} value={derecho.id}>
                   {derecho.derecho}

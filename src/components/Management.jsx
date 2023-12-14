@@ -798,6 +798,7 @@ function Management() {
                 setDerechosSelected(selectedValues);
               }}
             >
+              <option value=""></option>
               {derechosOptions.map((derecho) => (
                 <option key={derecho.id} value={derecho.id}>
                   {derecho.derecho}

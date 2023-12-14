@@ -83,23 +83,41 @@ function DashboardAdmin() {
   const [dataTipoAndEps, setDataTipoAndEps] = useState([]);
 
   const getData = async (paramQuery) => {
+    const token = localStorage.getItem("token");
+
     await api
-      .post("/indicadores/por_eps", paramQuery)
+      .post("/indicadores/por_eps", paramQuery, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => response.data)
       .then((data) => setDataEPS(data));
 
     await api
-      .post("/indicadores/por_servicio", paramQuery)
+      .post("/indicadores/por_servicio", paramQuery, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => response.data)
       .then((data) => setDataServicio(data));
 
     await api
-      .post("/indicadores/por_tipo", paramQuery)
+      .post("/indicadores/por_tipo", paramQuery, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => response.data)
       .then((data) => setDataTipo(data));
 
     await api
-      .post("/indicadores/por_tipo_y_eps", paramQuery)
+      .post("/indicadores/por_tipo_y_eps", paramQuery, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => response.data)
       .then((data) => setDataTipoAndEps(data));
   };
@@ -116,7 +134,8 @@ function DashboardAdmin() {
         <div className="flex-container admin__container">
           <p>
             Señor usuario por favor seleccione las fechas y luego de clic en
-            GENERAR INFORME para ver los resultados.
+            GENERAR INFORME para ver los resultados. Nota: agrega un día de más
+            en el campos de fecha de finalización.
           </p>
           <div className="input-box admin__input">
             <label>Fecha de inicio</label>
