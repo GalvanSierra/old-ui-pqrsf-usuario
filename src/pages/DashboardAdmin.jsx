@@ -83,44 +83,47 @@ function DashboardAdmin() {
   const [dataTipoAndEps, setDataTipoAndEps] = useState([]);
 
   const getData = async (paramQuery) => {
-    const token = localStorage.getItem("token");
+    try {
+      const token = localStorage.getItem("token");
 
-    await api
-      .post("/indicadores/por_eps", paramQuery, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => response.data)
-      .then((data) => setDataEPS(data));
+      const requests = [
+        api.post("/indicadores/por_eps", paramQuery, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }),
+        api.post("/indicadores/por_servicio", paramQuery, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }),
+        api.post("/indicadores/por_tipo", paramQuery, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }),
+        api.post("/indicadores/por_tipo_y_eps", paramQuery, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }),
+      ];
 
-    await api
-      .post("/indicadores/por_servicio", paramQuery, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => response.data)
-      .then((data) => setDataServicio(data));
+      const [dataEPS, dataServicio, dataTipo, dataTipoAndEps] =
+        await Promise.all(
+          requests.map((request) => request.then((response) => response.data))
+        );
 
-    await api
-      .post("/indicadores/por_tipo", paramQuery, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => response.data)
-      .then((data) => setDataTipo(data));
-
-    await api
-      .post("/indicadores/por_tipo_y_eps", paramQuery, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => response.data)
-      .then((data) => setDataTipoAndEps(data));
+      setDataEPS(dataEPS);
+      setDataServicio(dataServicio);
+      setDataTipo(dataTipo);
+      setDataTipoAndEps(dataTipoAndEps);
+    } catch (error) {
+      // Manejar errores aquí si es necesario
+      console.error("Error al obtener datos:", error);
+    }
   };
+
   const onSubmit = async (paramQuery) => {
     setParamsQuery(paramQuery);
 

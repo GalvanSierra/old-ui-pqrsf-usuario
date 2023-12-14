@@ -769,6 +769,22 @@ function Write() {
             </div>
           </div>
 
+          <div className="input-box form__input">
+            <label>Fecha de respuesta de las solicitud</label>
+            <input
+              className="input"
+              type="date"
+              {...register("fechaRespuesta", {
+                // validate: (value) => {
+                //   if (value < today) {
+                //     return "La fecha debe ser posterior o igual al día de hoy";
+                //   }
+                //   return true;
+                // },
+              })}
+            />
+          </div>
+
           <div className="input-box form__input--textarea">
             <label>Descripcion de la gestión</label>
             <textarea
@@ -822,24 +838,25 @@ function Write() {
               ))}
             </select>
             <ul className="derechos-list">
-              {derechosSelected.map((selectedId) => {
-                const selectedDerecho = derechosOptions.find(
-                  (derecho) => derecho.id === parseInt(selectedId, 10)
-                );
-                return (
-                  <li className="derecho" key={selectedId}>
-                    <strong>Derecho:</strong> {selectedDerecho?.derecho}
-                    <br />
-                    <strong>Valor:</strong> {selectedDerecho?.valor}
-                    <br />
-                    <strong>Deber:</strong>
-                    {selectedDerecho?.deber}
-                    <br />
-                    <strong>Interpretación:</strong>
-                    {selectedDerecho?.interpretacion}
-                  </li>
-                );
-              })}
+              {derechosSelected &&
+                derechosSelected.map((selectedId) => {
+                  const selectedDerecho = derechosOptions.find(
+                    (derecho) => derecho.id === parseInt(selectedId, 10)
+                  );
+                  return (
+                    <li className="derecho" key={selectedId}>
+                      <strong>Derecho:</strong> {selectedDerecho?.derecho}
+                      <br />
+                      <strong>Valor:</strong> {selectedDerecho?.valor}
+                      <br />
+                      <strong>Deber:</strong>
+                      {selectedDerecho?.deber}
+                      <br />
+                      <strong>Interpretación:</strong>
+                      {selectedDerecho?.interpretacion}
+                    </li>
+                  );
+                })}
             </ul>
           </div>
         </fieldset>

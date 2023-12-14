@@ -227,20 +227,30 @@ function Management() {
       const token = localStorage.getItem("token");
       setLoading(true); // Activar el indicador de carga
 
-      const resultado = await api.patch(`/peticiones/${id}`, changes, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log(resultado);
+      const identificador = await api
+        .patch(`/peticiones/${id}`, changes, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => response.data)
+        .then((data) => data.id);
 
       await Promise.all(
         derechosSelected.map(async (derecho) => {
           return await api
-            .post("/peticiones/add-item", {
-              peticionId: id,
-              derechoId: derecho,
-            })
+            .post(
+              "/peticiones/add-item",
+              {
+                peticionId: identificador,
+                derechoId: derecho,
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            )
             .catch((error) => {
               console.error("Error en la solicitud DERECHO", error);
             });
