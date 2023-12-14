@@ -80,7 +80,7 @@ function Write() {
   }, [pacienteTipoIdSelected, setValue]);
 
   useEffect(() => {
-    if (epsSelected === EPS_NA) {
+    if (EPS_NA.includes(epsSelected)) {
       setValue("paciente.regimenId", REGIMEN_NA);
       setIsDisableRegimen(true);
     } else {

@@ -1,4 +1,4 @@
-export const EPS_NA = 15;
+export const EPS_NA = [8, 15];
 export const REGIMEN_NA = 5;
 export const TIPOS_NA = ["AS", "MS", "NA"];
 
