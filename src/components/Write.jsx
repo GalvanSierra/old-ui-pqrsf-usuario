@@ -35,6 +35,42 @@ function Write() {
     `/departamentos/${watch("paciente.departamentoId") || 0}/municipios`
   );
 
+  useEffect(() => {
+    Promise.all([
+      tipoPeticionOptions,
+      epsOptions,
+      regimenOptions,
+      tipoIdOptions,
+      departamentoOptions,
+      areaOptions,
+      servicioOptions,
+      estadoOptions,
+      clasePeticionOptions,
+      complejidadOptions,
+      liderOptions,
+      calidadOptions,
+      canalOptions,
+      derechosOptions,
+      municipioOptions,
+    ]);
+  }, [
+    tipoPeticionOptions,
+    epsOptions,
+    regimenOptions,
+    tipoIdOptions,
+    departamentoOptions,
+    areaOptions,
+    servicioOptions,
+    estadoOptions,
+    clasePeticionOptions,
+    complejidadOptions,
+    liderOptions,
+    calidadOptions,
+    canalOptions,
+    derechosOptions,
+    municipioOptions,
+  ]);
+
   // deshabilitar campos  campos
   const [isPeticionarioRequiere, setIsPeticionarioRequiere] = useState(false);
   const [isDisabledIdPeticionario, setIsDisabledIdPeticionario] =
