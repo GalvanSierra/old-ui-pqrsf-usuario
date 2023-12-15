@@ -41,6 +41,7 @@ function Dashboard() {
           },
         });
         const data = response.data;
+
         setPeticiones(data);
       } catch (error) {
         if (error.response && error.response.status === 401) {
@@ -216,6 +217,7 @@ function Dashboard() {
             rows={peticiones}
             columns={columns}
             autoHeight
+            density="compact" // Esta línea configura la vista compacta por defecto
             disableExtendRowFullWidth
             slots={{ toolbar: CustomToolbar }}
             style={{ fontSize: "1.6rem" }}
@@ -234,6 +236,7 @@ function Dashboard() {
                   },
                 ],
               },
+              density: "compact", // Esta línea configura la vista compacta por defecto
             }}
           />
         </div>

@@ -467,3 +467,7 @@ tbody tr:hover td {
   margin: 30px 0;
   min-width: 200px;
 }
+
+#labelDirigidaA::after {
+  content: " (Nombre, cargo o área del funcionario del Hospital)";
+}

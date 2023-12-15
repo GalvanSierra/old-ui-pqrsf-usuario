@@ -14,7 +14,7 @@ function DashboardSearch({ data }) {
   const navigate = useNavigate();
 
   const { options: tipoPeticionOptions } = useOptions("/tipos_peticion");
-  const { options: estadoOptions } = useOptions("/estados");
+  // const { options: estadoOptions } = useOptions("/estados");
 
   const handleEdit = (peticionId) => {
     if (user.role === "atencion")
@@ -56,16 +56,16 @@ function DashboardSearch({ data }) {
       },
     },
     {
-      field: "estadoId",
-      headerName: "Estado",
-      type: "singleSelect",
+      field: "pacienteId",
+      headerName: "No Documento",
+      // type: "singleSelect",
       width: 160,
       valueGetter: (params) => {
-        return params.row.estado?.nombre;
+        return params.row.paciente?.id;
       },
-      valueOptions: () => {
-        return estadoOptions.map((opc) => opc?.nombre);
-      },
+      // valueOptions: () => {
+      //   return estadoOptions.map((opc) => opc?.nombre);
+      // },
     },
     // {
     //   field: "peticionario",
@@ -118,10 +118,11 @@ function DashboardSearch({ data }) {
           <DataGrid
             rows={data}
             columns={columns}
+            density="compact"
             autoHeight
             disableExtendRowFullWidth
             slots={{ toolbar: CustomToolbar }}
-            style={{ fontSize: "1.6rem" }}
+            style={{ fontSize: "1.6rem", overflowY: "auto" }}
             initialState={{
               filter: {
                 filterModel: {
@@ -134,8 +135,9 @@ function DashboardSearch({ data }) {
               sorting: {
                 sortModel: [{ field: "fechaRecepcion", sort: "desc" }],
               },
+              density: "compact",
             }}
-            pageSizeOptions={[5, 10, 25]} // Aquí agregamos la propiedad pageSizeOptions
+            pageSizeOptions={[5, 10, 17]} // Aquí agregamos la propiedad pageSizeOptions
           />
         </div>
       </div>

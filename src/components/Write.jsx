@@ -589,7 +589,7 @@ function Write() {
           </div>
 
           <div className="input-box form__input">
-            <label>Solicitud dirigida a</label>
+            <label id="labelDirigidaA">Solicitud dirigida a</label>
             <input
               className="input"
               type="text"
