@@ -56,7 +56,7 @@ function DataGridInfoAvg({ data }) {
               {uniqueProperties.map((prop, idx) => (
                 <td key={idx}>{row[prop]}</td>
               ))}
-              <td>{row.total_general / row.count}</td>
+              <td>{(row.total_general / row.count).toFixed(2)}</td>
             </tr>
           ))}
         </tbody>

@@ -220,7 +220,7 @@ function Dashboard() {
             density="compact" // Esta línea configura la vista compacta por defecto
             disableExtendRowFullWidth
             slots={{ toolbar: CustomToolbar }}
-            style={{ fontSize: "1.6rem" }}
+            style={{ fontSize: "1.6rem", marginBottom: "5rem" }}
             initialState={{
               filter: {
                 filterModel: {
