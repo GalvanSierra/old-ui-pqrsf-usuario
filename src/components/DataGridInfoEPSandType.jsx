@@ -1,26 +1,26 @@
 /* eslint-disable react/prop-types */
 function DataGridInfoEPSandType({ data }) {
-  const getUniqueProperties = () => {
-    const uniqueProperties = new Set();
+  const getUniqueTypes = () => {
+    const uniqueTypes = new Set();
     data.forEach((item) => {
-      uniqueProperties.add(item["eps"]);
+      uniqueTypes.add(item["tipo"]);
     });
-    return Array.from(uniqueProperties);
+    return Array.from(uniqueTypes);
   };
 
-  const uniqueProperties = getUniqueProperties();
+  const uniqueTypes = getUniqueTypes();
 
   const groupedData = data.reduce((acc, item) => {
-    if (!acc[item.tipo]) {
-      acc[item.tipo] = {
-        tipo: item.tipo,
+    if (!acc[item["eps"]]) {
+      acc[item["eps"]] = {
+        eps: item["eps"],
         total_general: 0,
-        // Inicializar recuento para cada EPS
-        ...Object.fromEntries(uniqueProperties.map((prop) => [prop, 0])),
+        // Inicializar recuento para cada tipo de solicitud
+        ...Object.fromEntries(uniqueTypes.map((type) => [type, 0])),
       };
     }
-    acc[item.tipo][item["eps"]] += item["total"];
-    acc[item.tipo].total_general += item["total"];
+    acc[item["eps"]][item["tipo"]] += item["total"];
+    acc[item["eps"]].total_general += item["total"];
     return acc;
   }, {});
 
@@ -31,9 +31,9 @@ function DataGridInfoEPSandType({ data }) {
       <table>
         <thead>
           <tr>
-            <th>Tipo de solicitud</th>
-            {uniqueProperties.map((prop) => (
-              <th key={prop}>{prop}</th>
+            <th>EPS</th>
+            {uniqueTypes.map((type) => (
+              <th key={type}>{type}</th>
             ))}
             <th>Total General</th>
           </tr>
@@ -41,9 +41,9 @@ function DataGridInfoEPSandType({ data }) {
         <tbody>
           {tableRows.map((row, index) => (
             <tr key={index}>
-              <td>{row.tipo}</td>
-              {uniqueProperties.map((prop, idx) => (
-                <td key={idx}>{row[prop]}</td>
+              <td>{row.eps}</td>
+              {uniqueTypes.map((type, idx) => (
+                <td key={idx}>{row[type]}</td>
               ))}
               <td>{row.total_general}</td>
             </tr>

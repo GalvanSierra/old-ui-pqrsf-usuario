@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { DataGridInfo } from "../components/DataGridInfo";
 import { DataGridInfoEPSandType } from "../components/DataGridInfoEPSandType";
+import { DataGridInfoAvg } from "../components/DataGridInfoAverage";
 
 function DashboardAdmin() {
   const {
@@ -81,6 +82,7 @@ function DashboardAdmin() {
   const [dataServicio, setDataServicio] = useState([]);
   const [dataTipo, setDataTipo] = useState([]);
   const [dataTipoAndEps, setDataTipoAndEps] = useState([]);
+  const [dataAvg, setDataAvg] = useState([]);
 
   const getData = async (paramQuery) => {
     try {
@@ -107,9 +109,14 @@ function DashboardAdmin() {
             Authorization: `Bearer ${token}`,
           },
         }),
+        api.post("/indicadores/promedio_respuesta", paramQuery, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }),
       ];
 
-      const [dataEPS, dataServicio, dataTipo, dataTipoAndEps] =
+      const [dataEPS, dataServicio, dataTipo, dataTipoAndEps, dataAvg] =
         await Promise.all(
           requests.map((request) => request.then((response) => response.data))
         );
@@ -118,6 +125,7 @@ function DashboardAdmin() {
       setDataServicio(dataServicio);
       setDataTipo(dataTipo);
       setDataTipoAndEps(dataTipoAndEps);
+      setDataAvg(dataAvg);
     } catch (error) {
       // Manejar errores aquí si es necesario
       console.error("Error al obtener datos:", error);
@@ -201,6 +209,9 @@ function DashboardAdmin() {
 
           <h2>Indicadores por Tipo de solicitud</h2>
           <DataGridInfoEPSandType data={dataTipoAndEps} atributo={"eps"} />
+
+          <h2>Indicadores promedio</h2>
+          <DataGridInfoAvg data={dataAvg} atributo={"tipo"} />
           <br />
         </div>
       )}

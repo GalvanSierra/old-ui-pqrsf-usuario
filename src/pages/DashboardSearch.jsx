@@ -82,9 +82,13 @@ function DashboardSearch({ data }) {
       headerName: "Paciente",
       width: 400,
       valueGetter: (params) => {
-        return `${params.row.paciente?.nombre || ""} ${
-          params.row.paciente?.apellido || ""
-        }`;
+        const nombre = (params.row.paciente?.nombre || "")
+          .trimStart()
+          .trimEnd();
+        const apellido = (params.row.paciente?.apellido || "")
+          .trimStart()
+          .trimEnd();
+        return `${nombre} ${apellido}`;
       },
     },
     {
