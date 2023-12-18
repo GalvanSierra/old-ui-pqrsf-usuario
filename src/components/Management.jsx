@@ -512,20 +512,24 @@ function Management() {
           <div className="input-box form__input">
             <label>¿Aplica tutela?</label>
             <div>
-              <input
-                className="input--radio"
-                type="radio"
-                value="1"
-                {...register("tutela", { disabled: true })}
-              />
-              <label>Si</label>
-              <input
-                className="input--radio"
-                type="radio"
-                value="0"
-                {...register("tutela", { disabled: true })}
-              />
-              <label>No</label>
+              <label>
+                <input
+                  className="input--radio"
+                  type="radio"
+                  value="1"
+                  {...register("tutela", { disabled: true })}
+                />
+                Si
+              </label>
+              <label>
+                <input
+                  className="input--radio"
+                  type="radio"
+                  value="0"
+                  {...register("tutela", { disabled: true })}
+                />
+                No
+              </label>
             </div>
           </div>
 
@@ -602,26 +606,30 @@ function Management() {
           <div className="input-box form__input">
             <label>¿Se va a radicar?</label>
             <div>
-              <input
-                className="input--radio"
-                type="radio"
-                value="1"
-                {...register("seGestiono", {
-                  valueAsNumber: true,
-                  disabled: isDonePeticion || isResponded,
-                })}
-              />
-              <label>Si</label>
-              <input
-                className="input--radio"
-                type="radio"
-                value="0"
-                {...register("seGestiono", {
-                  valueAsNumber: true,
-                  disabled: isDonePeticion || isResponded,
-                })}
-              />
-              <label>No</label>
+              <label>
+                <input
+                  className="input--radio"
+                  type="radio"
+                  value="1"
+                  {...register("seGestiono", {
+                    valueAsNumber: true,
+                    disabled: isDonePeticion || isResponded,
+                  })}
+                />
+                Si
+              </label>
+              <label>
+                <input
+                  className="input--radio"
+                  type="radio"
+                  value="0"
+                  {...register("seGestiono", {
+                    valueAsNumber: true,
+                    disabled: isDonePeticion || isResponded,
+                  })}
+                />
+                No
+              </label>
             </div>
           </div>
 
@@ -716,26 +724,30 @@ function Management() {
           <div className="input-box form__input">
             <label>¿Se dio respuesta al usuario?</label>
             <div>
-              <input
-                className="input--radio"
-                type="radio"
-                value="1"
-                {...register("seDioRespuesta", {
-                  valueAsNumber: true,
-                  disabled: isDonePeticion,
-                })}
-              />
-              <label>Si</label>
-              <input
-                className="input--radio"
-                type="radio"
-                value="0"
-                {...register("seDioRespuesta", {
-                  valueAsNumber: true,
-                  disabled: isDonePeticion,
-                })}
-              />
-              <label>No</label>
+              <label>
+                <input
+                  className="input--radio"
+                  type="radio"
+                  value="1"
+                  {...register("seDioRespuesta", {
+                    valueAsNumber: true,
+                    disabled: isDonePeticion,
+                  })}
+                />
+                Si
+              </label>
+              <label>
+                <input
+                  className="input--radio"
+                  type="radio"
+                  value="0"
+                  {...register("seDioRespuesta", {
+                    valueAsNumber: true,
+                    disabled: isDonePeticion,
+                  })}
+                />
+                No
+              </label>
             </div>
           </div>
 

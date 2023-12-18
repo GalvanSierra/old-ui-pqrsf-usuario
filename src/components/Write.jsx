@@ -607,22 +607,26 @@ function Write() {
           <div className="input-box form__input">
             <label>¿Aplica tutela?</label>
             <div>
-              <input
-                className="input--radio"
-                type="radio"
-                value="1"
-                {...register("tutela", { valueAsNumber: true })}
-                onClick={openTutelaInput}
-              />
-              <label>Si</label>
-              <input
-                className="input--radio"
-                type="radio"
-                value="0"
-                {...register("tutela", { valueAsNumber: true })}
-                onClick={closeTutelaInput}
-              />
-              <label>No</label>
+              <label>
+                <input
+                  className="input--radio"
+                  type="radio"
+                  value="1"
+                  {...register("tutela", { valueAsNumber: true })}
+                  onClick={openTutelaInput}
+                />
+                Si
+              </label>
+              <label>
+                <input
+                  className="input--radio"
+                  type="radio"
+                  value="0"
+                  {...register("tutela", { valueAsNumber: true })}
+                  onClick={closeTutelaInput}
+                />
+                No
+              </label>
             </div>
           </div>
 
@@ -654,20 +658,24 @@ function Write() {
           <div className="input-box form__input">
             <label>¿Se va a radicar?</label>
             <div>
-              <input
-                className="input--radio"
-                type="radio"
-                value={true}
-                {...register("seGestiono")}
-              />
-              <label>Si</label>
-              <input
-                className="input--radio"
-                type="radio"
-                value=""
-                {...register("seGestiono")}
-              />
-              <label>No</label>
+              <label>
+                <input
+                  className="input--radio"
+                  type="radio"
+                  value={true}
+                  {...register("seGestiono")}
+                />
+                Si
+              </label>
+              <label>
+                <input
+                  className="input--radio"
+                  type="radio"
+                  value=""
+                  {...register("seGestiono")}
+                />
+                No
+              </label>
             </div>
           </div>
 
@@ -788,20 +796,24 @@ function Write() {
           <div className="input-box form__input">
             <label>¿Se dio respuesta al usuario?</label>
             <div>
-              <input
-                className="input--radio"
-                type="radio"
-                value="1"
-                {...register("seDioRespuesta", { valueAsNumber: true })}
-              />
-              <label>Si</label>
-              <input
-                className="input--radio"
-                type="radio"
-                value="0"
-                {...register("seDioRespuesta", { valueAsNumber: true })}
-              />
-              <label>No</label>
+              <label>
+                <input
+                  className="input--radio"
+                  type="radio"
+                  value="1"
+                  {...register("seDioRespuesta", { valueAsNumber: true })}
+                />
+                Si
+              </label>
+              <label>
+                <input
+                  className="input--radio"
+                  type="radio"
+                  value="0"
+                  {...register("seDioRespuesta", { valueAsNumber: true })}
+                />
+                No
+              </label>
             </div>
           </div>
 
