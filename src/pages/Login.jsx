@@ -68,6 +68,15 @@ function Login() {
         <Link to="/recovery-password" className="login__link">
           <p>¿Olvídate tu contraseña?</p>
         </Link>
+        <p className="login__link">
+          <a
+            className="login__link"
+            href="https://drive.google.com/file/d/1WBRWxtAjcEHQBmu0q858KibGix3ofu97/view?usp=drive_link"
+            target="blank"
+          >
+            Manual de usuario
+          </a>
+        </p>
         {isInvalido && (
           <p className="alert login__alert">email y/o contraseña inválidos</p>
         )}
