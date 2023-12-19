@@ -198,19 +198,19 @@ function DashboardAdmin() {
           >
             Exportar datos
           </button>
-          <h2>Indicadores por EPS</h2>
+          <h2>Indicadores por EPS y Mes</h2>
           <DataGridInfo data={dataEPS} atributo={"eps"} />
 
-          <h2>Indicadores por Servicio</h2>
+          <h2>Indicadores por Servicio y Mes</h2>
           <DataGridInfo data={dataServicio} atributo={"servicio"} />
 
-          <h2>Indicadores por Tipo de solicitud</h2>
+          <h2>Indicadores por Tipo de Solicitud y Mes</h2>
           <DataGridInfo data={dataTipo} atributo={"tipo"} />
 
-          <h2>Indicadores por Tipo de solicitud</h2>
+          <h2>Indicadores por Tipo de Solicitud y EPS</h2>
           <DataGridInfoEPSandType data={dataTipoAndEps} atributo={"eps"} />
 
-          <h2>Indicadores promedio</h2>
+          <h2>Indicadores Promedio de Tiempo de Respuesta</h2>
           <DataGridInfoAvg data={dataAvg} atributo={"tipo"} />
           <br />
         </div>
