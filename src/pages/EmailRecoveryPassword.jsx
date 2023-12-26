@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import api from "../service/api";
 import { Link } from "react-router-dom";
-import { SetMealSharp } from "@mui/icons-material";
 
 function EmailRecoveryPassword() {
   const {

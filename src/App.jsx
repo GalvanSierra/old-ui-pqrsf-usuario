@@ -8,12 +8,12 @@ import { Navbar } from "./components/Navbar";
 import { AuthProvider } from "./contexts/AuthContext";
 
 import { AuthRoute } from "./components/AuthRoute";
-import { Management } from "./components/Management";
-import { Write } from "./components/Write";
+import { Management } from "./pages/Management";
+import { Write } from "./pages/Write";
 import { DashboardAdmin } from "./pages/DashboardAdmin";
 
 import "./style.css";
-import { ManagementLider } from "./components/ManagementLider";
+import { ManagementLider } from "./pages/ManagementLider";
 import { RecoveryPassword } from "./pages/RecoveryPassword";
 import { EmailRecoveryPassword } from "./pages/EmailRecoveryPassword";
 
