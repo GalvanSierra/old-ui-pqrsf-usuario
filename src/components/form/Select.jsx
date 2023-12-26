@@ -21,8 +21,8 @@ export function Select({ name, required, options, inputProps }) {
         })}
       >
         {options.map((option) => (
-          <option key={option.id} value={option.id}>
-            {option.nombre}
+          <option key={option.value} value={option.value}>
+            {option.label}
           </option>
         ))}
       </select>

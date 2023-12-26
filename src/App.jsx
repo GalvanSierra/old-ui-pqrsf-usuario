@@ -1,21 +1,23 @@
 import { BrowserRouter, useRoutes } from "react-router-dom";
 
-import { Login } from "./pages/Login";
-import { NotFound } from "./pages/NotFound";
-import { Dashboard } from "./pages/Dashboard";
-import { Logout } from "./pages/Logout";
 import { Navbar } from "./components/Navbar";
 import { AuthProvider } from "./contexts/AuthContext";
 
 import { AuthRoute } from "./components/AuthRoute";
-import { Management } from "./pages/Management";
-import { Write } from "./pages/Write";
-import { DashboardAdmin } from "./pages/DashboardAdmin";
 
 import "./style.css";
-import { ManagementLider } from "./pages/ManagementLider";
-import { RecoveryPassword } from "./pages/RecoveryPassword";
-import { EmailRecoveryPassword } from "./pages/EmailRecoveryPassword";
+import {
+  Dashboard,
+  DashboardAdmin,
+  EmailRecoveryPassword,
+  Login,
+  Logout,
+  Management,
+  ManagementLider,
+  NotFound,
+  RecoveryPassword,
+  Write,
+} from "./pages";
 
 const AppRoute = () => {
   const routes = useRoutes([

@@ -8,6 +8,7 @@ import { EPS_NA, REGIMEN_NA, TIPOS_NA } from "../constants";
 import { Select } from "../components/form/Select";
 import { Input } from "../components/form/Input";
 import { useOptionsWithAdapter } from "../hooks/useOptionsWithAdapter";
+import { getOptionsLiderAdapter } from "../adapter/getOptionAdapter";
 
 const validateNumbers = {
   value: /^(\d+|[a-zA-Z0-9]+)$/,
@@ -49,16 +50,21 @@ function Write() {
   const { options: tipoPeticionOptions } =
     useOptionsWithAdapter("/tipos_peticion");
   // const { options: tipoPeticionOptions } = useOptions("/tipos_peticion");
-  const { options: epsOptions } = useOptions("/eps");
-  const { options: regimenOptions } = useOptions("/regimenes");
-  const { options: tipoIdOptions } = useOptions("/tipos_identificacion");
-  const { options: departamentoOptions } = useOptions("/departamentos");
-  const { options: areaOptions } = useOptions("/areas");
-  const { options: servicioOptions } = useOptions("/servicios");
-  const { options: estadoOptions } = useOptions("/estados");
-  const { options: clasePeticionOptions } = useOptions("/clases_peticion");
-  const { options: complejidadOptions } = useOptions("/complejidades");
-  const { options: liderOptions } = useOptions("/lideres");
+  const { options: epsOptions } = useOptionsWithAdapter("/eps");
+  const { options: regimenOptions } = useOptionsWithAdapter("/regimenes");
+  const { options: tipoIdOptions } = useOptionsWithAdapter(
+    "/tipos_identificacion"
+  );
+  const { options: departamentoOptions } =
+    useOptionsWithAdapter("/departamentos");
+  const { options: areaOptions } = useOptionsWithAdapter("/areas");
+  const { options: servicioOptions } = useOptionsWithAdapter("/servicios");
+  const { options: estadoOptions } = useOptionsWithAdapter("/estados");
+  const { options: clasePeticionOptions } =
+    useOptionsWithAdapter("/clases_peticion");
+  const { options: complejidadOptions } =
+    useOptionsWithAdapter("/complejidades");
+  const { options: liderOptions } = useOptionsWithAdapter("/lideres");
   const { options: calidadOptions } = useOptions("/calidad");
   const { options: canalOptions } = useOptions("/canales");
   const { options: derechosOptions } = useOptions("/derechos_paciente");

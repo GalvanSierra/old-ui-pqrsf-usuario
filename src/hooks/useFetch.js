@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 
-import api from "../service/api";
-import { getOptionsAdapter } from "../adapter/getOptionAdapter";
+export const useFetch = (url) => {
+  const BASE_URL = "http://172.16.1.17:3065/api/v1";
 
-export const useOptionsWithAdapter = (url, adapter = getOptionsAdapter) => {
   const [options, setOptions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -11,10 +11,9 @@ export const useOptionsWithAdapter = (url, adapter = getOptionsAdapter) => {
   useEffect(() => {
     const fetchOptions = async () => {
       try {
-        await api
-          .get("/referencias" + url)
+        await axios
+          .get(BASE_URL + url)
           .then((response) => response.data)
-          .then((data) => adapter(data))
           .then((data) => {
             setOptions(data);
             setIsLoading(false);
