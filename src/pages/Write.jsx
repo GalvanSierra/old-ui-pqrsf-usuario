@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { CircularProgress } from "@mui/material";
 import api from "../service/api";
 import { useOptions } from "../hooks/useOptions";
-import { EPS_NA, REGIMEN_NA, TIPOS_NA } from "./constants";
+import { EPS_NA, REGIMEN_NA, TIPOS_NA } from "../constants";
 
 function Write() {
   const {
