@@ -588,12 +588,12 @@ function Management() {
               {...register("fechaDiligencia", {
                 required: "Campo requerido",
                 disabled: isDonePeticion || isResponded,
-                validate: (value) => {
-                  if (value < today && !value) {
-                    return "La fecha debe ser posterior o igual al día de hoy";
-                  }
-                  return true;
-                },
+                // validate: (value) => {
+                //   if (value < today && !value) {
+                //     return "La fecha debe ser posterior o igual al día de hoy";
+                //   }
+                //   return true;
+                // },
               })}
             />
             {errors.fechaDiligencia && (

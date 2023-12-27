@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 
 import api from "../service/api";
 import { useAuth } from "../hooks/useAuth";
+import { useOptions } from "../hooks/useOptions";
 
 function ManagementLider() {
   const { id } = useParams();
@@ -30,39 +31,94 @@ function ManagementLider() {
   const departamentoSelected = watch("paciente.departamentoId") || 0;
   //   Traer las opciones para los distintos selects
 
-  const [tipoPeticionOptions, seTipoPeticionOptions] = useState([]);
-  const [epsOption, setEpsOption] = useState([]);
-  const [tipoIdOptions, setTipoIdOptions] = useState([]);
-  const [departamentoOptions, setDepartamentoOptions] = useState([]);
-  const [municipioOptions, setMunicipioOptions] = useState([]);
-  const [areasOptions, setAreasOptions] = useState([]);
-  const [serviciosOptions, setServiciosOptions] = useState([]);
-  const [estadoOptions, setEstadoOptions] = useState([]);
-  const [clasePeticionOptions, setClasePeticionOptions] = useState([]);
-  const [complejidadOptions, setComplejidadOptions] = useState([]);
-  const [lideresOptions, setLideresOptions] = useState([]);
-  const [calidadOptions, setCalidadOptions] = useState([]);
-  const [regimenOptions, setRegimenOptions] = useState([]);
-  const [canalOptions, setCanalOptions] = useState([]);
+  const { options: tipoPeticionOptions } = useOptions("/tipos_peticion");
+  const { options: epsOptions } = useOptions("/eps");
+  const { options: regimenOptions } = useOptions("/regimenes");
+  const { options: tipoIdOptions } = useOptions("/tipos_identificacion");
+  const { options: departamentoOptions } = useOptions("/departamentos");
+  const { options: areaOptions } = useOptions("/areas");
+  const { options: servicioOptions } = useOptions("/servicios");
+  const { options: estadoOptions2 } = useOptions("/estados");
+  const estadoOptions = estadoOptions2.slice(1, 4);
+
+  const { options: clasePeticionOptions } = useOptions("/clases_peticion");
+  const { options: complejidadOptions } = useOptions("/complejidades");
+  const { options: liderOptions } = useOptions("/lideres");
+  const { options: calidadOptions } = useOptions("/calidad");
+  const { options: canalOptions } = useOptions("/canales");
+  const { options: municipioOptions } = useOptions(
+    `/departamentos/${watch("paciente.departamentoId") || 0}/municipios`
+  );
+
+  // const [tipoPeticionOptions, seTipoPeticionOptions] = useState([]);
+  // const [epsOptions, setEpsOption] = useState([]);
+  // const [tipoIdOptions, setTipoIdOptions] = useState([]);
+  // const [departamentoOptions, setDepartamentoOptions] = useState([]);
+  // const [municipioOptions, setMunicipioOptions] = useState([]);
+  // const [areaOptions, setAreasOptions] = useState([]);
+  // const [servicioOptions, setServiciosOptions] = useState([]);
+  // const [estadoOptions, setEstadoOptions] = useState([]);
+  // const [clasePeticionOptions, setClasePeticionOptions] = useState([]);
+  // const [complejidadOptions, setComplejidadOptions] = useState([]);
+  // const [liderOptions, setLideresOptions] = useState([]);
+  // const [calidadOptions, setCalidadOptions] = useState([]);
+  // const [regimenOptions, setRegimenOptions] = useState([]);
+  // const [canalOptions, setCanalOptions] = useState([]);
   const [derechosOptions, setDerechosOptions] = useState([]);
 
-  const urls = {
-    tipoPeticion: "/referencias/tipos_peticion",
-    eps: "referencias/eps",
-    tipoId: `/referencias/tipos_identificacion`,
-    departamentos: `/referencias/departamentos`,
-    municipios: `referencias/departamentos/${departamentoSelected}/municipios`,
-    areas: "/referencias/areas",
-    servicios: "/referencias/servicios",
-    estado: `/referencias/estados`,
-    clasePeticion: `/referencias/clases_peticion`,
-    complejidad: `/referencias/complejidades`,
-    lideres: `/referencias/lideres`,
-    calidad: `/referencias/calidad`,
-    regimen: "/referencias/regimenes",
-    canal: "/referencias/canales",
-    derechos: "/referencias/derechos_paciente",
-  };
+  // const urls = {
+  //   tipoPeticion: "/referencias/tipos_peticion",
+  //   eps: "referencias/eps",
+  //   tipoId: `/referencias/tipos_identificacion`,
+  //   departamentos: `/referencias/departamentos`,
+  //   municipios: `referencias/departamentos/${departamentoSelected}/municipios`,
+  //   areas: "/referencias/areas",
+  //   servicios: "/referencias/servicios",
+  //   estado: `/referencias/estados`,
+  //   clasePeticion: `/referencias/clases_peticion`,
+  //   complejidad: `/referencias/complejidades`,
+  //   lideres: `/referencias/lideres`,
+  //   calidad: `/referencias/calidad`,
+  //   regimen: "/referencias/regimenes",
+  //   canal: "/referencias/canales",
+  //   derechos: "/referencias/derechos_paciente",
+  // };
+
+  useEffect(() => {
+    Promise.all([
+      tipoPeticionOptions,
+      epsOptions,
+      regimenOptions,
+      tipoIdOptions,
+      departamentoOptions,
+      areaOptions,
+      servicioOptions,
+      estadoOptions,
+      clasePeticionOptions,
+      complejidadOptions,
+      liderOptions,
+      calidadOptions,
+      canalOptions,
+      derechosOptions,
+      municipioOptions,
+    ]);
+  }, [
+    tipoPeticionOptions,
+    epsOptions,
+    regimenOptions,
+    tipoIdOptions,
+    departamentoOptions,
+    areaOptions,
+    servicioOptions,
+    estadoOptions,
+    clasePeticionOptions,
+    complejidadOptions,
+    liderOptions,
+    calidadOptions,
+    canalOptions,
+    derechosOptions,
+    municipioOptions,
+  ]);
 
   const fetchDataReference = async (url) => {
     const response = await api.get(url).then((response) => response.data);
@@ -81,20 +137,20 @@ function ManagementLider() {
         referenceData[names[index]] = result;
       });
 
-      seTipoPeticionOptions(referenceData.tipoPeticion);
-      setTipoIdOptions(referenceData.tipoId);
-      setEpsOption(referenceData.eps);
-      setDepartamentoOptions(referenceData.departamentos);
-      setMunicipioOptions(referenceData.municipios);
-      setAreasOptions(referenceData.areas);
-      setServiciosOptions(referenceData.servicios);
-      setEstadoOptions(referenceData.estado.slice(2, 4));
-      setClasePeticionOptions(referenceData.clasePeticion);
-      setComplejidadOptions(referenceData.complejidad);
-      setLideresOptions(referenceData.lideres);
-      setCalidadOptions(referenceData.calidad);
-      setRegimenOptions(referenceData.regimen);
-      setCanalOptions(referenceData.canal);
+      // seTipoPeticionOptions(referenceData.tipoPeticion);
+      // setTipoIdOptions(referenceData.tipoId);
+      // setEpsOption(referenceData.eps);
+      // setDepartamentoOptions(referenceData.departamentos);
+      // setMunicipioOptions(referenceData.municipios);
+      // setAreasOptions(referenceData.areas);
+      // setServiciosOptions(referenceData.servicios);
+      // setEstadoOptions(referenceData.estado.slice(1, 4));
+      // setClasePeticionOptions(referenceData.clasePeticion);
+      // setComplejidadOptions(referenceData.complejidad);
+      // setLideresOptions(referenceData.lideres);
+      // setCalidadOptions(referenceData.calidad);
+      // setRegimenOptions(referenceData.regimen);
+      // setCanalOptions(referenceData.canal);
       setDerechosOptions(referenceData.derechos);
     });
   };
@@ -110,6 +166,7 @@ function ManagementLider() {
     return `${year}-${month}-${day}`;
   };
 
+  console.log(areaOptions);
   //   Traer toda la información de la petición
   const fetchPeticionData = async () => {
     const token = localStorage.getItem("token");
@@ -129,7 +186,7 @@ function ManagementLider() {
         console.error("Error:", error);
       });
 
-    setValue("radicado", peticion.radicado);
+    setValue("radicado", peticion?.radicado);
     setValue("tipoPeticionId", peticion.tipoPeticionId);
     setValue("peticionario.tipoId", peticion.peticionario?.tipoId);
     setValue("peticionario.id", peticion.peticionario?.id);
@@ -178,8 +235,7 @@ function ManagementLider() {
 
   const [isCompleted, setIsCompleted] = useState(false);
   useEffect(() => {
-    fetchSelectedOptions(urls);
-
+    // fetchSelectedOptions(urls);
     fetchPeticionData();
     if (user.role === "atencion") setIsDisabled(false);
     else setIsDisabled(true);
@@ -402,7 +458,7 @@ function ManagementLider() {
               {...register("paciente.epsId", { disabled: true })}
             >
               <option defaultValue={true} value=""></option>
-              {epsOption.map(({ id, nombre }) => (
+              {epsOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
                 </option>
@@ -468,7 +524,7 @@ function ManagementLider() {
               {...register("areaId", { disabled: true })}
             >
               <option defaultValue={true} hidden={true} value=""></option>
-              {areasOptions.map(({ id, nombre }) => (
+              {areaOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
                 </option>
@@ -483,7 +539,7 @@ function ManagementLider() {
               {...register("servicioId", { disabled: true })}
             >
               <option defaultValue={true} hidden={true} value=""></option>
-              {serviciosOptions.map(({ id, nombre }) => (
+              {servicioOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
                 </option>
@@ -562,12 +618,12 @@ function ManagementLider() {
               {...register("fechaDiligencia", {
                 required: "Campo requerido",
                 disabled: isDisabled || isCompleted,
-                validate: (value) => {
-                  if (value < today) {
-                    return "La fecha debe ser posterior o igual al día de hoy";
-                  }
-                  return true;
-                },
+                // validate: (value) => {
+                // if (value < today) {
+                //   return "La fecha debe ser posterior o igual al día de hoy";
+                // }
+                // return true;
+                // },
               })}
             />
             {errors.fechaDiligencia && (
@@ -632,7 +688,6 @@ function ManagementLider() {
                 disabled: isDisabled || isCompleted,
               })}
             >
-              <option defaultValue={true} hidden={true} value=""></option>
               {clasePeticionOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
@@ -669,7 +724,7 @@ function ManagementLider() {
               })}
             >
               <option defaultValue={true} value=""></option>
-              {lideresOptions.map(({ id, cargo }) => (
+              {liderOptions.map(({ id, cargo }) => (
                 <option key={id} value={id}>
                   {cargo}
                 </option>

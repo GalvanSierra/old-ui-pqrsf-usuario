@@ -695,6 +695,11 @@ function Write() {
                 },
               })}
             />
+            {errors.fechaDiligencia && (
+              <p role="alert" className="alert">
+                {errors.fechaDiligencia.message}
+              </p>
+            )}
           </div>
 
           <div className="input-box form__input">
