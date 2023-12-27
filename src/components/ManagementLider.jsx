@@ -218,8 +218,13 @@ function ManagementLider() {
   };
 
   const saveChanges = async () => {
+    const token = localStorage.getItem("token");
     await api
-      .patch(`/peticiones/${id}`, changes)
+      .patch(`/peticiones/${id}`, changes, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         console.log("éxito", response);
         setIsOpenModal(false);
@@ -232,10 +237,18 @@ function ManagementLider() {
     Promise.all(
       derechosSelected.map(async (derecho) => {
         return await api
-          .post("/peticiones/add-item", {
-            peticionId: id,
-            derechoId: derecho,
-          })
+          .post(
+            "/peticiones/add-item",
+            {
+              peticionId: id,
+              derechoId: derecho,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
 
           .catch((error) => {
             console.error("Error en la solicitud DERECHO", error);
