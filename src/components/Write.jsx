@@ -133,7 +133,9 @@ function Write() {
     data.tutela = Boolean(data.tutela);
     data.seGestiono = Boolean(data.seGestiono || false);
     data.seDioRespuesta = Boolean(data.seDioRespuesta);
+    data.fechaRecepcion = data.fechaDiligencia;
 
+    console.log(data.fechaRecepcion);
     if (!data.peticionario?.tipoId && !data.peticionario?.id)
       delete data.peticionario;
     if (!data.paciente?.tipoId && !data.paciente?.id) delete data.paciente;
@@ -152,7 +154,6 @@ function Write() {
     try {
       const token = localStorage.getItem("token");
 
-      console.log(newPeticion);
       setLoading(true);
       const idPeticion = await api
         .post("/peticiones", newPeticion, {
@@ -191,6 +192,7 @@ function Write() {
       );
 
       setIsOpenModalConfirm(false);
+      navigate("/dashboard-pqrsf", { replace: true });
     } catch (error) {
       console.error("Error en la función saveChanges", error);
     } finally {
@@ -686,20 +688,15 @@ function Write() {
               type="date"
               defaultValue={CURRENT_DATE}
               {...register("fechaDiligencia", {
-                validate: (value) => {
-                  if (value < CURRENT_DATE && value) {
-                    return "La fecha debe ser posterior o igual al día de hoy";
-                  } else {
-                    return true;
-                  }
-                },
+                // validate: (value) => {
+                //   if (value < CURRENT_DATE && value) {
+                //     return "La fecha debe ser posterior o igual al día de hoy";
+                //   } else {
+                //     return true;
+                //   }
+                // },
               })}
             />
-            {errors.fechaDiligencia && (
-              <p role="alert" className="alert">
-                {errors.fechaDiligencia.message}
-              </p>
-            )}
           </div>
 
           <div className="input-box form__input">
