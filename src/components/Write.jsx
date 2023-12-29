@@ -178,16 +178,15 @@ function Write() {
             peticionId: idPeticion,
             derechoId: derecho,
           };
-          await api
-            .post("/peticiones/add-item", newDerecho, {
+          try {
+            await api.post("/peticiones/add-item", newDerecho, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
-            })
-            .then(() => {})
-            .catch((error) =>
-              console.error("Error en la solicitud DERECHO", error)
-            );
+            });
+          } catch (error) {
+            console.error("Error en la solicitud DERECHO", error);
+          }
         })
       );
 

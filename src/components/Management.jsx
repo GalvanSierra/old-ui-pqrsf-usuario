@@ -137,13 +137,13 @@ function Management() {
       setValue("peticionario.telefono", peticion.peticionario?.telefono);
       setValue("peticionario.email", peticion.peticionario?.email);
 
-      setValue("paciente.tipoId", peticion.paciente?.tipoId);
-      setValue("paciente.id", peticion.paciente?.id);
-      setValue("paciente.nombre", peticion.paciente?.nombre);
-      setValue("paciente.apellido", peticion.paciente?.apellido);
-      setValue("paciente.epsId", peticion.paciente?.epsId);
-      setValue("paciente.regimenId", peticion.paciente?.regimenId);
-      setValue("paciente.departamentoId", peticion.paciente?.departamentoId);
+      setValue("paciente.tipoId", peticion?.paciente?.tipoId);
+      setValue("paciente.id", peticion?.paciente?.id);
+      setValue("paciente.nombre", peticion?.paciente?.nombre);
+      setValue("paciente.apellido", peticion?.paciente?.apellido);
+      setValue("paciente.epsId", peticion?.paciente?.epsId);
+      setValue("paciente.regimenId", peticion?.paciente?.regimenId);
+      setValue("paciente.departamentoId", peticion?.paciente?.departamentoId);
       // setValue("paciente.municipioId", peticion.paciente?.municipioId);
 
       setValue("areaId", peticion.areaId);
@@ -227,7 +227,7 @@ function Management() {
       const token = localStorage.getItem("token");
       setLoading(true); // Activar el indicador de carga
 
-      const identificador = await api
+      const idPeticion = await api
         .patch(`/peticiones/${id}`, changes, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -238,22 +238,20 @@ function Management() {
 
       await Promise.all(
         derechosSelected.map(async (derecho) => {
-          return await api
-            .post(
-              "/peticiones/add-item",
-              {
-                peticionId: identificador,
-                derechoId: derecho,
+          const newDerecho = {
+            peticionId: idPeticion,
+            derechoId: derecho,
+          };
+          await api
+            .post("/peticiones/add-item", newDerecho, {
+              headers: {
+                Authorization: `Bearer ${token}`,
               },
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            )
-            .catch((error) => {
-              console.error("Error en la solicitud DERECHO", error);
-            });
+            })
+            .then(() => {})
+            .catch((error) =>
+              console.error("Error en la solicitud DERECHO", error)
+            );
         })
       );
 
