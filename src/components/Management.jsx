@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { CircularProgress } from "@mui/material";
 
 import api from "../service/api";
+import { useOptions } from "../hooks/useOptions";
 
 function Management() {
   const { id } = useParams();
@@ -26,21 +27,40 @@ function Management() {
   let departamentoSelected = watch("paciente.departamentoId") || 0;
   //   Traer las opciones para los distintos selects
 
-  const [tipoPeticionOptions, seTipoPeticionOptions] = useState([]);
-  const [epsOption, setEpsOption] = useState([]);
-  const [tipoIdOptions, setTipoIdOptions] = useState([]);
-  const [departamentoOptions, setDepartamentoOptions] = useState([]);
-  const [municipioOptions, setMunicipioOptions] = useState([]);
-  const [areasOptions, setAreasOptions] = useState([]);
-  const [serviciosOptions, setServiciosOptions] = useState([]);
-  const [estadoOptions, setEstadoOptions] = useState([]);
-  const [clasePeticionOptions, setClasePeticionOptions] = useState([]);
-  const [complejidadOptions, setComplejidadOptions] = useState([]);
-  const [lideresOptions, setLideresOptions] = useState([]);
-  const [calidadOptions, setCalidadOptions] = useState([]);
-  const [regimenOptions, setRegimenOptions] = useState([]);
-  const [canalOptions, setCanalOptions] = useState([]);
-  const [derechosOptions, setDerechosOptions] = useState([]);
+  const { options: tipoPeticionOptions } = useOptions("/tipos_peticion");
+  const { options: epsOptions } = useOptions("/eps");
+  const { options: regimenOptions } = useOptions("/regimenes");
+  const { options: tipoIdOptions } = useOptions("/tipos_identificacion");
+  const { options: departamentoOptions } = useOptions("/departamentos");
+  const { options: areaOptions } = useOptions("/areas");
+  const { options: servicioOptions } = useOptions("/servicios");
+  const { options: estadoOptions } = useOptions("/estados");
+  const { options: clasePeticionOptions } = useOptions("/clases_peticion");
+  const { options: complejidadOptions } = useOptions("/complejidades");
+  const { options: liderOptions } = useOptions("/lideres");
+  const { options: calidadOptions } = useOptions("/calidad");
+  const { options: canalOptions } = useOptions("/canales");
+  const { options: derechosOptions } = useOptions("/derechos_paciente");
+  const { options: municipioOptions } = useOptions(
+    `/departamentos/${watch("paciente.departamentoId") || 0}/municipios`
+  );
+
+  // const [tipoPeticionOptions, seTipoPeticionOptions] = useState([]);
+  // const [epsOptions, setEpsOption] = useState([]);
+  // const [tipoIdOptions, setTipoIdOptions] = useState([]);
+  // const [departamentoOptions, setDepartamentoOptions] = useState([]);
+  // const [municipioOptions, setMunicipioOptions] = useState([]);
+  // const [areaOptions, setAreasOptions] = useState([]);
+  // const [servicioOptions, setServiciosOptions] = useState([]);
+  // const [estadoOptions, setEstadoOptions] = useState([]);
+  // const [clasePeticionOptions, setClasePeticionOptions] = useState([]);
+  // const [complejidadOptions, setComplejidadOptions] = useState([]);
+  // const [liderOptions, setLideresOptions] = useState([]);
+  // const [calidadOptions, setCalidadOptions] = useState([]);
+  // const [regimenOptions, setRegimenOptions] = useState([]);
+  // const [canalOptions, setCanalOptions] = useState([]);
+  // const [derechosOptions, setDerechosOptions] = useState([]);
+
   const [loading, setLoading] = useState(false);
 
   const urls = {
@@ -80,21 +100,21 @@ function Management() {
         referenceData[names[index]] = result;
       });
 
-      seTipoPeticionOptions(referenceData.tipoPeticion);
-      setTipoIdOptions(referenceData.tipoId);
-      setEpsOption(referenceData.eps);
-      setDepartamentoOptions(referenceData.departamentos);
-      setMunicipioOptions(referenceData.municipios);
-      setAreasOptions(referenceData.areas);
-      setServiciosOptions(referenceData.servicios);
-      setEstadoOptions(referenceData.estado);
-      setClasePeticionOptions(referenceData.clasePeticion);
-      setComplejidadOptions(referenceData.complejidad);
-      setLideresOptions(referenceData.lideres);
-      setCalidadOptions(referenceData.calidad);
-      setRegimenOptions(referenceData.regimen);
-      setCanalOptions(referenceData.canal);
-      setDerechosOptions(referenceData.derechos);
+      // seTipoPeticionOptions(referenceData.tipoPeticion);
+      // setTipoIdOptions(referenceData.tipoId);
+      // setEpsOption(referenceData.eps);
+      // setDepartamentoOptions(referenceData.departamentos);
+      // setMunicipioOptions(referenceData.municipios);
+      // setAreasOptions(referenceData.areas);
+      // setServiciosOptions(referenceData.servicios);
+      // setEstadoOptions(referenceData.estado);
+      // setClasePeticionOptions(referenceData.clasePeticion);
+      // setComplejidadOptions(referenceData.complejidad);
+      // setLideresOptions(referenceData.lideres);
+      // setCalidadOptions(referenceData.calidad);
+      // setRegimenOptions(referenceData.regimen);
+      // setCanalOptions(referenceData.canal);
+      // setDerechosOptions(referenceData.derechos);
     });
   };
 
@@ -128,48 +148,48 @@ function Management() {
       });
 
     setTimeout(() => {
-      setValue("radicado", peticion.radicado);
-      setValue("tipoPeticionId", peticion.tipoPeticionId);
-      setValue("peticionario.tipoId", peticion.peticionario?.tipoId);
-      setValue("peticionario.id", peticion.peticionario?.id);
-      setValue("peticionario.nombre", peticion.peticionario?.nombre);
-      setValue("peticionario.apellido", peticion.peticionario?.apellido);
-      setValue("peticionario.telefono", peticion.peticionario?.telefono);
-      setValue("peticionario.email", peticion.peticionario?.email);
+      setValue("radicado", peticion?.radicado);
+      setValue("tipoPeticionId", peticion?.tipoPeticionId);
+      setValue("peticionario.tipoId", peticion?.peticionario?.tipoId);
+      setValue("peticionario.id", peticion?.peticionario?.id);
+      setValue("peticionario.nombre", peticion?.peticionario?.nombre);
+      setValue("peticionario.apellido", peticion?.peticionario?.apellido);
+      setValue("peticionario.telefono", peticion?.peticionario?.telefono);
+      setValue("peticionario.email", peticion?.peticionario?.email);
 
-      setValue("paciente.tipoId", peticion.paciente?.tipoId);
-      setValue("paciente.id", peticion.paciente?.id);
-      setValue("paciente.nombre", peticion.paciente?.nombre);
-      setValue("paciente.apellido", peticion.paciente?.apellido);
-      setValue("paciente.epsId", peticion.paciente?.epsId);
-      setValue("paciente.regimenId", peticion.paciente?.regimenId);
-      setValue("paciente.departamentoId", peticion.paciente?.departamentoId);
+      setValue("paciente.tipoId", peticion?.paciente?.tipoId);
+      setValue("paciente.id", peticion?.paciente?.id);
+      setValue("paciente.nombre", peticion?.paciente?.nombre);
+      setValue("paciente.apellido", peticion?.paciente?.apellido);
+      setValue("paciente.epsId", peticion?.paciente?.epsId);
+      setValue("paciente.regimenId", peticion?.paciente?.regimenId);
+      setValue("paciente.departamentoId", peticion?.paciente?.departamentoId);
       // setValue("paciente.municipioId", peticion.paciente?.municipioId);
 
-      setValue("areaId", peticion.areaId);
-      setValue("servicioId", peticion.servicioId);
-      setValue("dirigidaA", peticion.dirigidaA);
-      setValue("tutela", peticion.tutela ? "1" : "0");
+      setValue("areaId", peticion?.areaId);
+      setValue("servicioId", peticion?.servicioId);
+      setValue("dirigidaA", peticion?.dirigidaA);
+      setValue("tutela", peticion?.tutela ? "1" : "0");
       setValue("radicadoTutela", peticion?.radicadoTutela);
-      setValue("motivo", peticion.motivo);
+      setValue("motivo", peticion?.motivo);
       setValue("fechaRecepcion", convertISOToDate(peticion.fechaRecepcion));
-      setValue("seGestiono", peticion.seGestiono ? "1" : "0");
+      setValue("seGestiono", peticion?.seGestiono ? "1" : "0");
       setValue("fechaDiligencia", convertISOToDate(peticion.fechaDiligencia));
-      setValue("estadoId", peticion.estadoId);
-      setValue("canalId", peticion.canalId);
-      setValue("clasePeticionId", peticion.clasePeticionId);
-      setValue("complejidadId", peticion.complejidadId);
-      setValue("dueDate", peticion.dueDate);
-      setValue("liderId", peticion.liderId);
+      setValue("estadoId", peticion?.estadoId);
+      setValue("canalId", peticion?.canalId);
+      setValue("clasePeticionId", peticion?.clasePeticionId);
+      setValue("complejidadId", peticion?.complejidadId);
+      setValue("dueDate", peticion?.dueDate);
+      setValue("liderId", peticion?.liderId);
 
-      setValue("derechos", peticion.derechos);
+      setValue("derechos", peticion?.derechos);
 
-      setValue("respuesta", peticion.respuesta);
-      setValue("seDioRespuesta", peticion.seDioRespuesta ? "1" : "0");
+      setValue("respuesta", peticion?.respuesta);
+      setValue("seDioRespuesta", peticion?.seDioRespuesta ? "1" : "0");
       setValue("fechaRespuesta", convertISOToDate(peticion.fechaRespuesta));
-      setValue("descripcionGestion", peticion.descripcionGestion);
-      setValue("calidadId", peticion.calidadId);
-      setValue("nota", peticion.nota);
+      setValue("descripcionGestion", peticion?.descripcionGestion);
+      setValue("calidadId", peticion?.calidadId);
+      setValue("nota", peticion?.nota);
     });
 
     setDerechosSelected(peticion.derechos.map((derecho) => derecho.id));
@@ -227,7 +247,7 @@ function Management() {
       const token = localStorage.getItem("token");
       setLoading(true); // Activar el indicador de carga
 
-      const identificador = await api
+      const idPeticion = await api
         .patch(`/peticiones/${id}`, changes, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -238,22 +258,20 @@ function Management() {
 
       await Promise.all(
         derechosSelected.map(async (derecho) => {
-          return await api
-            .post(
-              "/peticiones/add-item",
-              {
-                peticionId: identificador,
-                derechoId: derecho,
+          const newDerecho = {
+            peticionId: idPeticion,
+            derechoId: derecho,
+          };
+          await api
+            .post("/peticiones/add-item", newDerecho, {
+              headers: {
+                Authorization: `Bearer ${token}`,
               },
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            )
-            .catch((error) => {
-              console.error("Error en la solicitud DERECHO", error);
-            });
+            })
+            .then(() => {})
+            .catch((error) =>
+              console.error("Error en la solicitud DERECHO", error)
+            );
         })
       );
 
@@ -411,7 +429,7 @@ function Management() {
               {...register("paciente.epsId", { disabled: true })}
             >
               <option defaultValue={true} value=""></option>
-              {epsOption.map(({ id, nombre }) => (
+              {epsOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
                 </option>
@@ -477,7 +495,7 @@ function Management() {
               {...register("areaId", { disabled: true })}
             >
               <option defaultValue={true} hidden={true} value=""></option>
-              {areasOptions.map(({ id, nombre }) => (
+              {areaOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
                 </option>
@@ -492,7 +510,7 @@ function Management() {
               {...register("servicioId", { disabled: true })}
             >
               <option defaultValue={true} hidden={true} value=""></option>
-              {serviciosOptions.map(({ id, nombre }) => (
+              {servicioOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
                 </option>
@@ -703,7 +721,7 @@ function Management() {
               })}
             >
               <option defaultValue={true} value=""></option>
-              {lideresOptions.map(({ id, cargo }) => (
+              {liderOptions.map(({ id, cargo }) => (
                 <option key={id} value={id}>
                   {cargo}
                 </option>

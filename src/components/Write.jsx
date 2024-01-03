@@ -35,42 +35,6 @@ function Write() {
     `/departamentos/${watch("paciente.departamentoId") || 0}/municipios`
   );
 
-  useEffect(() => {
-    Promise.all([
-      tipoPeticionOptions,
-      epsOptions,
-      regimenOptions,
-      tipoIdOptions,
-      departamentoOptions,
-      areaOptions,
-      servicioOptions,
-      estadoOptions,
-      clasePeticionOptions,
-      complejidadOptions,
-      liderOptions,
-      calidadOptions,
-      canalOptions,
-      derechosOptions,
-      municipioOptions,
-    ]);
-  }, [
-    tipoPeticionOptions,
-    epsOptions,
-    regimenOptions,
-    tipoIdOptions,
-    departamentoOptions,
-    areaOptions,
-    servicioOptions,
-    estadoOptions,
-    clasePeticionOptions,
-    complejidadOptions,
-    liderOptions,
-    calidadOptions,
-    canalOptions,
-    derechosOptions,
-    municipioOptions,
-  ]);
-
   // deshabilitar campos  campos
   const [isPeticionarioRequiere, setIsPeticionarioRequiere] = useState(false);
   const [isDisabledIdPeticionario, setIsDisabledIdPeticionario] =
@@ -178,16 +142,15 @@ function Write() {
             peticionId: idPeticion,
             derechoId: derecho,
           };
-          await api
-            .post("/peticiones/add-item", newDerecho, {
+          try {
+            await api.post("/peticiones/add-item", newDerecho, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
-            })
-            .then(() => {})
-            .catch((error) =>
-              console.error("Error en la solicitud DERECHO", error)
-            );
+            });
+          } catch (error) {
+            console.error("Error en la solicitud DERECHO", error);
+          }
         })
       );
 
@@ -213,11 +176,12 @@ function Write() {
             })}
           >
             <option defaultValue={true} hidden={true} value=""></option>
-            {tipoPeticionOptions.map(({ id, nombre }) => (
-              <option key={id} value={id}>
-                {nombre}
-              </option>
-            ))}
+            {tipoPeticionOptions &&
+              tipoPeticionOptions.map(({ id, nombre }) => (
+                <option key={id} value={id}>
+                  {nombre}
+                </option>
+              ))}
           </select>
           {errors.tipoPeticionId && (
             <p role="alert" className="alert">
@@ -240,11 +204,12 @@ function Write() {
               })}
             >
               <option defaultValue={true} value=""></option>
-              {tipoIdOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
+              {tipoIdOptions &&
+                tipoIdOptions.map(({ id, nombre }) => (
+                  <option key={id} value={id}>
+                    {nombre}
+                  </option>
+                ))}
             </select>
             {errors.peticionario?.tipoId && (
               <p role="alert" className="alert">
@@ -385,11 +350,12 @@ function Write() {
               })}
             >
               <option defaultValue={true} value=""></option>
-              {tipoIdOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
+              {tipoIdOptions &&
+                tipoIdOptions.map(({ id, nombre }) => (
+                  <option key={id} value={id}>
+                    {nombre}
+                  </option>
+                ))}
             </select>
             {errors.paciente?.tipoId && (
               <p role="alert" className="alert">
@@ -467,11 +433,12 @@ function Write() {
               })}
             >
               <option defaultValue={true} hidden value=""></option>
-              {epsOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
+              {epsOptions &&
+                epsOptions.map(({ id, nombre }) => (
+                  <option key={id} value={id}>
+                    {nombre}
+                  </option>
+                ))}
             </select>
             {errors.paciente?.epsId && (
               <p role="alert" className="alert">
@@ -494,11 +461,12 @@ function Write() {
               })}
             >
               <option defaultValue={true} hidden value=""></option>
-              {regimenOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
+              {regimenOptions &&
+                regimenOptions.map(({ id, nombre }) => (
+                  <option key={id} value={id}>
+                    {nombre}
+                  </option>
+                ))}
             </select>
             {errors.paciente?.regimenId && (
               <p role="alert" className="alert">
@@ -516,11 +484,12 @@ function Write() {
               })}
             >
               <option defaultValue={true} hidden value=""></option>
-              {departamentoOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
+              {departamentoOptions &&
+                departamentoOptions.map(({ id, nombre }) => (
+                  <option key={id} value={id}>
+                    {nombre}
+                  </option>
+                ))}
             </select>
           </div>
 
@@ -533,11 +502,12 @@ function Write() {
               })}
             >
               <option defaultValue={true} hidden value=""></option>
-              {municipioOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
+              {municipioOptions &&
+                municipioOptions.map(({ id, nombre }) => (
+                  <option key={id} value={id}>
+                    {nombre}
+                  </option>
+                ))}
             </select>
           </div>
         </fieldset>
@@ -554,11 +524,12 @@ function Write() {
               })}
             >
               <option defaultValue={true} hidden={true} value=""></option>
-              {areaOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
+              {areaOptions &&
+                areaOptions.map(({ id, nombre }) => (
+                  <option key={id} value={id}>
+                    {nombre}
+                  </option>
+                ))}
             </select>
             {errors.areaId && (
               <p role="alert" className="alert">
@@ -577,11 +548,12 @@ function Write() {
               })}
             >
               <option defaultValue={true} hidden={true} value=""></option>
-              {servicioOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
+              {servicioOptions &&
+                servicioOptions.map(({ id, nombre }) => (
+                  <option key={id} value={id}>
+                    {nombre}
+                  </option>
+                ))}
             </select>
             {errors.servicioId && (
               <p role="alert" className="alert">
@@ -711,11 +683,12 @@ function Write() {
                 Sin comenzar
               </option>
 
-              {estadoOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
+              {estadoOptions &&
+                estadoOptions.map(({ id, nombre }) => (
+                  <option key={id} value={id}>
+                    {nombre}
+                  </option>
+                ))}
             </select>
           </div>
 
@@ -728,11 +701,12 @@ function Write() {
               })}
             >
               <option defaultValue={true} hidden={true} value={5}></option>
-              {canalOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
+              {canalOptions &&
+                canalOptions.map(({ id, nombre }) => (
+                  <option key={id} value={id}>
+                    {nombre}
+                  </option>
+                ))}
             </select>
           </div>
 
@@ -745,11 +719,12 @@ function Write() {
               })}
             >
               <option defaultValue={true} hidden={true} value=""></option>
-              {clasePeticionOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
+              {clasePeticionOptions &&
+                clasePeticionOptions.map(({ id, nombre }) => (
+                  <option key={id} value={id}>
+                    {nombre}
+                  </option>
+                ))}
             </select>
           </div>
 
@@ -762,11 +737,12 @@ function Write() {
               })}
             >
               <option defaultValue={true} value=""></option>
-              {complejidadOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
+              {complejidadOptions &&
+                complejidadOptions.map(({ id, nombre }) => (
+                  <option key={id} value={id}>
+                    {nombre}
+                  </option>
+                ))}
             </select>
           </div>
 
@@ -779,11 +755,12 @@ function Write() {
               })}
             >
               <option defaultValue={true} value=""></option>
-              {liderOptions.map(({ id, cargo }) => (
-                <option key={id} value={id}>
-                  {cargo}
-                </option>
-              ))}
+              {liderOptions &&
+                liderOptions.map(({ id, cargo }) => (
+                  <option key={id} value={id}>
+                    {cargo}
+                  </option>
+                ))}
             </select>
           </div>
 
@@ -857,11 +834,12 @@ function Write() {
               })}
             >
               <option defaultValue={true} hidden value=""></option>
-              {calidadOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
+              {calidadOptions &&
+                calidadOptions.map(({ id, nombre }) => (
+                  <option key={id} value={id}>
+                    {nombre}
+                  </option>
+                ))}
             </select>
           </div>
           <div className="input-box form__input--textarea">
@@ -881,11 +859,12 @@ function Write() {
               }}
             >
               <option value=""></option>
-              {derechosOptions.map((derecho) => (
-                <option key={derecho.id} value={derecho.id}>
-                  {derecho.derecho}
-                </option>
-              ))}
+              {derechosOptions &&
+                derechosOptions.map((derecho) => (
+                  <option key={derecho.id} value={derecho.id}>
+                    {derecho.derecho}
+                  </option>
+                ))}
             </select>
             <ul className="derechos-list">
               {derechosSelected &&
