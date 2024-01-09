@@ -17,7 +17,6 @@ function ManagementLider() {
   const [isOpenModal, setIsOpenModal] = useState(false);
 
   const navigate = useNavigate();
-  const today = new Date().toISOString().split("T")[0];
 
   const {
     register,
@@ -28,81 +27,11 @@ function ManagementLider() {
   } = useForm();
 
   const [peticionData, setPeticionData] = useState(null);
-  const departamentoSelected = watch("paciente.departamentoId") || 0;
   //   Traer las opciones para los distintos selects
 
-  const { options: tipoPeticionOptions } = useOptions("/tipos_peticion");
-  const { options: epsOptions } = useOptions("/eps");
-  const { options: regimenOptions } = useOptions("/regimenes");
-  const { options: tipoIdOptions } = useOptions("/tipos_identificacion");
-  const { options: departamentoOptions } = useOptions("/departamentos");
-  const { options: areaOptions } = useOptions("/areas");
-  const { options: servicioOptions } = useOptions("/servicios");
-  const { options: estadoOptions2 } = useOptions("/estados");
-  const estadoOptions = estadoOptions2.slice(1, 4);
+  const { options: all } = useOptions("/all");
 
-  const { options: clasePeticionOptions } = useOptions("/clases_peticion");
-  const { options: complejidadOptions } = useOptions("/complejidades");
-  const { options: liderOptions } = useOptions("/lideres");
-  const { options: calidadOptions } = useOptions("/calidad");
-  const { options: canalOptions } = useOptions("/canales");
-  const { options: municipioOptions } = useOptions(
-    `/departamentos/${watch("paciente.departamentoId") || 0}/municipios`
-  );
-
-  // const [tipoPeticionOptions, seTipoPeticionOptions] = useState([]);
-  // const [epsOptions, setEpsOption] = useState([]);
-  // const [tipoIdOptions, setTipoIdOptions] = useState([]);
-  // const [departamentoOptions, setDepartamentoOptions] = useState([]);
-  // const [municipioOptions, setMunicipioOptions] = useState([]);
-  // const [areaOptions, setAreasOptions] = useState([]);
-  // const [servicioOptions, setServiciosOptions] = useState([]);
-  // const [estadoOptions, setEstadoOptions] = useState([]);
-  // const [clasePeticionOptions, setClasePeticionOptions] = useState([]);
-  // const [complejidadOptions, setComplejidadOptions] = useState([]);
-  // const [liderOptions, setLideresOptions] = useState([]);
-  // const [calidadOptions, setCalidadOptions] = useState([]);
-  // const [regimenOptions, setRegimenOptions] = useState([]);
-  // const [canalOptions, setCanalOptions] = useState([]);
-  const [derechosOptions, setDerechosOptions] = useState([]);
-
-  // const urls = {
-  //   tipoPeticion: "/referencias/tipos_peticion",
-  //   eps: "referencias/eps",
-  //   tipoId: `/referencias/tipos_identificacion`,
-  //   departamentos: `/referencias/departamentos`,
-  //   municipios: `referencias/departamentos/${departamentoSelected}/municipios`,
-  //   areas: "/referencias/areas",
-  //   servicios: "/referencias/servicios",
-  //   estado: `/referencias/estados`,
-  //   clasePeticion: `/referencias/clases_peticion`,
-  //   complejidad: `/referencias/complejidades`,
-  //   lideres: `/referencias/lideres`,
-  //   calidad: `/referencias/calidad`,
-  //   regimen: "/referencias/regimenes",
-  //   canal: "/referencias/canales",
-  //   derechos: "/referencias/derechos_paciente",
-  // };
-
-  useEffect(() => {
-    Promise.all([
-      tipoPeticionOptions,
-      epsOptions,
-      regimenOptions,
-      tipoIdOptions,
-      departamentoOptions,
-      areaOptions,
-      servicioOptions,
-      estadoOptions,
-      clasePeticionOptions,
-      complejidadOptions,
-      liderOptions,
-      calidadOptions,
-      canalOptions,
-      derechosOptions,
-      municipioOptions,
-    ]);
-  }, [
+  const {
     tipoPeticionOptions,
     epsOptions,
     regimenOptions,
@@ -110,50 +39,36 @@ function ManagementLider() {
     departamentoOptions,
     areaOptions,
     servicioOptions,
-    estadoOptions,
+    estadoOptions2,
     clasePeticionOptions,
     complejidadOptions,
     liderOptions,
     calidadOptions,
     canalOptions,
-    derechosOptions,
-    municipioOptions,
-  ]);
+  } = all;
 
-  const fetchDataReference = async (url) => {
-    const response = await api.get(url).then((response) => response.data);
-    return response;
-  };
+  // const { options: tipoPeticionOptions } = useOptions("/tipos_peticion");
+  // const { options: epsOptions } = useOptions("/eps");
+  // const { options: regimenOptions } = useOptions("/regimenes");
+  // const { options: tipoIdOptions } = useOptions("/tipos_identificacion");
+  // const { options: departamentoOptions } = useOptions("/departamentos");
+  // const { options: areaOptions } = useOptions("/areas");
+  // const { options: servicioOptions } = useOptions("/servicios");
+  // const { options: estadoOptions2 } = useOptions("/estados");
+  const estadoOptions = estadoOptions2?.slice(1, 4);
+
+  // const { options: clasePeticionOptions } = useOptions("/clases_peticion");
+  // const { options: complejidadOptions } = useOptions("/complejidades");
+  // const { options: liderOptions } = useOptions("/lideres");
+  // const { options: calidadOptions } = useOptions("/calidad");
+  // const { options: canalOptions } = useOptions("/canales");
+  const { options: municipioOptions } = useOptions(
+    `/departamentos/${watch("paciente.departamentoId") || 0}/municipios`
+  );
+
+  const [derechosOptions] = useState([]);
 
   const [derechosSelected, setDerechosSelected] = useState([]);
-
-  const fetchSelectedOptions = async (apiReferences) => {
-    const urls = Object.values(apiReferences);
-    const names = Object.keys(apiReferences);
-
-    Promise.all(urls.map(fetchDataReference)).then((results) => {
-      const referenceData = {};
-      results.forEach((result, index) => {
-        referenceData[names[index]] = result;
-      });
-
-      // seTipoPeticionOptions(referenceData.tipoPeticion);
-      // setTipoIdOptions(referenceData.tipoId);
-      // setEpsOption(referenceData.eps);
-      // setDepartamentoOptions(referenceData.departamentos);
-      // setMunicipioOptions(referenceData.municipios);
-      // setAreasOptions(referenceData.areas);
-      // setServiciosOptions(referenceData.servicios);
-      // setEstadoOptions(referenceData.estado.slice(1, 4));
-      // setClasePeticionOptions(referenceData.clasePeticion);
-      // setComplejidadOptions(referenceData.complejidad);
-      // setLideresOptions(referenceData.lideres);
-      // setCalidadOptions(referenceData.calidad);
-      // setRegimenOptions(referenceData.regimen);
-      // setCanalOptions(referenceData.canal);
-      setDerechosOptions(referenceData.derechos);
-    });
-  };
 
   const convertISOToDate = (isoDate) => {
     if (!isoDate) return;
@@ -336,11 +251,12 @@ function ManagementLider() {
             })}
           >
             <option defaultValue={true} hidden={true} value=""></option>
-            {tipoPeticionOptions.map(({ id, nombre }) => (
-              <option key={id} value={id}>
-                {nombre}
-              </option>
-            ))}
+            {tipoPeticionOptions &&
+              tipoPeticionOptions.map(({ id, nombre }) => (
+                <option key={id} value={id}>
+                  {nombre}
+                </option>
+              ))}
           </select>
         </div>
 
@@ -354,11 +270,12 @@ function ManagementLider() {
               {...register("peticionario.tipoId", { disabled: true })}
             >
               <option defaultValue={true} value=""></option>
-              {tipoIdOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
+              {tipoIdOptions &&
+                tipoIdOptions.map(({ id, nombre }) => (
+                  <option key={id} value={id}>
+                    {nombre}
+                  </option>
+                ))}
             </select>
           </div>
 
@@ -417,11 +334,12 @@ function ManagementLider() {
               {...register("paciente.tipoId", { disabled: true })}
             >
               <option defaultValue={true} value=""></option>
-              {tipoIdOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
+              {tipoIdOptions &&
+                tipoIdOptions.map(({ id, nombre }) => (
+                  <option key={id} value={id}>
+                    {nombre}
+                  </option>
+                ))}
             </select>
           </div>
 
@@ -458,11 +376,12 @@ function ManagementLider() {
               {...register("paciente.epsId", { disabled: true })}
             >
               <option defaultValue={true} value=""></option>
-              {epsOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
+              {epsOptions &&
+                epsOptions.map(({ id, nombre }) => (
+                  <option key={id} value={id}>
+                    {nombre}
+                  </option>
+                ))}
             </select>
           </div>
 
@@ -472,11 +391,12 @@ function ManagementLider() {
               className="input"
               {...register("paciente.regimenId", { disabled: true })}
             >
-              {regimenOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
+              {regimenOptions &&
+                regimenOptions.map(({ id, nombre }) => (
+                  <option key={id} value={id}>
+                    {nombre}
+                  </option>
+                ))}
               <option defaultValue={true} value=""></option>
             </select>
           </div>
@@ -488,11 +408,12 @@ function ManagementLider() {
               {...register("paciente.departamentoId", { disabled: true })}
             >
               <option defaultValue={true} value=""></option>
-              {departamentoOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
+              {departamentoOptions &&
+                departamentoOptions.map(({ id, nombre }) => (
+                  <option key={id} value={id}>
+                    {nombre}
+                  </option>
+                ))}
             </select>
           </div>
 
@@ -505,11 +426,12 @@ function ManagementLider() {
               <option value={peticionData?.paciente?.municipio?.id}>
                 {peticionData?.paciente?.municipio?.nombre}
               </option>
-              {municipioOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
+              {municipioOptions &&
+                municipioOptions.map(({ id, nombre }) => (
+                  <option key={id} value={id}>
+                    {nombre}
+                  </option>
+                ))}
             </select>
           </div>
         </fieldset>
@@ -524,11 +446,12 @@ function ManagementLider() {
               {...register("areaId", { disabled: true })}
             >
               <option defaultValue={true} hidden={true} value=""></option>
-              {areaOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
+              {areaOptions &&
+                areaOptions.map(({ id, nombre }) => (
+                  <option key={id} value={id}>
+                    {nombre}
+                  </option>
+                ))}
             </select>
           </div>
 
@@ -539,11 +462,12 @@ function ManagementLider() {
               {...register("servicioId", { disabled: true })}
             >
               <option defaultValue={true} hidden={true} value=""></option>
-              {servicioOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
+              {servicioOptions &&
+                servicioOptions.map(({ id, nombre }) => (
+                  <option key={id} value={id}>
+                    {nombre}
+                  </option>
+                ))}
             </select>
           </div>
 
@@ -641,11 +565,12 @@ function ManagementLider() {
                 disabled: true,
               })}
             >
-              {canalOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
+              {canalOptions &&
+                canalOptions.map(({ id, nombre }) => (
+                  <option key={id} value={id}>
+                    {nombre}
+                  </option>
+                ))}
             </select>
           </div>
 
@@ -688,11 +613,12 @@ function ManagementLider() {
                 disabled: isDisabled || isCompleted,
               })}
             >
-              {clasePeticionOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
+              {clasePeticionOptions &&
+                clasePeticionOptions.map(({ id, nombre }) => (
+                  <option key={id} value={id}>
+                    {nombre}
+                  </option>
+                ))}
             </select>
           </div>
 
@@ -706,11 +632,12 @@ function ManagementLider() {
               })}
             >
               <option defaultValue={true} hidden={true} value=""></option>
-              {complejidadOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
+              {complejidadOptions &&
+                complejidadOptions.map(({ id, nombre }) => (
+                  <option key={id} value={id}>
+                    {nombre}
+                  </option>
+                ))}
             </select>
           </div>
 
@@ -724,11 +651,12 @@ function ManagementLider() {
               })}
             >
               <option defaultValue={true} value=""></option>
-              {liderOptions.map(({ id, cargo }) => (
-                <option key={id} value={id}>
-                  {cargo}
-                </option>
-              ))}
+              {liderOptions &&
+                liderOptions.map(({ id, cargo }) => (
+                  <option key={id} value={id}>
+                    {cargo}
+                  </option>
+                ))}
             </select>
           </div>
 
@@ -743,11 +671,12 @@ function ManagementLider() {
               })}
             >
               <option defaultValue={true} hidden={true} value=""></option>
-              {estadoOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
+              {estadoOptions &&
+                estadoOptions.map(({ id, nombre }) => (
+                  <option key={id} value={id}>
+                    {nombre}
+                  </option>
+                ))}
             </select>
             {errors.estadoId && (
               <p role="alert" className="alert">
@@ -838,11 +767,12 @@ function ManagementLider() {
               })}
             >
               <option defaultValue={true} hidden={true} value=""></option>
-              {calidadOptions.map(({ id, nombre }) => (
-                <option key={id} value={id}>
-                  {nombre}
-                </option>
-              ))}
+              {calidadOptions &&
+                calidadOptions.map(({ id, nombre }) => (
+                  <option key={id} value={id}>
+                    {nombre}
+                  </option>
+                ))}
             </select>
           </div>
 
@@ -864,11 +794,12 @@ function ManagementLider() {
                 setDerechosSelected(selectedValues);
               }}
             >
-              {derechosOptions.map((derecho) => (
-                <option key={derecho.id} value={derecho.id}>
-                  {derecho.derecho}
-                </option>
-              ))}
+              {derechosOptions &&
+                derechosOptions.map((derecho) => (
+                  <option key={derecho.id} value={derecho.id}>
+                    {derecho.derecho}
+                  </option>
+                ))}
             </select>
             <ul className="derechos-list">
               {derechosSelected.map((selectedId) => {
