@@ -17,20 +17,22 @@ function Write() {
 
   const navigate = useNavigate();
 
-  const { options: tipoPeticionOptions } = useOptions("/tipos_peticion");
-  const { options: epsOptions } = useOptions("/eps");
-  const { options: regimenOptions } = useOptions("/regimenes");
-  const { options: tipoIdOptions } = useOptions("/tipos_identificacion");
-  const { options: departamentoOptions } = useOptions("/departamentos");
-  const { options: areaOptions } = useOptions("/areas");
-  const { options: servicioOptions } = useOptions("/servicios");
-  const { options: estadoOptions } = useOptions("/estados");
-  const { options: clasePeticionOptions } = useOptions("/clases_peticion");
-  const { options: complejidadOptions } = useOptions("/complejidades");
-  const { options: liderOptions } = useOptions("/lideres");
-  const { options: calidadOptions } = useOptions("/calidad");
-  const { options: canalOptions } = useOptions("/canales");
-  const { options: derechosOptions } = useOptions("/derechos_paciente");
+  const { options: allOptions } = useOptions("/all");
+
+  // const { options: tipoPeticionOptions } = useOptions("/tipos_peticion");
+  // const { options: epsOptions } = useOptions("/eps");
+  // const { options: regimenOptions } = useOptions("/regimenes");
+  // const { options: tipoIdOptions } = useOptions("/tipos_identificacion");
+  // const { options: departamentoOptions } = useOptions("/departamentos");
+  // const { options: areaOptions } = useOptions("/areas");
+  // const { options: servicioOptions } = useOptions("/servicios");
+  // const { options: estadoOptions } = useOptions("/estados");
+  // const { options: clasePeticionOptions } = useOptions("/clases_peticion");
+  // const { options: complejidadOptions } = useOptions("/complejidades");
+  // const { options: liderOptions } = useOptions("/lideres");
+  // const { options: calidadOptions } = useOptions("/calidad");
+  // const { options: canalOptions } = useOptions("/canales");
+  // const { options: derechosOptions } = useOptions("/derechos_paciente");
   const { options: municipioOptions } = useOptions(
     `/departamentos/${watch("paciente.departamentoId") || 0}/municipios`
   );
@@ -176,8 +178,8 @@ function Write() {
             })}
           >
             <option defaultValue={true} hidden={true} value=""></option>
-            {tipoPeticionOptions &&
-              tipoPeticionOptions.map(({ id, nombre }) => (
+            {allOptions.tipoPeticionOptions &&
+              allOptions.tipoPeticionOptions.map(({ id, nombre }) => (
                 <option key={id} value={id}>
                   {nombre}
                 </option>
@@ -204,8 +206,8 @@ function Write() {
               })}
             >
               <option defaultValue={true} value=""></option>
-              {tipoIdOptions &&
-                tipoIdOptions.map(({ id, nombre }) => (
+              {allOptions.tipoIdOptions &&
+                allOptions.tipoIdOptions.map(({ id, nombre }) => (
                   <option key={id} value={id}>
                     {nombre}
                   </option>
@@ -350,8 +352,8 @@ function Write() {
               })}
             >
               <option defaultValue={true} value=""></option>
-              {tipoIdOptions &&
-                tipoIdOptions.map(({ id, nombre }) => (
+              {allOptions.tipoIdOptions &&
+                allOptions.tipoIdOptions.map(({ id, nombre }) => (
                   <option key={id} value={id}>
                     {nombre}
                   </option>
@@ -433,8 +435,8 @@ function Write() {
               })}
             >
               <option defaultValue={true} hidden value=""></option>
-              {epsOptions &&
-                epsOptions.map(({ id, nombre }) => (
+              {allOptions.epsOptions &&
+                allOptions.epsOptions.map(({ id, nombre }) => (
                   <option key={id} value={id}>
                     {nombre}
                   </option>
@@ -461,8 +463,8 @@ function Write() {
               })}
             >
               <option defaultValue={true} hidden value=""></option>
-              {regimenOptions &&
-                regimenOptions.map(({ id, nombre }) => (
+              {allOptions.regimenOptions &&
+                allOptions.regimenOptions.map(({ id, nombre }) => (
                   <option key={id} value={id}>
                     {nombre}
                   </option>
@@ -484,8 +486,8 @@ function Write() {
               })}
             >
               <option defaultValue={true} hidden value=""></option>
-              {departamentoOptions &&
-                departamentoOptions.map(({ id, nombre }) => (
+              {allOptions.departamentoOptions &&
+                allOptions.departamentoOptions.map(({ id, nombre }) => (
                   <option key={id} value={id}>
                     {nombre}
                   </option>
@@ -524,8 +526,8 @@ function Write() {
               })}
             >
               <option defaultValue={true} hidden={true} value=""></option>
-              {areaOptions &&
-                areaOptions.map(({ id, nombre }) => (
+              {allOptions.areaOptions &&
+                allOptions.areaOptions.map(({ id, nombre }) => (
                   <option key={id} value={id}>
                     {nombre}
                   </option>
@@ -548,8 +550,8 @@ function Write() {
               })}
             >
               <option defaultValue={true} hidden={true} value=""></option>
-              {servicioOptions &&
-                servicioOptions.map(({ id, nombre }) => (
+              {allOptions.servicioOptions &&
+                allOptions.servicioOptions.map(({ id, nombre }) => (
                   <option key={id} value={id}>
                     {nombre}
                   </option>
@@ -683,8 +685,8 @@ function Write() {
                 Sin comenzar
               </option>
 
-              {estadoOptions &&
-                estadoOptions.map(({ id, nombre }) => (
+              {allOptions.estadoOptions &&
+                allOptions.estadoOptions.map(({ id, nombre }) => (
                   <option key={id} value={id}>
                     {nombre}
                   </option>
@@ -701,8 +703,8 @@ function Write() {
               })}
             >
               <option defaultValue={true} hidden={true} value={5}></option>
-              {canalOptions &&
-                canalOptions.map(({ id, nombre }) => (
+              {allOptions.canalOptions &&
+                allOptions.canalOptions.map(({ id, nombre }) => (
                   <option key={id} value={id}>
                     {nombre}
                   </option>
@@ -719,8 +721,8 @@ function Write() {
               })}
             >
               <option defaultValue={true} hidden={true} value=""></option>
-              {clasePeticionOptions &&
-                clasePeticionOptions.map(({ id, nombre }) => (
+              {allOptions.clasePeticionOptions &&
+                allOptions.clasePeticionOptions.map(({ id, nombre }) => (
                   <option key={id} value={id}>
                     {nombre}
                   </option>
@@ -737,8 +739,8 @@ function Write() {
               })}
             >
               <option defaultValue={true} value=""></option>
-              {complejidadOptions &&
-                complejidadOptions.map(({ id, nombre }) => (
+              {allOptions.complejidadOptions &&
+                allOptions.complejidadOptions.map(({ id, nombre }) => (
                   <option key={id} value={id}>
                     {nombre}
                   </option>
@@ -755,8 +757,8 @@ function Write() {
               })}
             >
               <option defaultValue={true} value=""></option>
-              {liderOptions &&
-                liderOptions.map(({ id, cargo }) => (
+              {allOptions.liderOptions &&
+                allOptions.liderOptions.map(({ id, cargo }) => (
                   <option key={id} value={id}>
                     {cargo}
                   </option>
@@ -834,8 +836,8 @@ function Write() {
               })}
             >
               <option defaultValue={true} hidden value=""></option>
-              {calidadOptions &&
-                calidadOptions.map(({ id, nombre }) => (
+              {allOptions.calidadOptions &&
+                allOptions.calidadOptions.map(({ id, nombre }) => (
                   <option key={id} value={id}>
                     {nombre}
                   </option>
@@ -859,8 +861,8 @@ function Write() {
               }}
             >
               <option value=""></option>
-              {derechosOptions &&
-                derechosOptions.map((derecho) => (
+              {allOptions.derechosOptions &&
+                allOptions.derechosOptions.map((derecho) => (
                   <option key={derecho.id} value={derecho.id}>
                     {derecho.derecho}
                   </option>
@@ -869,7 +871,7 @@ function Write() {
             <ul className="derechos-list">
               {derechosSelected &&
                 derechosSelected.map((selectedId) => {
-                  const selectedDerecho = derechosOptions.find(
+                  const selectedDerecho = allOptions.derechosOptions.find(
                     (derecho) => derecho.id === parseInt(selectedId, 10)
                   );
                   return (

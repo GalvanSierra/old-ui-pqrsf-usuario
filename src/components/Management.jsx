@@ -147,50 +147,48 @@ function Management() {
         console.error("Error:", error);
       });
 
-    setTimeout(() => {
-      setValue("radicado", peticion?.radicado);
-      setValue("tipoPeticionId", peticion?.tipoPeticionId);
-      setValue("peticionario.tipoId", peticion?.peticionario?.tipoId);
-      setValue("peticionario.id", peticion?.peticionario?.id);
-      setValue("peticionario.nombre", peticion?.peticionario?.nombre);
-      setValue("peticionario.apellido", peticion?.peticionario?.apellido);
-      setValue("peticionario.telefono", peticion?.peticionario?.telefono);
-      setValue("peticionario.email", peticion?.peticionario?.email);
+    setValue("radicado", peticion?.radicado);
+    setValue("tipoPeticionId", peticion?.tipoPeticionId);
+    setValue("peticionario.tipoId", peticion?.peticionario?.tipoId);
+    setValue("peticionario.id", peticion?.peticionario?.id);
+    setValue("peticionario.nombre", peticion?.peticionario?.nombre);
+    setValue("peticionario.apellido", peticion?.peticionario?.apellido);
+    setValue("peticionario.telefono", peticion?.peticionario?.telefono);
+    setValue("peticionario.email", peticion?.peticionario?.email);
 
-      setValue("paciente.tipoId", peticion?.paciente?.tipoId);
-      setValue("paciente.id", peticion?.paciente?.id);
-      setValue("paciente.nombre", peticion?.paciente?.nombre);
-      setValue("paciente.apellido", peticion?.paciente?.apellido);
-      setValue("paciente.epsId", peticion?.paciente?.epsId);
-      setValue("paciente.regimenId", peticion?.paciente?.regimenId);
-      setValue("paciente.departamentoId", peticion?.paciente?.departamentoId);
-      // setValue("paciente.municipioId", peticion.paciente?.municipioId);
+    setValue("paciente.tipoId", peticion?.paciente?.tipoId);
+    setValue("paciente.id", peticion?.paciente?.id);
+    setValue("paciente.nombre", peticion?.paciente?.nombre);
+    setValue("paciente.apellido", peticion?.paciente?.apellido);
+    setValue("paciente.epsId", peticion?.paciente?.epsId);
+    setValue("paciente.regimenId", peticion?.paciente?.regimenId);
+    setValue("paciente.departamentoId", peticion?.paciente?.departamentoId);
+    // setValue("paciente.municipioId", peticion.paciente?.municipioId);
 
-      setValue("areaId", peticion?.areaId);
-      setValue("servicioId", peticion?.servicioId);
-      setValue("dirigidaA", peticion?.dirigidaA);
-      setValue("tutela", peticion?.tutela ? "1" : "0");
-      setValue("radicadoTutela", peticion?.radicadoTutela);
-      setValue("motivo", peticion?.motivo);
-      setValue("fechaRecepcion", convertISOToDate(peticion.fechaRecepcion));
-      setValue("seGestiono", peticion?.seGestiono ? "1" : "0");
-      setValue("fechaDiligencia", convertISOToDate(peticion.fechaDiligencia));
-      setValue("estadoId", peticion?.estadoId);
-      setValue("canalId", peticion?.canalId);
-      setValue("clasePeticionId", peticion?.clasePeticionId);
-      setValue("complejidadId", peticion?.complejidadId);
-      setValue("dueDate", peticion?.dueDate);
-      setValue("liderId", peticion?.liderId);
+    setValue("areaId", peticion?.areaId);
+    setValue("servicioId", peticion?.servicioId);
+    setValue("dirigidaA", peticion?.dirigidaA);
+    setValue("tutela", peticion?.tutela ? "1" : "0");
+    setValue("radicadoTutela", peticion?.radicadoTutela);
+    setValue("motivo", peticion?.motivo);
+    setValue("fechaRecepcion", convertISOToDate(peticion.fechaRecepcion));
+    setValue("seGestiono", peticion?.seGestiono ? "1" : "0");
+    setValue("fechaDiligencia", convertISOToDate(peticion.fechaDiligencia));
+    setValue("estadoId", peticion?.estadoId);
+    setValue("canalId", peticion?.canalId);
+    setValue("clasePeticionId", peticion?.clasePeticionId);
+    setValue("complejidadId", peticion?.complejidadId);
+    setValue("dueDate", peticion?.dueDate);
+    setValue("liderId", peticion?.liderId);
 
-      setValue("derechos", peticion?.derechos);
+    setValue("derechos", peticion?.derechos);
 
-      setValue("respuesta", peticion?.respuesta);
-      setValue("seDioRespuesta", peticion?.seDioRespuesta ? "1" : "0");
-      setValue("fechaRespuesta", convertISOToDate(peticion.fechaRespuesta));
-      setValue("descripcionGestion", peticion?.descripcionGestion);
-      setValue("calidadId", peticion?.calidadId);
-      setValue("nota", peticion?.nota);
-    });
+    setValue("respuesta", peticion?.respuesta);
+    setValue("seDioRespuesta", peticion?.seDioRespuesta ? "1" : "0");
+    setValue("fechaRespuesta", convertISOToDate(peticion.fechaRespuesta));
+    setValue("descripcionGestion", peticion?.descripcionGestion);
+    setValue("calidadId", peticion?.calidadId);
+    setValue("nota", peticion?.nota);
 
     setDerechosSelected(peticion.derechos.map((derecho) => derecho.id));
 
